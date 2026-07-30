@@ -29,21 +29,19 @@
         </div>
 
         <div class="ca-hero__stage" data-hero-part="stage">
-            <svg class="ca-hero__route" viewBox="0 0 1000 220" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-                <path class="ca-hero__route-path" d="M 20 190 C 240 190, 300 40, 500 105 C 700 170, 780 30, 980 25" />
-                <circle class="ca-hero__route-dot ca-hero__route-dot--green" cx="345" cy="90" r="6" />
-                <circle class="ca-hero__route-dot ca-hero__route-dot--gold" cx="760" cy="65" r="6" />
+            <svg class="ca-hero__route" viewBox="0 0 1000 260" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+                <path class="ca-hero__route-path" d="M 20 220 C 260 220, 300 60, 500 130 C 700 200, 740 40, 980 30" />
+                <circle class="ca-hero__route-dot ca-hero__route-dot--green" cx="345" cy="112" r="6" />
+                <circle class="ca-hero__route-dot ca-hero__route-dot--gold" cx="742" cy="45" r="6" />
             </svg>
 
-            <img
-                src="{{ asset('assets/images/home/hero-electric-car.webp') }}"
-                alt="Kendaraan listrik yang dikelola sebagai aset produktif CarAsset"
-                width="2000"
-                height="1150"
-                fetchpriority="high"
-                decoding="async"
-                class="ca-hero__stage-image"
-            >
+            <div class="ca-hero__mark" aria-hidden="true">
+                <span class="ca-hero__mark-ring ca-hero__mark-ring--outer"></span>
+                <span class="ca-hero__mark-ring ca-hero__mark-ring--inner"></span>
+                <span class="ca-hero__mark-core">
+                    <span class="ca-hero__mark-icon" data-lucide="car-front" aria-hidden="true"></span>
+                </span>
+            </div>
         </div>
 
         <div class="ca-hero-status" data-hero-part="status">

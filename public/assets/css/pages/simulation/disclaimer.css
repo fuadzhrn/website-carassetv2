@@ -1,0 +1,109 @@
+/* ==========================================================================
+   CarAsset — Simulation / Disclaimer (disclaimer.css)
+   Konsep: Transparent Decision Panel — disclaimer sebagai bagian visual
+   utama, bukan teks kecil yang disembunyikan.
+   ========================================================================== */
+
+.ca-simulation-disclaimer {
+    background-color: var(--ca-color-extra-light-gray);
+}
+
+.ca-simulation-disclaimer__inner {
+    max-width: 820px;
+}
+
+.ca-simulation-disclaimer__panel {
+    position: relative;
+    background-color: var(--ca-color-white);
+    border: 1px solid var(--ca-color-gold);
+    border-radius: var(--ca-radius-xl);
+    padding: var(--ca-space-10);
+    box-shadow: var(--ca-shadow-sm);
+}
+
+.ca-simulation-disclaimer__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--ca-radius-md);
+    background-color: var(--ca-bg-gold-soft);
+    color: var(--ca-color-gold);
+    margin-bottom: var(--ca-space-4);
+}
+
+.ca-simulation-disclaimer__eyebrow {
+    color: var(--ca-color-gold);
+    display: block;
+}
+
+.ca-simulation-disclaimer__title {
+    color: var(--ca-color-navy);
+    margin: var(--ca-space-3) 0 var(--ca-space-5);
+}
+
+.ca-simulation-disclaimer__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-4);
+    color: var(--ca-color-dark-gray);
+}
+
+.ca-simulation-disclaimer__points {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-3);
+    margin-top: var(--ca-space-6);
+    padding-top: var(--ca-space-6);
+    border-top: 1px solid var(--ca-border-color);
+}
+
+.ca-simulation-disclaimer__points li {
+    position: relative;
+    padding-left: var(--ca-space-6);
+    color: var(--ca-color-navy);
+    font-family: var(--ca-font-ui);
+    font-weight: 500;
+    font-size: var(--ca-text-sm);
+}
+
+.ca-simulation-disclaimer__points li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 6px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--ca-color-gold);
+}
+
+/* -------------------------------------------------------------------------
+   CTA — dipisahkan jelas dari panel disclaimer
+   ------------------------------------------------------------------------- */
+.ca-simulation-disclaimer__cta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--ca-space-4);
+    text-align: center;
+    margin-top: var(--ca-space-16);
+}
+
+.ca-simulation-disclaimer__cta-title {
+    color: var(--ca-color-navy);
+    margin: 0;
+}
+
+.ca-simulation-disclaimer__microcopy {
+    color: var(--ca-color-slate);
+    max-width: 60ch;
+}
+
+/* Desktop-small safety */
+@media (max-width: 1180px) {
+    .ca-simulation-disclaimer__panel {
+        padding: var(--ca-space-8);
+    }
+}

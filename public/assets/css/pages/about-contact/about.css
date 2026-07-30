@@ -1,0 +1,129 @@
+/* ==========================================================================
+   CarAsset — About-Contact / Tentang CarAsset (about.css)
+   Konsep: Editorial Brand Manifesto — komposisi asimetris, bukan hero
+   mobil besar, bukan dua kolom 50:50 biasa.
+   ========================================================================== */
+
+.ca-about {
+    background-color: var(--ca-color-white);
+    overflow: hidden;
+}
+
+.ca-about__intro {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-4);
+    max-width: 920px;
+}
+
+.ca-about__title {
+    color: var(--ca-color-navy);
+    margin: 0;
+}
+
+/* -------------------------------------------------------------------------
+   BODY — narasi + tagline oversized (asimetris, bukan 50:50)
+   ------------------------------------------------------------------------- */
+.ca-about__body {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+    gap: var(--ca-space-16);
+    margin-top: var(--ca-space-16);
+    padding-top: var(--ca-space-16);
+    border-top: 1px solid var(--ca-border-color);
+}
+
+.ca-about__narrative {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ca-space-6);
+}
+
+.ca-about__narrative .ca-body-lg,
+.ca-about__narrative .ca-body {
+    color: var(--ca-color-dark-gray);
+    max-width: 60ch;
+}
+
+.ca-about__positioning {
+    margin: 0;
+    padding-left: var(--ca-space-6);
+    border-left: 3px solid var(--ca-color-gold);
+    font-family: var(--ca-font-heading);
+    font-weight: 600;
+    font-size: var(--ca-text-xl);
+    line-height: var(--ca-leading-heading);
+    color: var(--ca-color-navy);
+}
+
+.ca-about__actions {
+    margin-top: var(--ca-space-2);
+}
+
+/* Oversized tagline — elemen visual dekoratif, bukan gambar mobil */
+.ca-about__tagline {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-family: var(--ca-font-heading);
+    font-weight: 700;
+    font-size: clamp(32px, 4vw, 56px);
+    line-height: 1.05;
+    color: var(--ca-color-extra-light-gray);
+    border-left: 1px solid var(--ca-border-color);
+    padding-left: var(--ca-space-10);
+}
+
+.ca-about__tagline-accent {
+    color: var(--ca-bg-green-soft);
+}
+
+/* -------------------------------------------------------------------------
+   STRIP — foto editorial sebagai AKSEN, bukan elemen dominan
+   ------------------------------------------------------------------------- */
+.ca-about__strip {
+    position: relative;
+    margin: var(--ca-space-16) 0 0;
+    height: 220px;
+    border-radius: var(--ca-radius-lg);
+    overflow: hidden;
+}
+
+.ca-about__strip::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 4px;
+    background-color: var(--ca-color-green);
+    z-index: 1;
+}
+
+.ca-about__strip-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(15%);
+}
+
+/* Desktop-small safety */
+@media (max-width: 1180px) {
+    .ca-about__body {
+        grid-template-columns: 1fr;
+        gap: var(--ca-space-10);
+    }
+
+    .ca-about__tagline {
+        border-left: none;
+        padding-left: 0;
+        border-top: 1px solid var(--ca-border-color);
+        padding-top: var(--ca-space-8);
+        font-size: clamp(28px, 6vw, 40px);
+    }
+
+    .ca-about__strip {
+        height: 180px;
+    }
+}

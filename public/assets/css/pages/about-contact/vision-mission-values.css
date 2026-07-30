@@ -1,0 +1,171 @@
+/* ==========================================================================
+   CarAsset — About-Contact / Visi, Misi & Nilai (vision-mission-values.css)
+   Konsep: Brand Direction & Value Constellation — bukan 4 kartu identik.
+   ========================================================================== */
+
+.ca-vision {
+    background-color: var(--ca-color-navy);
+}
+
+.ca-vision__eyebrow {
+    color: var(--ca-color-gold);
+}
+
+.ca-vision__note {
+    display: block;
+    color: rgba(226, 232, 240, 0.6);
+    margin-top: var(--ca-space-3);
+}
+
+/* -------------------------------------------------------------------------
+   VISI — pernyataan besar
+   ------------------------------------------------------------------------- */
+.ca-vision__statement-block {
+    max-width: 900px;
+}
+
+.ca-vision__statement {
+    color: var(--ca-color-white);
+    margin: var(--ca-space-4) 0 0;
+    font-size: var(--ca-text-4xl);
+}
+
+/* -------------------------------------------------------------------------
+   MISI — jalur/urutan kerja
+   ------------------------------------------------------------------------- */
+.ca-vision__mission-block {
+    margin-top: var(--ca-space-16);
+    padding-top: var(--ca-space-12);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    max-width: 800px;
+}
+
+.ca-vision__mission-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-5);
+    margin: var(--ca-space-6) 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.ca-vision__mission-list li {
+    display: flex;
+    align-items: baseline;
+    gap: var(--ca-space-5);
+}
+
+.ca-vision__mission-number {
+    font-family: var(--ca-font-heading);
+    font-weight: 700;
+    font-size: var(--ca-text-2xl);
+    color: var(--ca-color-green);
+    flex-shrink: 0;
+    width: 2ch;
+}
+
+.ca-vision__mission-list .ca-body {
+    color: var(--ca-color-light-gray);
+    max-width: 60ch;
+}
+
+/* -------------------------------------------------------------------------
+   NILAI — constellation asimetris, bukan grid 4 kartu
+   ------------------------------------------------------------------------- */
+.ca-vision__values {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--ca-space-8);
+    margin-top: var(--ca-space-20);
+    padding-top: var(--ca-space-10);
+}
+
+.ca-vision__track {
+    position: absolute;
+    top: 56px;
+    left: 2%;
+    right: 2%;
+    height: 1px;
+    background: repeating-linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.16) 0,
+        rgba(255, 255, 255, 0.16) 6px,
+        transparent 6px,
+        transparent 12px
+    );
+}
+
+.ca-vision__value {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-2);
+}
+
+/* Staggering asimetris — dua di atas, dua sedikit di bawah */
+.ca-vision__value--2 {
+    margin-top: var(--ca-space-10);
+}
+
+.ca-vision__value--4 {
+    margin-top: var(--ca-space-6);
+}
+
+.ca-vision__value-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(22, 163, 74, 0.18);
+    color: var(--ca-color-green);
+    margin-bottom: var(--ca-space-2);
+}
+
+.ca-vision__value-icon--gold {
+    background-color: rgba(212, 175, 55, 0.18);
+    color: var(--ca-color-gold);
+}
+
+.ca-vision__value-eyebrow {
+    font-family: var(--ca-font-ui);
+    font-weight: 600;
+    font-size: var(--ca-text-xs);
+    letter-spacing: 0.08em;
+    color: rgba(226, 232, 240, 0.55);
+}
+
+.ca-vision__value-title {
+    font-family: var(--ca-font-ui);
+    font-weight: 600;
+    font-size: var(--ca-text-lg);
+    color: var(--ca-color-white);
+    margin: 0;
+}
+
+.ca-vision__value-description {
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-sm);
+    color: var(--ca-color-light-gray);
+    max-width: 26ch;
+    margin: 0;
+}
+
+/* Desktop-small safety */
+@media (max-width: 1180px) {
+    .ca-vision__values {
+        grid-template-columns: repeat(2, 1fr);
+        row-gap: var(--ca-space-10);
+    }
+
+    .ca-vision__value--2,
+    .ca-vision__value--4 {
+        margin-top: 0;
+    }
+
+    .ca-vision__track {
+        display: none;
+    }
+}

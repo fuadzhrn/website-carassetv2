@@ -1,0 +1,120 @@
+/* ==========================================================================
+   CarAsset — About-Contact / FAQ (faq.css)
+   Konsep: Editorial FAQ Index — nomor besar, border tipis, bukan kartu tebal.
+   ========================================================================== */
+
+.ca-faq {
+    background-color: var(--ca-color-extra-light-gray);
+}
+
+.ca-faq__inner {
+    max-width: 980px;
+}
+
+.ca-faq__heading {
+    max-width: 640px;
+}
+
+.ca-faq__title {
+    color: var(--ca-color-navy);
+    margin: var(--ca-space-3) 0 var(--ca-space-3);
+}
+
+.ca-faq__description {
+    color: var(--ca-color-dark-gray);
+}
+
+/* -------------------------------------------------------------------------
+   LIST
+   ------------------------------------------------------------------------- */
+.ca-faq__list {
+    margin-top: var(--ca-space-12);
+}
+
+.ca-faq__item {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: var(--ca-space-6);
+    border-bottom: 1px solid var(--ca-border-color);
+    padding-block: var(--ca-space-2);
+}
+
+.ca-faq__number {
+    font-family: var(--ca-font-heading);
+    font-weight: 700;
+    font-size: var(--ca-text-2xl);
+    color: var(--ca-color-light-gray);
+    line-height: 1;
+    padding-top: var(--ca-space-5);
+}
+
+.ca-faq__heading-item {
+    margin: 0;
+}
+
+.ca-faq__trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ca-space-4);
+    width: 100%;
+    padding-block: var(--ca-space-5);
+    text-align: left;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.ca-faq__trigger-text {
+    font-family: var(--ca-font-ui);
+    font-weight: 600;
+    font-size: var(--ca-text-lg);
+    color: var(--ca-color-navy);
+}
+
+.ca-faq__icon {
+    display: inline-flex;
+    width: 20px;
+    height: 20px;
+    color: var(--ca-color-slate);
+    flex-shrink: 0;
+    transition: transform var(--ca-transition-fast);
+}
+
+.ca-faq__trigger[aria-expanded="true"] .ca-faq__icon {
+    transform: rotate(180deg);
+    color: var(--ca-color-green);
+}
+
+.ca-faq__trigger:focus-visible {
+    outline: none;
+    box-shadow: var(--ca-shadow-focus);
+    border-radius: var(--ca-radius-sm);
+}
+
+.ca-faq__panel {
+    padding-bottom: var(--ca-space-6);
+}
+
+.ca-faq__panel[hidden] {
+    display: none;
+}
+
+.ca-faq__panel .ca-body {
+    color: var(--ca-color-dark-gray);
+    max-width: 70ch;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ca-faq__icon {
+        transition: none;
+    }
+}
+
+/* Desktop-small safety */
+@media (max-width: 1180px) {
+    .ca-faq__item {
+        grid-template-columns: 40px 1fr;
+        gap: var(--ca-space-4);
+    }
+}

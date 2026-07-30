@@ -1,0 +1,145 @@
+/* ==========================================================================
+   CarAsset — About-Contact / Legalitas & Partner (legal-partners.css)
+   Konsep: Trust Registry — satu panel besar, dua area, placeholder jujur.
+   ========================================================================== */
+
+.ca-legal {
+    background-color: var(--ca-color-white);
+}
+
+.ca-legal__status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ca-space-2);
+    margin-top: var(--ca-space-4);
+    padding: var(--ca-space-2) var(--ca-space-4);
+    background-color: var(--ca-bg-gold-soft);
+    border: 1px solid var(--ca-color-gold);
+    border-radius: var(--ca-radius-pill);
+    color: var(--ca-color-navy);
+    font-family: var(--ca-font-ui);
+    font-weight: 500;
+    font-size: var(--ca-text-sm);
+}
+
+.ca-legal__status-icon {
+    display: inline-flex;
+    width: 16px;
+    height: 16px;
+    color: var(--ca-color-gold);
+}
+
+/* -------------------------------------------------------------------------
+   REGISTRY PANEL
+   ------------------------------------------------------------------------- */
+.ca-legal__registry {
+    display: grid;
+    grid-template-columns: 1.1fr auto 0.9fr;
+    gap: var(--ca-space-10);
+    margin-top: var(--ca-space-12);
+    padding: var(--ca-space-10);
+    border: 1px solid var(--ca-border-color);
+    border-radius: var(--ca-radius-xl);
+    box-shadow: var(--ca-shadow-sm);
+}
+
+.ca-legal__area-title {
+    color: var(--ca-color-navy);
+    margin: 0 0 var(--ca-space-6);
+}
+
+.ca-legal__divider {
+    width: 1px;
+    background-color: var(--ca-border-color);
+}
+
+.ca-legal__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-5);
+    margin: 0;
+}
+
+.ca-legal__item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--ca-space-3);
+}
+
+.ca-legal__item-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    border-radius: var(--ca-radius-sm);
+    background-color: var(--ca-bg-navy-soft);
+    color: var(--ca-color-navy);
+}
+
+.ca-legal__label {
+    display: block;
+    font-family: var(--ca-font-ui);
+    font-weight: 500;
+    font-size: var(--ca-text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ca-color-slate);
+    margin: 0 0 2px;
+}
+
+.ca-legal__value {
+    margin: 0;
+    font-family: var(--ca-font-body);
+    font-style: italic;
+    color: var(--ca-color-slate);
+}
+
+/* -------------------------------------------------------------------------
+   PARTNER AREA
+   ------------------------------------------------------------------------- */
+.ca-legal__partner-note {
+    color: var(--ca-color-slate);
+    margin: 0 0 var(--ca-space-5);
+}
+
+.ca-legal__partner-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--ca-space-3);
+}
+
+.ca-legal__partner-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 72px;
+    border: 1px dashed var(--ca-color-light-gray);
+    border-radius: var(--ca-radius-md);
+    background-color: var(--ca-color-extra-light-gray);
+    color: var(--ca-color-slate);
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-xs);
+    text-align: center;
+    padding: var(--ca-space-2);
+}
+
+.ca-legal__note {
+    color: var(--ca-color-slate);
+    margin-top: var(--ca-space-6);
+    max-width: 70ch;
+}
+
+/* Desktop-small safety */
+@media (max-width: 1180px) {
+    .ca-legal__registry {
+        grid-template-columns: 1fr;
+        gap: var(--ca-space-8);
+    }
+
+    .ca-legal__divider {
+        width: 100%;
+        height: 1px;
+    }
+}

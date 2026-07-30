@@ -1,0 +1,107 @@
+/* ==========================================================================
+   CarAsset — Simulation / Beberapa Unit (multiple-units.css)
+   Konsep: Scenario Comparison Rail — TIGA modul SAMA (bukan paket
+   Program Kemitraan, bukan penekanan pada 10 unit sebagai "terbaik").
+   ========================================================================== */
+
+.ca-multiple-units {
+    background-color: var(--ca-color-navy);
+}
+
+/* Modifier gelap untuk class bersama simulation.css */
+.ca-simulation-status--dark {
+    background-color: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.18);
+    color: var(--ca-color-white);
+}
+
+.ca-simulation-note--dark {
+    color: var(--ca-color-light-gray);
+}
+
+/* -------------------------------------------------------------------------
+   RAIL — tiga skenario dengan bobot visual SETARA
+   ------------------------------------------------------------------------- */
+.ca-multiple-units__rail {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--ca-space-8);
+    margin-top: var(--ca-space-16);
+}
+
+.ca-multiple-units__track {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: repeating-linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.2) 0,
+        rgba(255, 255, 255, 0.2) 8px,
+        transparent 8px,
+        transparent 14px
+    );
+}
+
+.ca-multiple-units__scenario {
+    padding-top: var(--ca-space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-2);
+}
+
+.ca-multiple-units__label {
+    color: rgba(226, 232, 240, 0.7);
+}
+
+.ca-multiple-units__unit {
+    color: var(--ca-color-white);
+    margin: 0 0 var(--ca-space-4);
+}
+
+.ca-multiple-units__rows {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-4);
+}
+
+.ca-multiple-units__rows li {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-1);
+    padding-top: var(--ca-space-3);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ca-multiple-units__rows .ca-simulation-label {
+    color: rgba(226, 232, 240, 0.7);
+}
+
+.ca-multiple-units__rows .ca-simulation-value {
+    color: var(--ca-color-white);
+}
+
+.ca-multiple-units__warning {
+    max-width: 70ch;
+    margin-top: var(--ca-space-12);
+}
+
+.ca-multiple-units__cta {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--ca-space-10);
+}
+
+/* Desktop-small safety */
+@media (max-width: 1180px) {
+    .ca-multiple-units__rail {
+        grid-template-columns: 1fr;
+        gap: var(--ca-space-10);
+    }
+
+    .ca-multiple-units__track {
+        display: none;
+    }
+}

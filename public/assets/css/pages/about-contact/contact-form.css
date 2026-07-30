@@ -1,0 +1,189 @@
+/* ==========================================================================
+   CarAsset — About-Contact / Kontak & Form (contact-form.css)
+   Konsep: Consultation Workspace — form 60-65%, contact rail 35-40%,
+   bukan layout 50:50 kaku.
+   ========================================================================== */
+
+.ca-contact {
+    background-color: var(--ca-color-white);
+}
+
+.ca-contact__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+    gap: var(--ca-space-16);
+    align-items: start;
+}
+
+/* -------------------------------------------------------------------------
+   FORM AREA
+   ------------------------------------------------------------------------- */
+.ca-contact__form-status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ca-space-2);
+    margin-top: var(--ca-space-6);
+    padding: var(--ca-space-2) var(--ca-space-4);
+    background-color: var(--ca-bg-green-soft);
+    border: 1px solid var(--ca-color-green);
+    border-radius: var(--ca-radius-pill);
+    color: var(--ca-color-navy);
+    font-family: var(--ca-font-ui);
+    font-weight: 500;
+    font-size: var(--ca-text-sm);
+}
+
+.ca-contact__form-status-icon {
+    display: inline-flex;
+    width: 16px;
+    height: 16px;
+    color: var(--ca-color-green);
+}
+
+.ca-contact__form-microcopy {
+    color: var(--ca-color-slate);
+    margin-top: var(--ca-space-3);
+}
+
+.ca-contact__form {
+    margin-top: var(--ca-space-8);
+    max-width: 620px;
+}
+
+.ca-contact__form-message {
+    min-height: 1.2em;
+    margin-bottom: var(--ca-space-5);
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-sm);
+    color: var(--ca-color-navy);
+}
+
+.ca-contact__form-message:empty {
+    display: none;
+}
+
+.ca-contact__form-message.is-success {
+    color: var(--ca-color-green);
+}
+
+.ca-contact__form-message.is-error {
+    color: var(--ca-color-error);
+}
+
+.ca-contact__form-note {
+    color: var(--ca-color-slate);
+    margin-top: var(--ca-space-3);
+}
+
+/* -------------------------------------------------------------------------
+   CONTACT RAIL
+   ------------------------------------------------------------------------- */
+.ca-contact__rail {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-6);
+}
+
+.ca-contact__info-panel {
+    background-color: var(--ca-color-navy);
+    border-radius: var(--ca-radius-xl);
+    padding: var(--ca-space-8);
+}
+
+.ca-contact__info-title {
+    color: var(--ca-color-white);
+    margin: 0 0 var(--ca-space-6);
+}
+
+.ca-contact__info-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-5);
+}
+
+.ca-contact__info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--ca-space-3);
+}
+
+.ca-contact__info-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    border-radius: var(--ca-radius-sm);
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--ca-color-white);
+}
+
+.ca-contact__info-label {
+    display: block;
+    font-family: var(--ca-font-ui);
+    font-weight: 500;
+    font-size: var(--ca-text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: rgba(226, 232, 240, 0.6);
+}
+
+.ca-contact__info-value {
+    display: block;
+    font-family: var(--ca-font-body);
+    font-style: italic;
+    color: var(--ca-color-light-gray);
+}
+
+.ca-contact__info-note {
+    color: rgba(226, 232, 240, 0.6);
+    margin-top: var(--ca-space-6);
+    padding-top: var(--ca-space-5);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* -------------------------------------------------------------------------
+   MAP PLACEHOLDER
+   ------------------------------------------------------------------------- */
+.ca-contact-map-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--ca-space-3);
+    min-height: 180px;
+    padding: var(--ca-space-8);
+    text-align: center;
+    background-color: var(--ca-color-extra-light-gray);
+    background-image:
+        linear-gradient(var(--ca-color-light-gray) 1px, transparent 1px),
+        linear-gradient(90deg, var(--ca-color-light-gray) 1px, transparent 1px);
+    background-size: 24px 24px;
+    border: 1px solid var(--ca-color-light-gray);
+    border-radius: var(--ca-radius-xl);
+}
+
+.ca-contact-map-placeholder__icon {
+    display: inline-flex;
+    width: 28px;
+    height: 28px;
+    color: var(--ca-color-slate);
+}
+
+.ca-contact-map-placeholder__text {
+    color: var(--ca-color-slate);
+    max-width: 28ch;
+}
+
+/* Desktop-small safety */
+@media (max-width: 1180px) {
+    .ca-contact__layout {
+        grid-template-columns: 1fr;
+        gap: var(--ca-space-10);
+    }
+
+    .ca-contact__form {
+        max-width: none;
+    }
+}

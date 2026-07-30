@@ -53,6 +53,14 @@ textarea.ca-field__control {
     cursor: not-allowed;
 }
 
+.ca-field__control[aria-invalid="true"] {
+    border-color: var(--ca-color-error);
+}
+
+.ca-field__control[aria-invalid="true"]:focus-visible {
+    border-color: var(--ca-color-error);
+}
+
 .ca-field__help {
     margin: 0;
     font-family: var(--ca-font-body);
@@ -65,4 +73,47 @@ textarea.ca-field__control {
     font-family: var(--ca-font-body);
     font-size: var(--ca-text-sm);
     color: var(--ca-color-error);
+}
+
+.ca-field__error[hidden] {
+    display: none;
+}
+
+/* -------------------------------------------------------------------------
+   CHECKBOX
+   ------------------------------------------------------------------------- */
+.ca-field--checkbox {
+    gap: var(--ca-space-1);
+}
+
+.ca-field__checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--ca-space-3);
+    cursor: pointer;
+}
+
+.ca-field__checkbox-input {
+    margin-top: 3px;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    accent-color: var(--ca-color-green);
+}
+
+.ca-field__checkbox-input:focus-visible {
+    outline: none;
+    box-shadow: var(--ca-shadow-focus);
+    border-radius: var(--ca-radius-sm);
+}
+
+.ca-field__checkbox-input[aria-invalid="true"] {
+    outline: 2px solid var(--ca-color-error);
+    outline-offset: 2px;
+}
+
+.ca-field__checkbox-text {
+    color: var(--ca-color-charcoal);
+    font-size: var(--ca-text-sm);
+    line-height: var(--ca-leading-normal);
 }

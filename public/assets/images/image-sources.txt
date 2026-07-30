@@ -38,7 +38,7 @@ ENTRI GAMBAR — HOME (PROMPT 03)
 
 ------------------------------------------------------------------
 HALAMAN: Home
-SECTION: Hero & Value Proposition (REVISI — Cinematic Center-Stage)
+SECTION: Hero & Value Proposition (SUDAH TIDAK DIPAKAI — lihat catatan di bawah)
 KEBUTUHAN GAMBAR: Kendaraan listrik modern sebagai visual utama center-stage hero
 KATA KUNCI PENCARIAN: premium electric car dark background, electric vehicle studio dark
 SUMBER: Unsplash
@@ -63,7 +63,12 @@ ALASAN PEMILIHAN: Dari 4 kandidat yang dibandingkan (Hyundai Ioniq 6 front-on
   (4) framing depan-tengah simetris memperkuat konsep "center-stage"
   alih-alih sudut tiga-perempat konvensional; (5) pencahayaan sinematik,
   ruang kosong luas di kiri-kanan-atas, tanpa watermark.
-STATUS: Sudah diunduh
+STATUS: TIDAK DIPAKAI LAGI — file lokal masih ada (belum dihapus) tetapi
+  tidak direferensikan di hero.blade.php. Hero kini memakai visual
+  abstrak buatan sendiri (garis perjalanan diperkuat + "asset mark"
+  berupa ikon kendaraan dalam cincin monitoring berdenyut halus, murni
+  CSS/SVG/Lucide, tanpa foto) — hasil diskusi bahwa foto stok masih
+  terasa seperti "katalog dealer" meski komposisinya sudah center-stage.
 
 CATATAN: Entri gambar hero sebelumnya (Precious Madubuike, unsplash.com/
   photos/N2Td7KpIvYc, komposisi dua-kolom) sudah TIDAK dipakai lagi sejak
@@ -191,6 +196,68 @@ Section Pilih Program, Paket & Benefit, dan Persyaratan pada halaman
 Program Kemitraan TIDAK memakai foto — sesuai arahan desain, section
 tersebut dibangun murni dengan typography, ikon, dan garis (route line,
 checkpoint, accordion), bukan foto.
+
+ENTRI GAMBAR — SIMULASI & PERLINDUNGAN (PROMPT 09)
+=====================================================
+
+------------------------------------------------------------------
+HALAMAN: Simulasi & Perlindungan
+SECTION: Perlindungan & Monitoring Aset (protection-monitoring)
+KEBUTUHAN GAMBAR: Visual teknologi/perlindungan kendaraan listrik (charging port close-up)
+KATA KUNCI PENCARIAN: electric car charging maintenance, electric vehicle technology
+SUMBER: Unsplash
+FOTOGRAFER: CHUTTERSNAP (@chuttersnap)
+URL SUMBER: https://unsplash.com/photos/xfaYAsMV1p8
+FILE TARGET: public/assets/images/simulation/protection-monitoring.webp
+LISENSI/CATATAN: Unsplash License (free). Diunduh & disimpan lokal,
+  dikonversi ke WebP via PHP GD (1600x1065, ~35KB). Kandidat lain yang
+  dibandingkan: (1) foto pengisian EV serupa namun ada logo BMW kecil
+  pada roda di latar belakang blur — dihindari demi kehati-hatian meski
+  tidak "dominan"; (2) foto teknisi dengan tablet menampilkan UI Windows
+  yang terlalu spesifik/mengganggu — dihindari; (3) foto mekanik di
+  bengkel tradisional — dihindari karena kesan "bengkel" tidak relevan
+  dengan positioning teknologi/monitoring. Foto terpilih bersih dari
+  logo pihak ketiga, tanpa wajah manusia, nuansa biru-teknologi yang
+  selaras dengan warna navy/green brand. Gambar prototipe — WAJIB
+  diganti dokumentasi resmi sistem/kendaraan CarAsset sebelum production.
+STATUS: Sudah diunduh
+------------------------------------------------------------------
+
+Section Dasar Perhitungan, Simulasi 1 Unit, Simulasi Beberapa Unit, dan
+Disclaimer pada halaman Simulasi & Perlindungan TIDAK memakai foto —
+sesuai arahan desain, mengandalkan typography, garis, ikon, panel, dan
+diagram data placeholder.
+
+ENTRI GAMBAR — TENTANG & KONTAK (PROMPT 11)
+==============================================
+
+------------------------------------------------------------------
+HALAMAN: Tentang & Kontak
+SECTION: Tentang CarAsset (about)
+KEBUTUHAN GAMBAR: Foto editorial aksen (strip horizontal, bukan elemen dominan)
+KATA KUNCI PENCARIAN: future urban mobility, modern city business district aerial
+SUMBER: Unsplash
+FOTOGRAFER: Colin OBrien (@colinobriennn)
+URL SUMBER: https://unsplash.com/photos/VhMfApFOHW8
+FILE TARGET: public/assets/images/about-contact/about-carasset.webp
+LISENSI/CATATAN: Unsplash License (free). Diunduh & disimpan lokal,
+  dikonversi ke WebP via PHP GD (1200x800, ~147KB). Kandidat lain yang
+  dibandingkan: foto Tesla Model Y di jalan layang (subjek utama berupa
+  mobil kompetitor yang mudah dikenali — dihindari), foto pria berjas
+  berjalan di antara SUV GMC/Chevrolet (kesan korporat-parkiran, kurang
+  sesuai nuansa "Smart Asset Mobility", tag menyebut brand spesifik),
+  foto cityscape dengan elevated train (portrait, gagal syarat
+  landscape). Foto terpilih (aerial skyline kota bersih) dipakai sebagai
+  strip editorial aksen — BUKAN elemen dominan section — tanpa
+  kendaraan/manusia/logo apa pun sehingga aman dari risiko brand pihak
+  ketiga. Gambar prototipe — WAJIB diganti dokumentasi resmi CarAsset
+  sebelum production.
+STATUS: Sudah diunduh
+------------------------------------------------------------------
+
+Section Visi-Misi-Nilai, Legalitas & Partner, FAQ, dan Kontak & Form
+pada halaman Tentang & Kontak TIDAK memakai foto — sesuai arahan desain,
+mengandalkan typography, garis, ikon, placeholder, dan panel.
 
 Seluruh gambar di atas adalah PROTOTIPE. Foto BYD atau kendaraan
 berbranding CarAsset final WAJIB diganti dengan aset resmi dari klien

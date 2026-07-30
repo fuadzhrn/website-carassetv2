@@ -1,0 +1,28 @@
+/* ==========================================================================
+   CarAsset — About & Contact (about-contact.css)
+   Hanya aturan bersama lintas section Tentang & Kontak. Setiap section
+   tetap punya file CSS sendiri untuk gaya spesifiknya.
+   ========================================================================== */
+
+.ca-page--about-contact {
+    background-color: var(--ca-color-white);
+}
+
+/* Section spacing bersama */
+.ca-about,
+.ca-vision,
+.ca-legal,
+.ca-faq,
+.ca-contact {
+    padding-block: var(--ca-section-space);
+}
+
+@media (max-width: 1180px) {
+    .ca-about,
+    .ca-vision,
+    .ca-legal,
+    .ca-faq,
+    .ca-contact {
+        padding-block: var(--ca-section-space-small);
+    }
+}

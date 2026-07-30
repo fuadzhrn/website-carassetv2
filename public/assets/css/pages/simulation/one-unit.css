@@ -1,0 +1,113 @@
+/* ==========================================================================
+   CarAsset — Simulation / Satu Unit (one-unit.css)
+   Konsep: Operational Cash-Flow Journey — diagram alur, bukan tabel,
+   bukan grafik batang hijau.
+   ========================================================================== */
+
+.ca-one-unit {
+    background-color: var(--ca-color-white);
+}
+
+.ca-one-unit > .ca-container > .ca-simulation-status {
+    margin-top: var(--ca-space-4);
+}
+
+/* -------------------------------------------------------------------------
+   FLOW — enam node, bukan enam kartu identik
+   ------------------------------------------------------------------------- */
+.ca-one-unit__flow {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: var(--ca-space-5);
+    margin-top: var(--ca-space-16);
+}
+
+.ca-one-unit__track {
+    position: absolute;
+    top: 26px;
+    left: 3%;
+    right: 3%;
+    height: 2px;
+    z-index: 0;
+}
+
+.ca-one-unit__node {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-2);
+}
+
+.ca-one-unit__node-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--ca-radius-md);
+    background-color: var(--ca-bg-navy-soft);
+    color: var(--ca-color-navy);
+    margin-bottom: var(--ca-space-1);
+}
+
+/* Hanya node aktivitas (awal alur) yang boleh beraksen hijau */
+.ca-one-unit__node:first-child .ca-one-unit__node-icon {
+    background-color: var(--ca-bg-green-soft);
+    color: var(--ca-color-green);
+}
+
+.ca-one-unit__node-title {
+    margin: 0;
+    color: var(--ca-color-navy);
+    max-width: 18ch;
+}
+
+.ca-one-unit__node-value {
+    margin: 0;
+}
+
+.ca-one-unit__node-description {
+    margin: 0;
+    color: var(--ca-color-slate);
+    max-width: 22ch;
+}
+
+/* -------------------------------------------------------------------------
+   SUMMARY PANEL
+   ------------------------------------------------------------------------- */
+.ca-one-unit__summary {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--ca-space-6);
+    margin-top: var(--ca-space-16);
+}
+
+.ca-one-unit__summary-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-2);
+}
+
+.ca-one-unit__cta {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--ca-space-12);
+}
+
+/* Desktop-small safety */
+@media (max-width: 1180px) {
+    .ca-one-unit__flow {
+        grid-template-columns: repeat(3, 1fr);
+        row-gap: var(--ca-space-10);
+    }
+
+    .ca-one-unit__track {
+        display: none;
+    }
+
+    .ca-one-unit__summary {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
