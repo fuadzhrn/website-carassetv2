@@ -1,0 +1,204 @@
+/* ==========================================================================
+   CarAsset — Partnership / Program Selector (program-selector.css)
+   Konsep: Branched Pathway. Bukan Hero seperti Home, bukan layout
+   dua kolom seperti Bisnis.
+   ========================================================================== */
+
+.ca-program-selector {
+    background-color: var(--ca-color-extra-light-gray);
+    text-align: center;
+}
+
+.ca-program-selector__intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--ca-space-5);
+    max-width: 720px;
+    margin-inline: auto;
+}
+
+.ca-program-selector__title {
+    margin: 0;
+    color: var(--ca-color-navy);
+}
+
+.ca-program-selector__description {
+    color: var(--ca-color-dark-gray);
+    margin: 0;
+}
+
+/* -------------------------------------------------------------------------
+   BRANCH — satu titik di tengah, bercabang ke dua jalur
+   ------------------------------------------------------------------------- */
+.ca-program-selector__branch {
+    position: relative;
+    margin-top: var(--ca-space-16);
+}
+
+.ca-program-selector__branch-line {
+    display: block;
+    width: 100%;
+    max-width: 800px;
+    height: 100px;
+    margin-inline: auto;
+}
+
+.ca-program-selector__branch-path {
+    fill: none;
+    stroke: rgba(15, 23, 42, 0.15);
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+}
+
+.ca-program-selector__branch-dot--navy {
+    fill: var(--ca-color-navy);
+}
+
+.ca-program-selector__branch-dot--green {
+    fill: var(--ca-color-green);
+}
+
+.ca-program-selector__paths {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--ca-space-16);
+    max-width: 900px;
+    margin-inline: auto;
+    margin-top: calc(-1 * var(--ca-space-4));
+}
+
+.ca-program-selector__path {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--ca-space-3);
+    padding-top: var(--ca-space-6);
+}
+
+.ca-program-selector__path-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--ca-radius-md);
+    margin-bottom: var(--ca-space-2);
+}
+
+.ca-program-selector__path--owner .ca-program-selector__path-icon {
+    background-color: var(--ca-bg-navy-soft);
+    color: var(--ca-color-navy);
+}
+
+.ca-program-selector__path--driver .ca-program-selector__path-icon {
+    background-color: var(--ca-bg-green-soft);
+    color: var(--ca-color-green);
+}
+
+.ca-program-selector__path-title {
+    margin: 0;
+    color: var(--ca-color-navy);
+}
+
+.ca-program-selector__path-description {
+    color: var(--ca-color-slate);
+    max-width: 32ch;
+}
+
+.ca-program-selector__path-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ca-space-2);
+    margin-top: var(--ca-space-2);
+    color: var(--ca-color-navy);
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 2px;
+    transition: color var(--ca-transition-fast);
+}
+
+.ca-program-selector__path--driver .ca-program-selector__path-cta {
+    color: var(--ca-color-green);
+}
+
+.ca-program-selector__path-cta:hover {
+    color: var(--ca-color-gold);
+}
+
+.ca-program-selector__path-cta:focus-visible {
+    outline: none;
+    box-shadow: var(--ca-shadow-focus);
+    border-radius: var(--ca-radius-sm);
+}
+
+/* -------------------------------------------------------------------------
+   SEGMENTED ANCHOR NAVIGATION — sticky ringan, bukan tab yang menyembunyikan
+   ------------------------------------------------------------------------- */
+.ca-program-nav {
+    position: sticky;
+    top: 80px;
+    z-index: var(--ca-z-dropdown);
+    background-color: var(--ca-color-white);
+    border-bottom: 1px solid var(--ca-border-color);
+}
+
+.ca-program-nav__inner {
+    display: flex;
+    justify-content: center;
+    gap: var(--ca-space-10);
+}
+
+.ca-program-nav__link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ca-space-2);
+    padding: var(--ca-space-4) var(--ca-space-2);
+    font-family: var(--ca-font-ui);
+    font-weight: 500;
+    font-size: var(--ca-text-sm);
+    color: var(--ca-color-slate);
+    border-bottom: 2px solid transparent;
+    transition: color var(--ca-transition-fast), border-color var(--ca-transition-fast);
+}
+
+.ca-program-nav__link::before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: transparent;
+    transition: background-color var(--ca-transition-fast);
+}
+
+.ca-program-nav__link:hover {
+    color: var(--ca-color-navy);
+}
+
+.ca-program-nav__link.is-active {
+    color: var(--ca-color-navy);
+    font-weight: 600;
+    border-bottom-color: var(--ca-color-green);
+}
+
+.ca-program-nav__link.is-active::before {
+    background-color: var(--ca-color-green);
+}
+
+.ca-program-nav__link:focus-visible {
+    outline: none;
+    box-shadow: var(--ca-shadow-focus);
+    border-radius: var(--ca-radius-sm);
+}
+
+/* Desktop-small safety */
+@media (max-width: 1180px) {
+    .ca-program-selector__paths {
+        gap: var(--ca-space-10);
+    }
+
+    .ca-program-nav__inner {
+        gap: var(--ca-space-6);
+    }
+}

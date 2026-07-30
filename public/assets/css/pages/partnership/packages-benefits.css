@@ -1,0 +1,164 @@
+/* ==========================================================================
+   CarAsset — Partnership / Paket & Benefit (packages-benefits.css)
+   Konsep: Progressive Partnership Scale — tiga panel BERBEDA perlakuan
+   (bukan tabel harga, bukan tiga kartu identik).
+   ========================================================================== */
+
+.ca-packages {
+    background-color: var(--ca-color-extra-light-gray);
+}
+
+.ca-packages__scale {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr 1fr;
+    align-items: end;
+    gap: var(--ca-space-8);
+    max-width: 1100px;
+    margin: var(--ca-space-16) auto 0;
+}
+
+.ca-packages__package {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ca-space-3);
+    padding: var(--ca-space-8);
+    border-radius: var(--ca-radius-lg);
+}
+
+.ca-packages__label {
+    color: var(--ca-color-slate);
+}
+
+.ca-packages__label--inverse {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.ca-packages__unit {
+    font-size: var(--ca-text-4xl);
+    color: var(--ca-color-navy);
+    margin: 0;
+}
+
+.ca-packages__unit--inverse {
+    color: var(--ca-color-white);
+}
+
+.ca-packages__description {
+    color: var(--ca-color-dark-gray);
+}
+
+.ca-packages__description--inverse {
+    color: var(--ca-color-light-gray);
+}
+
+.ca-packages__benefits {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-2);
+    margin: var(--ca-space-2) 0 var(--ca-space-4);
+    width: 100%;
+}
+
+.ca-packages__benefits li {
+    position: relative;
+    padding-left: var(--ca-space-5);
+    color: var(--ca-color-dark-gray);
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-sm);
+}
+
+.ca-packages__benefits li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--ca-color-slate);
+}
+
+.ca-packages__benefits--inverse li {
+    color: var(--ca-color-light-gray);
+}
+
+.ca-packages__benefits--inverse li::before {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* -------------------------------------------------------------------------
+   PAKET 1 — Langkah Awal (sederhana)
+   ------------------------------------------------------------------------- */
+.ca-packages__package--1 {
+    background-color: var(--ca-color-white);
+    border: 1px solid var(--ca-border-color);
+}
+
+/* -------------------------------------------------------------------------
+   PAKET 5 — Pengembangan Portofolio (aksen gold, paling menonjol)
+   ------------------------------------------------------------------------- */
+.ca-packages__package--5 {
+    position: relative;
+    background-color: var(--ca-color-white);
+    border: 1px solid var(--ca-color-gold);
+    box-shadow: var(--ca-shadow-md);
+    margin-bottom: var(--ca-space-8);
+    padding-top: var(--ca-space-12);
+}
+
+.ca-packages__badge {
+    position: absolute;
+    top: calc(-1 * var(--ca-space-4));
+    left: var(--ca-space-8);
+    display: inline-flex;
+    align-items: center;
+    padding: var(--ca-space-1) var(--ca-space-4);
+    background-color: var(--ca-color-gold);
+    color: var(--ca-color-navy);
+    font-family: var(--ca-font-ui);
+    font-weight: 600;
+    font-size: var(--ca-text-xs);
+    border-radius: var(--ca-radius-pill);
+}
+
+/* -------------------------------------------------------------------------
+   PAKET 10 — Skala Armada (navy, skala besar)
+   ------------------------------------------------------------------------- */
+.ca-packages__package--10 {
+    background-color: var(--ca-color-navy);
+    padding-block: var(--ca-space-10);
+}
+
+/* -------------------------------------------------------------------------
+   FOOTNOTE — cashback/undian belum final
+   ------------------------------------------------------------------------- */
+.ca-packages__footnote {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--ca-space-3);
+    text-align: center;
+    max-width: 60ch;
+    margin: var(--ca-space-12) auto 0;
+    color: var(--ca-color-slate);
+}
+
+.ca-packages__footnote-badge {
+    display: inline-flex;
+    padding: var(--ca-space-1) var(--ca-space-4);
+    border: 1px solid var(--ca-color-light-gray);
+    border-radius: var(--ca-radius-pill);
+    font-family: var(--ca-font-ui);
+    font-weight: 500;
+    font-size: var(--ca-text-xs);
+    color: var(--ca-color-slate);
+}
+
+/* Desktop-small safety */
+@media (max-width: 1180px) {
+    .ca-packages__scale {
+        grid-template-columns: 1fr;
+        align-items: stretch;
+    }
+
+    .ca-packages__package--5 {
+        margin-bottom: 0;
+    }
+}

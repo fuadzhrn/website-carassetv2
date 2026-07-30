@@ -1,0 +1,222 @@
+/* ==========================================================================
+   CarAsset — Partnership / Mitra Owner (owner-program.css)
+   Konsep: Ownership Architecture — visual di tengah, callout di sekeliling,
+   panel peran terpadu. Bukan layout teks-kiri/gambar-kanan biasa.
+   ========================================================================== */
+
+.ca-owner-program {
+    background-color: var(--ca-color-white);
+}
+
+/* -------------------------------------------------------------------------
+   STAGE — visual di tengah + callout di sekeliling
+   ------------------------------------------------------------------------- */
+.ca-owner-program__stage {
+    position: relative;
+    max-width: 760px;
+    margin: var(--ca-space-16) auto 0;
+}
+
+.ca-owner-program__frame {
+    aspect-ratio: 3 / 2;
+    border-radius: var(--ca-radius-xl);
+    overflow: hidden;
+    box-shadow: var(--ca-shadow-md);
+}
+
+.ca-owner-program__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ca-owner-program__callout {
+    position: absolute;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: var(--ca-space-2);
+    padding: var(--ca-space-3) var(--ca-space-4);
+    background-color: var(--ca-color-white);
+    border: 1px solid var(--ca-border-color);
+    border-radius: var(--ca-radius-pill);
+    box-shadow: var(--ca-shadow-sm);
+    white-space: nowrap;
+}
+
+.ca-owner-program__callout-icon {
+    display: inline-flex;
+    width: 16px;
+    height: 16px;
+    color: var(--ca-color-navy);
+    flex-shrink: 0;
+}
+
+.ca-owner-program__callout-label {
+    color: var(--ca-color-navy);
+}
+
+.ca-owner-program__callout--tl {
+    top: var(--ca-space-6);
+    left: calc(-1 * var(--ca-space-8));
+}
+
+.ca-owner-program__callout--tr {
+    top: var(--ca-space-6);
+    right: calc(-1 * var(--ca-space-8));
+}
+
+.ca-owner-program__callout--bl {
+    bottom: var(--ca-space-6);
+    left: calc(-1 * var(--ca-space-6));
+}
+
+.ca-owner-program__callout--br {
+    bottom: var(--ca-space-6);
+    right: calc(-1 * var(--ca-space-6));
+}
+
+.ca-owner-program__stage-caption {
+    text-align: center;
+    color: var(--ca-color-slate);
+    margin-top: var(--ca-space-6);
+}
+
+/* -------------------------------------------------------------------------
+   ROLES — satu panel terpadu, dua sisi (bukan tabel kaku)
+   ------------------------------------------------------------------------- */
+.ca-owner-program__roles {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: var(--ca-space-10);
+    max-width: 960px;
+    margin: var(--ca-space-20) auto 0;
+    padding: var(--ca-space-10);
+    background-color: var(--ca-bg-navy-soft);
+    border-radius: var(--ca-radius-xl);
+}
+
+.ca-owner-program__role-title {
+    display: flex;
+    align-items: center;
+    gap: var(--ca-space-3);
+    color: var(--ca-color-navy);
+    margin: 0 0 var(--ca-space-5);
+}
+
+.ca-owner-program__role-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--ca-radius-sm);
+    background-color: var(--ca-color-white);
+    color: var(--ca-color-navy);
+}
+
+.ca-owner-program__role-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-3);
+}
+
+.ca-owner-program__role-list li {
+    position: relative;
+    padding-left: var(--ca-space-5);
+    color: var(--ca-color-dark-gray);
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-sm);
+}
+
+.ca-owner-program__role-list li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--ca-color-navy);
+}
+
+.ca-owner-program__role-divider {
+    width: 1px;
+    background-color: var(--ca-border-color);
+}
+
+/* -------------------------------------------------------------------------
+   BENEFITS
+   ------------------------------------------------------------------------- */
+.ca-owner-program__benefits {
+    display: flex;
+    justify-content: center;
+    gap: var(--ca-space-10);
+    flex-wrap: wrap;
+    margin-top: var(--ca-space-12);
+}
+
+.ca-owner-program__benefit {
+    display: flex;
+    align-items: center;
+    gap: var(--ca-space-2);
+    color: var(--ca-color-charcoal);
+}
+
+.ca-owner-program__benefit-icon {
+    display: inline-flex;
+    width: 18px;
+    height: 18px;
+    color: var(--ca-color-green);
+    flex-shrink: 0;
+}
+
+/* -------------------------------------------------------------------------
+   CTA
+   ------------------------------------------------------------------------- */
+.ca-owner-program__cta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--ca-space-3);
+    margin-top: var(--ca-space-10);
+    text-align: center;
+}
+
+.ca-owner-program__microcopy {
+    color: var(--ca-color-slate);
+    max-width: 60ch;
+}
+
+/* Desktop-small safety */
+@media (max-width: 1180px) {
+    .ca-owner-program__stage {
+        max-width: 600px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .ca-owner-program__callout {
+        position: static;
+        display: inline-flex;
+        margin: var(--ca-space-2);
+        order: 1;
+    }
+
+    .ca-owner-program__callout--tl,
+    .ca-owner-program__callout--tr,
+    .ca-owner-program__callout--bl,
+    .ca-owner-program__callout--br {
+        top: auto;
+        left: auto;
+        right: auto;
+        bottom: auto;
+    }
+
+    .ca-owner-program__roles {
+        grid-template-columns: 1fr;
+        gap: var(--ca-space-8);
+    }
+
+    .ca-owner-program__role-divider {
+        width: 100%;
+        height: 1px;
+    }
+}

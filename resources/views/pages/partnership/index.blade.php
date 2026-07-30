@@ -1,19 +1,33 @@
 @extends('layouts.app')
 
 @section('title', 'Program Kemitraan CarAsset')
-@section('meta_description', 'Temukan program Mitra Owner dan Mitra Driver yang dirancang untuk mendukung kepemilikan dan pengelolaan kendaraan produktif.')
+
+@section(
+    'meta_description',
+    'Pelajari program Mitra Owner dan Mitra Driver CarAsset serta pilihan skala kemitraan kendaraan produktif.'
+)
+
 @section('body-class', 'ca-page ca-page--partnership')
 
-@section('content')
-    <section class="ca-page-shell">
-        <div class="ca-container ca-page-shell__content">
-            <span class="ca-page-shell__badge">Kerangka Halaman</span>
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('assets/css/pages/partnership/partnership.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/pages/partnership/program-selector.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/pages/partnership/owner-program.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/pages/partnership/driver-program.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/pages/partnership/packages-benefits.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/pages/partnership/terms.css') }}">
+@endpush
 
-            <x-section-heading
-                tag="h1"
-                title="Program Kemitraan"
-                description="Halaman Program Kemitraan akan dikembangkan pada tahap pengerjaan section berikutnya (Pilih Program, Mitra Owner, Mitra Driver, Paket & Benefit, Persyaratan)."
-            />
-        </div>
-    </section>
+@section('content')
+    @include('pages.partnership.sections.program-selector')
+    @include('pages.partnership.sections.owner-program')
+    @include('pages.partnership.sections.driver-program')
+    @include('pages.partnership.sections.packages-benefits')
+    @include('pages.partnership.sections.terms')
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('assets/js/pages/partnership/program-navigation.js') }}" defer></script>
+    <script src="{{ asset('assets/js/pages/partnership/driver-journey.js') }}" defer></script>
+    <script src="{{ asset('assets/js/pages/partnership/partnership-accordion.js') }}" defer></script>
+@endpush

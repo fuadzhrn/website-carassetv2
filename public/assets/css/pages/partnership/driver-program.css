@@ -1,0 +1,254 @@
+/* ==========================================================================
+   CarAsset — Partnership / Mitra Driver (driver-program.css)
+   Konsep: Road to Ownership — atmosfer green soft, timeline milestone
+   horizontal. Berbeda dari layout Owner.
+   ========================================================================== */
+
+.ca-driver-program {
+    background-color: var(--ca-bg-green-soft);
+}
+
+/* -------------------------------------------------------------------------
+   INTRO — asimetris, foto driver terintegrasi
+   ------------------------------------------------------------------------- */
+.ca-driver-program__intro {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    align-items: center;
+    gap: var(--ca-space-12);
+}
+
+.ca-driver-program__intro-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ca-space-4);
+}
+
+.ca-driver-program__title {
+    color: var(--ca-color-navy);
+    margin: 0;
+}
+
+.ca-driver-program__description {
+    color: var(--ca-color-dark-gray);
+    max-width: 52ch;
+}
+
+.ca-driver-program__intro-visual {
+    position: relative;
+    border-radius: var(--ca-radius-xl);
+    overflow: hidden;
+    box-shadow: var(--ca-shadow-md);
+}
+
+.ca-driver-program__intro-visual::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(160deg, rgba(22, 163, 74, 0.28), rgba(15, 23, 42, 0.15));
+}
+
+.ca-driver-program__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+}
+
+/* -------------------------------------------------------------------------
+   TIMELINE — milestone, bukan lima kartu identik
+   ------------------------------------------------------------------------- */
+.ca-driver-program__timeline {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--ca-space-5);
+    margin-top: var(--ca-space-20);
+}
+
+.ca-driver-program__track {
+    position: absolute;
+    top: 24px;
+    left: 4%;
+    right: 4%;
+    height: 2px;
+    background: repeating-linear-gradient(
+        90deg,
+        rgba(15, 23, 42, 0.18) 0,
+        rgba(15, 23, 42, 0.18) 8px,
+        transparent 8px,
+        transparent 14px
+    );
+    z-index: 0;
+}
+
+.ca-driver-program__milestone {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-2);
+}
+
+/* Zig-zag ringan mengikuti jalur */
+.ca-driver-program__milestone:nth-child(3),
+.ca-driver-program__milestone:nth-child(5) {
+    margin-top: var(--ca-space-8);
+}
+
+.ca-driver-program__milestone-dot {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: var(--ca-color-white);
+    border: 2px solid var(--ca-color-green);
+    box-shadow: var(--ca-shadow-sm);
+    margin-bottom: var(--ca-space-1);
+}
+
+.ca-driver-program__milestone-dot--gold {
+    border-color: var(--ca-color-gold);
+}
+
+.ca-driver-program__milestone-icon {
+    display: inline-flex;
+    width: 20px;
+    height: 20px;
+    color: var(--ca-color-green);
+}
+
+.ca-driver-program__milestone-dot--gold .ca-driver-program__milestone-icon {
+    color: var(--ca-color-gold);
+}
+
+.ca-driver-program__milestone-eyebrow {
+    color: var(--ca-color-slate);
+}
+
+.ca-driver-program__milestone-title {
+    margin: 0;
+    color: var(--ca-color-navy);
+    max-width: 20ch;
+}
+
+.ca-driver-program__milestone-description {
+    margin: 0;
+    color: var(--ca-color-dark-gray);
+    max-width: 26ch;
+}
+
+/* -------------------------------------------------------------------------
+   REVEAL (progressive enhancement — driver-journey.js)
+   ------------------------------------------------------------------------- */
+[data-driver-milestone] {
+    opacity: 1;
+    transform: none;
+}
+
+[data-driver-journey].is-enhanced [data-driver-milestone] {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity var(--ca-transition-slow), transform var(--ca-transition-slow);
+}
+
+[data-driver-journey].is-enhanced [data-driver-milestone].is-active {
+    opacity: 1;
+    transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    [data-driver-journey].is-enhanced [data-driver-milestone] {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
+
+/* -------------------------------------------------------------------------
+   AFTER PANEL — satu panel ringkas, bukan kartu berjajar
+   ------------------------------------------------------------------------- */
+.ca-driver-program__after {
+    max-width: 720px;
+    margin: var(--ca-space-20) auto 0;
+    padding: var(--ca-space-8) var(--ca-space-10);
+    background-color: var(--ca-color-white);
+    border-radius: var(--ca-radius-xl);
+    box-shadow: var(--ca-shadow-sm);
+    text-align: center;
+}
+
+.ca-driver-program__after-title {
+    color: var(--ca-color-navy);
+    margin: 0 0 var(--ca-space-2);
+}
+
+.ca-driver-program__after-lead {
+    color: var(--ca-color-slate);
+    margin: 0 0 var(--ca-space-4);
+}
+
+.ca-driver-program__after-list {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ca-space-2);
+    margin-inline: auto;
+}
+
+.ca-driver-program__after-list li {
+    position: relative;
+    padding-left: var(--ca-space-5);
+    color: var(--ca-color-charcoal);
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-sm);
+}
+
+.ca-driver-program__after-list li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--ca-color-green);
+}
+
+/* -------------------------------------------------------------------------
+   CTA
+   ------------------------------------------------------------------------- */
+.ca-driver-program__cta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--ca-space-3);
+    margin-top: var(--ca-space-10);
+    text-align: center;
+}
+
+.ca-driver-program__note {
+    max-width: 60ch;
+}
+
+/* Desktop-small safety */
+@media (max-width: 1180px) {
+    .ca-driver-program__intro {
+        grid-template-columns: 1fr;
+        gap: var(--ca-space-8);
+    }
+
+    .ca-driver-program__timeline {
+        grid-template-columns: repeat(3, 1fr);
+        row-gap: var(--ca-space-10);
+    }
+
+    .ca-driver-program__milestone:nth-child(3),
+    .ca-driver-program__milestone:nth-child(5) {
+        margin-top: 0;
+    }
+
+    .ca-driver-program__track {
+        display: none;
+    }
+}

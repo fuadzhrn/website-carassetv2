@@ -1,0 +1,44 @@
+/* ==========================================================================
+   CarAsset — Partnership (partnership.css)
+   Hanya aturan bersama lintas section Program Kemitraan. Setiap section
+   tetap punya file CSS sendiri untuk gaya spesifiknya.
+   ========================================================================== */
+
+.ca-page--partnership {
+    background-color: var(--ca-color-white);
+}
+
+/* Section spacing bersama */
+.ca-program-selector,
+.ca-owner-program,
+.ca-driver-program,
+.ca-packages,
+.ca-terms {
+    padding-block: var(--ca-section-space);
+}
+
+/* program-selector diikuti langsung oleh nav sticky — kurangi padding
+   bawahnya agar nav tidak memiliki jarak kosong berlebih */
+.ca-program-selector {
+    padding-bottom: var(--ca-space-12);
+}
+
+/* Kompensasi anchor scroll agar heading tidak tertutup header (80px)
+   dan segmented navigation sticky (~56px) saat #mitra-owner/#mitra-driver
+   dituju via smooth scroll native (html { scroll-behavior: smooth } —
+   lihat reset.css). */
+#mitra-owner,
+#mitra-driver {
+    scroll-margin-top: 148px;
+}
+
+/* Desktop-small safety bersama */
+@media (max-width: 1180px) {
+    .ca-program-selector,
+    .ca-owner-program,
+    .ca-driver-program,
+    .ca-packages,
+    .ca-terms {
+        padding-block: var(--ca-section-space-small);
+    }
+}

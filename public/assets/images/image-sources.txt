@@ -149,6 +149,49 @@ TIDAK memakai foto — seluruh visual (dashboard ilustratif, jalur
 pertumbuhan, timeline) dibangun murni dengan HTML/CSS sesuai arahan
 desain (dashboard/growth journey adalah ilustrasi sistem, bukan foto).
 
+ENTRI GAMBAR — PROGRAM KEMITRAAN (PROMPT 07)
+==============================================
+
+------------------------------------------------------------------
+HALAMAN: Program Kemitraan
+SECTION: Program Mitra Owner (owner-program)
+KEBUTUHAN GAMBAR: Professional car owner / electric vehicle, konteks bisnis
+KATA KUNCI PENCARIAN: professional car owner electric vehicle, entrepreneur electric vehicle
+SUMBER: Unsplash
+FOTOGRAFER: JUICE (@juice_world)
+URL SUMBER: https://unsplash.com/photos/YX-BmnafcJE
+FILE TARGET: public/assets/images/partnership/owner-program.webp
+LISENSI/CATATAN: Unsplash License (free). Diunduh & disimpan lokal,
+  dikonversi ke WebP via PHP GD. Kandidat lain yang dibandingkan: foto
+  serah-terima kunci (motif sudah dipakai di halaman Bisnis/OWN,
+  dihindari agar tidak berulang). Gambar prototipe — WAJIB diganti
+  dokumentasi resmi CarAsset sebelum production.
+STATUS: Sudah diunduh
+------------------------------------------------------------------
+
+------------------------------------------------------------------
+HALAMAN: Program Kemitraan
+SECTION: Program Mitra Driver (driver-program)
+KEBUTUHAN GAMBAR: Professional ride-hailing/driver di dalam kendaraan modern
+KATA KUNCI PENCARIAN: professional driver electric vehicle, driver steering wheel professional
+SUMBER: Unsplash
+FOTOGRAFER: serjan midili (@s_midili)
+URL SUMBER: https://unsplash.com/photos/YWoiQV4XrfM
+FILE TARGET: public/assets/images/partnership/driver-program.webp
+LISENSI/CATATAN: Unsplash License (free). Diunduh & disimpan lokal,
+  dikonversi ke WebP via PHP GD. Beberapa kandidat lain ditolak karena
+  logo brand kendaraan pihak ketiga terlihat jelas pada setir (Nissan,
+  Mazda, Toyota) — foto ini dipilih karena tidak menampilkan logo brand
+  apa pun. Gambar prototipe — WAJIB diganti dokumentasi resmi CarAsset
+  sebelum production.
+STATUS: Sudah diunduh
+------------------------------------------------------------------
+
+Section Pilih Program, Paket & Benefit, dan Persyaratan pada halaman
+Program Kemitraan TIDAK memakai foto — sesuai arahan desain, section
+tersebut dibangun murni dengan typography, ikon, dan garis (route line,
+checkpoint, accordion), bukan foto.
+
 Seluruh gambar di atas adalah PROTOTIPE. Foto BYD atau kendaraan
 berbranding CarAsset final WAJIB diganti dengan aset resmi dari klien
 sebelum production.
