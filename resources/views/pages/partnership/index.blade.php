@@ -1,11 +1,19 @@
 @extends('layouts.app')
 
-@section('title', 'Program Kemitraan — CarAsset')
-@section('meta_description', 'Pilihan program kemitraan CarAsset untuk Mitra Owner dan Mitra Driver, lengkap dengan paket, benefit, serta syarat dan ketentuan.')
+@section('title', 'Program Kemitraan CarAsset')
+@section('meta_description', 'Temukan program Mitra Owner dan Mitra Driver yang dirancang untuk mendukung kepemilikan dan pengelolaan kendaraan produktif.')
+@section('body-class', 'ca-page ca-page--partnership')
 
 @section('content')
-    {{-- Section halaman Program Kemitraan (Pilih Program Anda, Program Mitra Owner,
-         Program Mitra Driver, Paket & Benefit, Persyaratan & Ketentuan) akan ditambahkan
-         pada tahap pengerjaan halaman ini, masing-masing sebagai satu file di
-         resources/views/pages/partnership/sections/. --}}
+    <section class="ca-page-shell">
+        <div class="ca-container ca-page-shell__content">
+            <span class="ca-page-shell__badge">Kerangka Halaman</span>
+
+            <x-section-heading
+                tag="h1"
+                title="Program Kemitraan"
+                description="Halaman Program Kemitraan akan dikembangkan pada tahap pengerjaan section berikutnya (Pilih Program, Mitra Owner, Mitra Driver, Paket & Benefit, Persyaratan)."
+            />
+        </div>
+    </section>
 @endsection

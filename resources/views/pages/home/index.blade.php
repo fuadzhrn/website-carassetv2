@@ -1,11 +1,19 @@
 @extends('layouts.app')
 
-@section('title', 'Home — CarAsset')
-@section('meta_description', 'CarAsset — Mobil Bekerja. Aset Bertumbuh. Smart Asset Mobility untuk mitra owner dan mitra driver.')
+@section('title', 'CarAsset — Mobil Bekerja, Aset Bertumbuh')
+@section('meta_description', 'Kenali CarAsset, platform pengelolaan kendaraan produktif dengan sistem kemitraan yang profesional dan transparan.')
+@section('body-class', 'ca-page ca-page--home')
 
 @section('content')
-    {{-- Section halaman Home (Hero, Value Proposition, Pentingnya Penghasilan Tambahan,
-         Cara Singkat CarAsset Bekerja, Pilihan Program Kemitraan, CTA Konsultasi)
-         akan ditambahkan pada tahap pengerjaan halaman Home, masing-masing sebagai
-         satu file di resources/views/pages/home/sections/. --}}
+    <section class="ca-page-shell">
+        <div class="ca-container ca-page-shell__content">
+            <span class="ca-page-shell__badge">Kerangka Halaman</span>
+
+            <x-section-heading
+                tag="h1"
+                title="CarAsset — Mobil Bekerja. Aset Bertumbuh."
+                description="Halaman Home akan dikembangkan pada tahap pengerjaan section berikutnya (Hero, Value Proposition, Cara Kerja, dan Pilihan Program Kemitraan)."
+            />
+        </div>
+    </section>
 @endsection

@@ -1,0 +1,119 @@
+/* ==========================================================================
+   CarAsset — Button component (buttons.css)
+   ========================================================================== */
+
+.ca-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--ca-space-2);
+    border-radius: var(--ca-radius-sm);
+    border: 1px solid transparent;
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color var(--ca-transition-fast),
+        border-color var(--ca-transition-fast),
+        color var(--ca-transition-fast),
+        transform var(--ca-transition-fast);
+}
+
+.ca-btn:focus-visible {
+    outline: none;
+    box-shadow: var(--ca-shadow-focus);
+}
+
+.ca-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.ca-btn__icon {
+    display: inline-flex;
+    width: 1em;
+    height: 1em;
+}
+
+/* -------------------------------------------------------------------------
+   SIZE
+   ------------------------------------------------------------------------- */
+.ca-btn--sm {
+    padding: var(--ca-space-2) var(--ca-space-4);
+    font-size: var(--ca-text-sm);
+}
+
+.ca-btn--md {
+    padding: var(--ca-space-3) var(--ca-space-6);
+    font-size: var(--ca-text-base);
+}
+
+.ca-btn--lg {
+    padding: var(--ca-space-4) var(--ca-space-8);
+    font-size: var(--ca-text-lg);
+}
+
+/* -------------------------------------------------------------------------
+   VARIANT — Primary (CTA utama)
+   ------------------------------------------------------------------------- */
+.ca-btn--primary {
+    background-color: var(--ca-color-green);
+    color: var(--ca-color-white);
+}
+
+.ca-btn--primary:hover {
+    background-color: #128a3e;
+}
+
+.ca-btn--primary:active {
+    transform: translateY(1px);
+}
+
+/* -------------------------------------------------------------------------
+   VARIANT — Secondary
+   ------------------------------------------------------------------------- */
+.ca-btn--secondary {
+    background-color: var(--ca-color-navy);
+    color: var(--ca-color-white);
+}
+
+.ca-btn--secondary:hover {
+    background-color: #1e293b;
+}
+
+/* -------------------------------------------------------------------------
+   VARIANT — Outline
+   ------------------------------------------------------------------------- */
+.ca-btn--outline {
+    background-color: transparent;
+    border-color: var(--ca-color-navy);
+    color: var(--ca-color-navy);
+}
+
+.ca-btn--outline:hover {
+    background-color: var(--ca-bg-navy-soft);
+}
+
+/* -------------------------------------------------------------------------
+   VARIANT — Ghost
+   ------------------------------------------------------------------------- */
+.ca-btn--ghost {
+    background-color: transparent;
+    color: var(--ca-color-navy);
+}
+
+.ca-btn--ghost:hover {
+    color: var(--ca-color-green);
+    background-color: var(--ca-bg-green-soft);
+}
+
+/* -------------------------------------------------------------------------
+   VARIANT — Gold (aksen premium, teks selalu navy)
+   ------------------------------------------------------------------------- */
+.ca-btn--gold {
+    background-color: var(--ca-color-gold);
+    color: var(--ca-color-navy);
+}
+
+.ca-btn--gold:hover {
+    background-color: #c19f30;
+}

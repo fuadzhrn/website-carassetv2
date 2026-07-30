@@ -1,0 +1,101 @@
+/* ==========================================================================
+   CarAsset — Icon box (icon-box.css)
+   Fondasi komponen — belum dipakai untuk isi halaman final.
+   ========================================================================== */
+
+.ca-icon-box {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--ca-space-4);
+    padding: var(--ca-space-6);
+    border-radius: var(--ca-radius-md);
+    border: 1px solid var(--ca-border-color);
+    background-color: var(--ca-color-white);
+}
+
+.ca-icon-box__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: var(--ca-radius-sm);
+}
+
+.ca-icon-box__title {
+    margin: 0 0 var(--ca-space-1);
+}
+
+.ca-icon-box__description {
+    margin: 0;
+    color: var(--ca-color-slate);
+}
+
+/* -------------------------------------------------------------------------
+   ICON SIZE
+   ------------------------------------------------------------------------- */
+.ca-icon-box--icon-sm .ca-icon-box__icon {
+    width: 32px;
+    height: 32px;
+}
+
+.ca-icon-box--icon-md .ca-icon-box__icon {
+    width: 40px;
+    height: 40px;
+}
+
+.ca-icon-box--icon-lg .ca-icon-box__icon {
+    width: 48px;
+    height: 48px;
+}
+
+/* -------------------------------------------------------------------------
+   VARIANT
+   ------------------------------------------------------------------------- */
+.ca-icon-box--light {
+    background-color: var(--ca-color-white);
+    border-color: var(--ca-border-color);
+}
+
+.ca-icon-box--light .ca-icon-box__icon {
+    background-color: var(--ca-color-extra-light-gray);
+    color: var(--ca-color-navy);
+}
+
+.ca-icon-box--navy {
+    background-color: var(--ca-color-navy);
+    border-color: var(--ca-color-navy);
+    color: var(--ca-color-white);
+}
+
+.ca-icon-box--navy .ca-icon-box__icon {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--ca-color-white);
+}
+
+.ca-icon-box--navy .ca-icon-box__title {
+    color: var(--ca-color-white);
+}
+
+.ca-icon-box--navy .ca-icon-box__description {
+    color: var(--ca-color-light-gray);
+}
+
+.ca-icon-box--green {
+    background-color: var(--ca-bg-green-soft);
+    border-color: transparent;
+}
+
+.ca-icon-box--green .ca-icon-box__icon {
+    background-color: var(--ca-color-green);
+    color: var(--ca-color-white);
+}
+
+.ca-icon-box--gold-soft {
+    background-color: var(--ca-bg-gold-soft);
+    border-color: transparent;
+}
+
+.ca-icon-box--gold-soft .ca-icon-box__icon {
+    background-color: var(--ca-color-gold);
+    color: var(--ca-color-navy);
+}

@@ -1,0 +1,36 @@
+/* ==========================================================================
+   CarAsset — WhatsApp floating button (whatsapp-button.css)
+   ========================================================================== */
+
+.ca-whatsapp-button {
+    position: fixed;
+    right: var(--ca-space-8);
+    bottom: var(--ca-space-8);
+    z-index: var(--ca-z-sticky);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: var(--ca-radius-pill);
+    background-color: var(--ca-color-green);
+    color: var(--ca-color-white);
+    box-shadow: var(--ca-shadow-md);
+    transition: transform var(--ca-transition-fast), box-shadow var(--ca-transition-fast);
+}
+
+.ca-whatsapp-button:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--ca-shadow-lg);
+}
+
+.ca-whatsapp-button:focus-visible {
+    outline: none;
+    box-shadow: var(--ca-shadow-focus), var(--ca-shadow-md);
+}
+
+.ca-whatsapp-button__icon {
+    display: inline-flex;
+    width: 26px;
+    height: 26px;
+}

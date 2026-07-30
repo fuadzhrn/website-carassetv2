@@ -1,0 +1,42 @@
+/* ==========================================================================
+   CarAsset — Page shell (page-shell.css)
+   Placeholder halaman sementara untuk membuktikan route/layout/header/footer
+   berfungsi. BUKAN desain final section.
+   ========================================================================== */
+
+.ca-page-shell {
+    padding-block: var(--ca-section-space);
+    min-height: 50vh;
+    display: flex;
+    align-items: center;
+}
+
+.ca-page-shell__content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ca-space-6);
+}
+
+.ca-page-shell__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ca-space-2);
+    padding: var(--ca-space-2) var(--ca-space-4);
+    border-radius: var(--ca-radius-pill);
+    background-color: var(--ca-bg-navy-soft);
+    color: var(--ca-color-navy);
+    font-family: var(--ca-font-ui);
+    font-weight: 500;
+    font-size: var(--ca-text-sm);
+    border: 1px solid var(--ca-border-color);
+}
+
+.ca-page-shell__badge::before {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--ca-color-green);
+}

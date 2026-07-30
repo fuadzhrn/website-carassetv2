@@ -1,0 +1,100 @@
+/* ==========================================================================
+   CarAsset — Header (header.css)
+   ========================================================================== */
+
+.ca-header {
+    position: sticky;
+    top: 0;
+    z-index: var(--ca-z-sticky);
+    background-color: var(--ca-color-white);
+    border-bottom: 1px solid var(--ca-border-color);
+    transition: box-shadow var(--ca-transition-base), border-color var(--ca-transition-base);
+}
+
+.ca-header--scrolled {
+    box-shadow: var(--ca-shadow-sm);
+    border-bottom-color: var(--ca-color-light-gray);
+}
+
+.ca-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ca-space-8);
+    height: 80px;
+}
+
+/* -------------------------------------------------------------------------
+   BRAND / LOGO
+   ------------------------------------------------------------------------- */
+.ca-header__brand {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.ca-header__logo-image {
+    height: 36px;
+    width: auto;
+}
+
+.ca-header__logo-fallback {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ca-space-3);
+}
+
+.ca-header__logo-fallback-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--ca-radius-sm);
+    background-color: var(--ca-color-navy);
+    color: var(--ca-color-white);
+    font-family: var(--ca-font-heading);
+    font-weight: 700;
+    font-size: var(--ca-text-sm);
+}
+
+.ca-header__logo-fallback-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.ca-header__logo-fallback-name {
+    font-family: var(--ca-font-heading);
+    font-weight: 700;
+    font-size: var(--ca-text-lg);
+    color: var(--ca-color-navy);
+}
+
+.ca-header__logo-fallback-tagline {
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-xs);
+    color: var(--ca-color-slate);
+}
+
+/* -------------------------------------------------------------------------
+   ACTIONS
+   ------------------------------------------------------------------------- */
+.ca-header__actions {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+/* -------------------------------------------------------------------------
+   DESKTOP-SMALL SAFETY (bukan breakpoint mobile)
+   ------------------------------------------------------------------------- */
+@media (max-width: 1180px) {
+    .ca-header__inner {
+        gap: var(--ca-space-4);
+    }
+
+    .ca-header__logo-fallback-tagline {
+        display: none;
+    }
+}

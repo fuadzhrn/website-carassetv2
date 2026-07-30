@@ -1,0 +1,68 @@
+/* ==========================================================================
+   CarAsset — Form field (form-field.css)
+   Fondasi tampilan front-end saja — tanpa validasi/backend.
+   ========================================================================== */
+
+.ca-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-2);
+    margin-bottom: var(--ca-space-5);
+}
+
+.ca-field__label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ca-space-1);
+}
+
+.ca-field__required {
+    color: var(--ca-color-error);
+}
+
+.ca-field__control {
+    width: 100%;
+    padding: var(--ca-space-3) var(--ca-space-4);
+    border: 1px solid var(--ca-border-color);
+    border-radius: var(--ca-radius-sm);
+    background-color: var(--ca-color-white);
+    color: var(--ca-color-charcoal);
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-base);
+    transition: border-color var(--ca-transition-fast), box-shadow var(--ca-transition-fast);
+}
+
+textarea.ca-field__control {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.ca-field__control::placeholder {
+    color: var(--ca-color-slate);
+}
+
+.ca-field__control:focus-visible {
+    outline: none;
+    border-color: var(--ca-color-green);
+    box-shadow: var(--ca-shadow-focus);
+}
+
+.ca-field__control:disabled {
+    background-color: var(--ca-color-extra-light-gray);
+    color: var(--ca-color-slate);
+    cursor: not-allowed;
+}
+
+.ca-field__help {
+    margin: 0;
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-sm);
+    color: var(--ca-color-slate);
+}
+
+.ca-field__error {
+    margin: 0;
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-sm);
+    color: var(--ca-color-error);
+}

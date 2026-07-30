@@ -3,24 +3,44 @@
 <head>
     @include('partials.seo-meta')
 
-    {{-- Urutan wajib: reset > variables > typography > utilities > global > layouts > components > pages --}}
+    {{-- Urutan wajib: reset > variables > typography > utilities > global > layouts > components > page-specific --}}
     <link rel="stylesheet" href="{{ asset('assets/css/base/reset.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/base/variables.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/base/typography.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/base/utilities.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/base/global.css') }}">
 
+    <link rel="stylesheet" href="{{ asset('assets/css/layouts/header.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/layouts/navigation.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/layouts/footer.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/layouts/page-shell.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('assets/css/components/buttons.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/components/section-heading.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/components/icon-box.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/components/form-field.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/components/whatsapp-button.css') }}">
+
     @stack('styles')
 </head>
-<body class="ca-body">
-    @include('partials.header')
+<body class="@yield('body-class', 'ca-page')">
+    <a href="#main-content" class="ca-skip-link">Lewati ke konten utama</a>
 
-    <main class="ca-main">
-        @yield('content')
-    </main>
+    <div class="ca-site">
+        @include('partials.header')
 
-    @include('partials.footer')
-    @include('partials.whatsapp-button')
+        <main id="main-content" class="ca-main">
+            @yield('content')
+        </main>
+
+        @include('partials.footer')
+        @include('partials.whatsapp-button')
+    </div>
+
+    {{-- Lucide Icons — dipanggil terpusat di sini, jangan diulang di partial/component lain --}}
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+    <script src="{{ asset('assets/js/global/lucide-init.js') }}" defer></script>
+    <script src="{{ asset('assets/js/global/header-scroll.js') }}" defer></script>
 
     @stack('scripts')
 </body>
