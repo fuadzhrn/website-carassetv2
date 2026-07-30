@@ -1,9 +1,36 @@
 CarAsset — Catatan Sumber Gambar
 ==================================
-Format: [folder/nama-file] — sumber URL — fotografer/kontributor — lisensi
+Setiap gambar prototipe yang dipakai di halaman WAJIB dicatat di file ini
+sebelum digunakan, memakai template berikut (salin blok untuk tiap gambar).
 
-Belum ada gambar yang dipasang pada tahap struktur dasar (PROMPT 01).
-Setiap gambar prototipe yang diambil dari Unsplash/Pexels pada tahap
-pengerjaan halaman WAJIB dicatat di sini sebelum digunakan, mengikuti
-format di atas. Foto BYD dan CarAsset resmi akan menggantikan gambar
-prototipe ini dan wajib dicatat ulang saat penggantian terjadi.
+------------------------------------------------------------------
+HALAMAN:
+SECTION:
+KEBUTUHAN GAMBAR:
+KATA KUNCI PENCARIAN:
+SUMBER:
+NAMA FOTOGRAFER:
+URL SUMBER:
+NAMA FILE TARGET:
+LISENSI/CATATAN:
+STATUS:
+- Placeholder
+- Sudah diunduh
+- Menunggu aset resmi klien
+- Sudah diganti aset final
+------------------------------------------------------------------
+
+CATATAN WAJIB
+--------------
+- Gunakan Unsplash atau Pexels untuk gambar prototipe.
+- Jangan mengambil gambar acak dari Google Images.
+- Jangan menggunakan gambar ber-watermark.
+- Jangan melakukan hotlink permanen pada production (unduh dan simpan
+  lokal di folder public/assets/images terkait sebelum go-live).
+- Foto BYD atau kendaraan berbranding CarAsset harus diganti dengan aset
+  resmi klien sebelum production.
+- Gunakan format WebP bila memungkinkan.
+- Catat sumber setiap gambar prototipe di bawah blok template di atas,
+  jangan biarkan gambar tanpa catatan sumber.
+
+Belum ada entri gambar pada tahap fondasi/design system (PROMPT 01).

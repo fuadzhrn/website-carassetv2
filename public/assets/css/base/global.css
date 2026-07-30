@@ -1,0 +1,128 @@
+/* ==========================================================================
+   CarAsset — Global (global.css)
+   Aturan global situs. TIDAK berisi style header, footer, tombol, kartu,
+   form, accordion, atau halaman — semua itu dibuat pada tahap berikutnya.
+   ========================================================================== */
+
+/* 1. html & body */
+html {
+    background-color: var(--ca-color-white);
+    color: var(--ca-text-primary);
+}
+
+body {
+    min-height: 100vh;
+    background-color: var(--ca-color-white);
+}
+
+/* 2. main */
+main,
+.ca-main {
+    display: block;
+    min-height: 60vh;
+}
+
+/* 3. Wrapper situs */
+.ca-site {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* 4. Link */
+a {
+    transition: color var(--ca-transition-fast);
+}
+
+/* 5. Button dasar (perilaku, bukan tampilan brand) */
+button {
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* 6. Image */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* 7. Focus-visible — jelas dan konsisten, tidak dihilangkan */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+    outline: none;
+    box-shadow: var(--ca-shadow-focus);
+    border-radius: var(--ca-radius-sm);
+}
+
+/* 8. Seleksi teks */
+::selection {
+    background-color: var(--ca-color-green);
+    color: var(--ca-color-white);
+}
+
+/* 9. Scrollbar — ringan, tidak berlebihan (WebKit only, tidak wajib) */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--ca-color-extra-light-gray);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--ca-color-light-gray);
+    border-radius: var(--ca-radius-pill);
+}
+
+/* 10. Skip link — aksesibilitas keyboard */
+.ca-skip-link {
+    position: absolute;
+    top: -48px;
+    left: var(--ca-space-4);
+    z-index: var(--ca-z-toast);
+    background-color: var(--ca-color-navy);
+    color: var(--ca-color-white);
+    padding: var(--ca-space-3) var(--ca-space-4);
+    border-radius: var(--ca-radius-sm);
+    transition: top var(--ca-transition-fast);
+}
+
+.ca-skip-link:focus {
+    top: var(--ca-space-4);
+}
+
+/* 11. Pembatas antarseksi (garis tipis, netral) */
+.ca-section-divider {
+    border: none;
+    border-top: 1px solid var(--ca-border-color);
+    margin: 0;
+}
+
+/* 12. Placeholder media — dipakai selama gambar/logo resmi belum tersedia,
+   agar TIDAK pernah menampilkan broken image. */
+.ca-placeholder-media,
+.ca-image-fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: var(--ca-color-extra-light-gray);
+    border: 1px dashed var(--ca-color-light-gray);
+    border-radius: var(--ca-radius-md);
+    color: var(--ca-color-slate);
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-sm);
+    padding: var(--ca-space-6);
+    min-height: 120px;
+}

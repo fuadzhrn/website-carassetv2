@@ -1,36 +1,190 @@
-/* CarAsset — Typography hierarchy (locked) */
+/* ==========================================================================
+   CarAsset — Typography (typography.css)
+
+   Font resmi (League Spartan 500/600/700, Poppins 400/500/600,
+   DM Sans 400/500) dimuat SATU KALI lewat <link> Google Fonts di
+   resources/views/partials/seo-meta.blade.php (bukan @import di sini)
+   agar tidak menambah rantai render-blocking. Jangan menduplikasi
+   pemanggilan font di file lain.
+   ========================================================================== */
+
+/* -------------------------------------------------------------------------
+   ELEMEN DASAR
+   ------------------------------------------------------------------------- */
 body {
     font-family: var(--ca-font-body);
     font-weight: 400;
-    color: var(--ca-color-charcoal);
+    font-size: var(--ca-text-base);
+    line-height: var(--ca-leading-normal);
+    color: var(--ca-text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-.ca-hero-heading,
+h1,
+h2,
+h3 {
+    font-family: var(--ca-font-heading);
+    font-weight: 700;
+    color: var(--ca-color-navy);
+    line-height: var(--ca-leading-heading);
+    margin-bottom: var(--ca-space-4);
+}
+
+h4,
+h5,
+h6 {
+    font-family: var(--ca-font-ui);
+    font-weight: 600;
+    color: var(--ca-color-navy);
+    line-height: var(--ca-leading-heading);
+    margin-bottom: var(--ca-space-3);
+}
+
+p {
+    font-family: var(--ca-font-body);
+    color: var(--ca-color-dark-gray);
+    line-height: var(--ca-leading-relaxed);
+    max-width: 65ch;
+}
+
+small,
+.ca-caption {
+    font-family: var(--ca-font-body);
+    color: var(--ca-color-slate);
+    font-size: var(--ca-text-sm);
+}
+
+button,
+input,
+select,
+textarea {
+    font-family: var(--ca-font-ui);
+}
+
+/* -------------------------------------------------------------------------
+   CLASS TIPOGRAFI REUSABLE
+   ------------------------------------------------------------------------- */
+
+/* Hero heading — halaman/section paling atas */
+.ca-display {
+    font-family: var(--ca-font-heading);
+    font-weight: 700;
+    font-size: var(--ca-text-hero);
+    line-height: var(--ca-leading-tight);
+    color: var(--ca-color-navy);
+}
+
+/* Page title */
 .ca-page-title {
     font-family: var(--ca-font-heading);
     font-weight: 700;
+    font-size: var(--ca-text-4xl);
+    line-height: var(--ca-leading-tight);
+    color: var(--ca-color-navy);
 }
 
+/* Section title */
 .ca-section-title {
     font-family: var(--ca-font-heading);
     font-weight: 600;
+    font-size: var(--ca-text-3xl);
+    line-height: var(--ca-leading-heading);
+    color: var(--ca-color-navy);
 }
 
+/* Section subtitle */
+.ca-section-subtitle {
+    font-family: var(--ca-font-ui);
+    font-weight: 500;
+    font-size: var(--ca-text-lg);
+    line-height: var(--ca-leading-normal);
+    color: var(--ca-color-slate);
+}
+
+/* Card title */
 .ca-card-title {
-    font-family: var(--ca-font-subheading);
+    font-family: var(--ca-font-ui);
     font-weight: 600;
+    font-size: var(--ca-text-lg);
+    line-height: var(--ca-leading-heading);
+    color: var(--ca-color-navy);
 }
 
+/* Body */
+.ca-body-lg {
+    font-family: var(--ca-font-body);
+    font-weight: 400;
+    font-size: var(--ca-text-lg);
+    line-height: var(--ca-leading-relaxed);
+}
+
+.ca-body {
+    font-family: var(--ca-font-body);
+    font-weight: 400;
+    font-size: var(--ca-text-base);
+    line-height: var(--ca-leading-relaxed);
+}
+
+.ca-body-sm {
+    font-family: var(--ca-font-body);
+    font-weight: 400;
+    font-size: var(--ca-text-sm);
+    line-height: var(--ca-leading-normal);
+}
+
+/* Label — form, tag */
+.ca-label {
+    font-family: var(--ca-font-ui);
+    font-weight: 500;
+    font-size: var(--ca-text-sm);
+    color: var(--ca-color-charcoal);
+}
+
+/* Eyebrow — label kecil di atas judul section */
+.ca-eyebrow {
+    font-family: var(--ca-font-ui);
+    font-weight: 600;
+    font-size: var(--ca-text-sm);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ca-color-green);
+}
+
+/* Warna teks bantu */
+.ca-text-muted {
+    color: var(--ca-color-slate);
+}
+
+.ca-text-inverse {
+    color: var(--ca-text-inverse);
+}
+
+/* -------------------------------------------------------------------------
+   COMPATIBILITY — dipakai oleh partial/component fondasi (PROMPT 01
+   tahap struktur dasar sebelumnya): navigasi, tombol, form, FAQ, disclaimer.
+   Dipertahankan agar markup yang sudah ada tidak rusak.
+   ------------------------------------------------------------------------- */
 .ca-nav-text,
 .ca-button-text {
-    font-family: var(--ca-font-subheading);
+    font-family: var(--ca-font-ui);
     font-weight: 500;
 }
 
-.ca-body-text,
+.ca-body-text {
+    font-family: var(--ca-font-body);
+    font-weight: 400;
+}
+
 .ca-form-text,
-.ca-faq-text,
+.ca-faq-text {
+    font-family: var(--ca-font-body);
+    font-weight: 400;
+}
+
 .ca-disclaimer-text {
     font-family: var(--ca-font-body);
     font-weight: 400;
+    font-size: var(--ca-text-sm);
+    color: var(--ca-color-slate);
 }

@@ -1,6 +1,14 @@
-/* CarAsset — Design Tokens (locked brand values) */
+/* ==========================================================================
+   CarAsset — Design Tokens (variables.css)
+   Seluruh warna, font, spacing, radius, shadow, transition, z-index, dan
+   ukuran tipografi WAJIB diambil dari file ini. Jangan hardcode nilai brand
+   di file CSS lain.
+   ========================================================================== */
+
 :root {
-    /* Colors */
+    /* -------------------------------------------------------------------
+       WARNA RESMI
+       ------------------------------------------------------------------- */
     --ca-color-navy: #0F172A;
     --ca-color-green: #16A34A;
     --ca-color-slate: #64748B;
@@ -8,19 +16,123 @@
     --ca-color-white: #FFFFFF;
     --ca-color-charcoal: #111827;
     --ca-color-dark-gray: #334155;
+    --ca-color-medium-gray: #64748B;
     --ca-color-light-gray: #E2E8F0;
     --ca-color-extra-light-gray: #F1F5F9;
 
-    /* Typography */
-    --ca-font-heading: 'League Spartan', sans-serif;
-    --ca-font-subheading: 'Poppins', sans-serif;
-    --ca-font-body: 'DM Sans', sans-serif;
+    /* -------------------------------------------------------------------
+       WARNA TURUNAN
+       ------------------------------------------------------------------- */
+    --ca-bg-navy-soft: rgba(15, 23, 42, 0.06);
+    --ca-bg-green-soft: rgba(22, 163, 74, 0.10);
+    --ca-bg-gold-soft: rgba(212, 175, 55, 0.12);
 
-    /* Layout */
-    --ca-container-max: 1280px;
-    --ca-section-spacing: 112px;
+    --ca-border-color: var(--ca-color-light-gray);
 
-    /* Effects */
-    --ca-shadow-soft: 0 4px 24px rgba(15, 23, 42, 0.08);
-    --ca-border-light: 1px solid var(--ca-color-light-gray);
+    --ca-text-primary: var(--ca-color-charcoal);
+    --ca-text-secondary: var(--ca-color-slate);
+    --ca-text-inverse: var(--ca-color-white);
+
+    --ca-overlay-dark: rgba(15, 23, 42, 0.65);
+
+    /* Warna sistem/utility (bukan bagian dari 10 warna resmi brand),
+       disiapkan untuk kebutuhan status form pada tahap berikutnya. */
+    --ca-color-success: var(--ca-color-green);
+    --ca-color-warning: #B45309;
+    --ca-color-error: #DC2626;
+
+    /* -------------------------------------------------------------------
+       FONT
+       ------------------------------------------------------------------- */
+    --ca-font-heading: "League Spartan", sans-serif;
+    --ca-font-ui: "Poppins", sans-serif;
+    --ca-font-body: "DM Sans", sans-serif;
+
+    /* -------------------------------------------------------------------
+       CONTAINER
+       ------------------------------------------------------------------- */
+    --ca-container-max: 1320px;
+    --ca-container-wide: 1440px;
+    --ca-container-narrow: 960px;
+    --ca-container-padding: 32px;
+
+    /* -------------------------------------------------------------------
+       SPACING SCALE
+       ------------------------------------------------------------------- */
+    --ca-space-1: 4px;
+    --ca-space-2: 8px;
+    --ca-space-3: 12px;
+    --ca-space-4: 16px;
+    --ca-space-5: 20px;
+    --ca-space-6: 24px;
+    --ca-space-8: 32px;
+    --ca-space-10: 40px;
+    --ca-space-12: 48px;
+    --ca-space-16: 64px;
+    --ca-space-20: 80px;
+    --ca-space-24: 96px;
+    --ca-space-28: 112px;
+    --ca-space-32: 128px;
+
+    /* SECTION SPACING */
+    --ca-section-space: 112px;
+    --ca-section-space-small: 80px;
+
+    /* -------------------------------------------------------------------
+       RADIUS
+       ------------------------------------------------------------------- */
+    --ca-radius-sm: 8px;
+    --ca-radius-md: 14px;
+    --ca-radius-lg: 20px;
+    --ca-radius-xl: 28px;
+    --ca-radius-pill: 999px;
+
+    /* -------------------------------------------------------------------
+       SHADOW — ringan, berbasis navy dengan opacity rendah
+       ------------------------------------------------------------------- */
+    --ca-shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
+    --ca-shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.06);
+    --ca-shadow-md: 0 8px 24px rgba(15, 23, 42, 0.08);
+    --ca-shadow-lg: 0 16px 48px rgba(15, 23, 42, 0.12);
+    --ca-shadow-focus: 0 0 0 3px rgba(22, 163, 74, 0.35);
+
+    /* -------------------------------------------------------------------
+       TRANSITION
+       ------------------------------------------------------------------- */
+    --ca-transition-fast: 150ms ease;
+    --ca-transition-base: 250ms ease;
+    --ca-transition-slow: 400ms ease;
+    --ca-transition-smooth: 400ms cubic-bezier(0.16, 1, 0.3, 1);
+
+    /* -------------------------------------------------------------------
+       Z-INDEX
+       ------------------------------------------------------------------- */
+    --ca-z-base: 1;
+    --ca-z-dropdown: 100;
+    --ca-z-sticky: 200;
+    --ca-z-overlay: 300;
+    --ca-z-modal: 400;
+    --ca-z-toast: 500;
+
+    /* -------------------------------------------------------------------
+       UKURAN FONT (DESKTOP)
+       ------------------------------------------------------------------- */
+    --ca-text-xs: 12px;
+    --ca-text-sm: 14px;
+    --ca-text-base: 16px;
+    --ca-text-lg: 18px;
+    --ca-text-xl: 20px;
+    --ca-text-2xl: 24px;
+    --ca-text-3xl: 30px;
+    --ca-text-4xl: 36px;
+    --ca-text-5xl: 48px;
+    --ca-text-hero: clamp(48px, 3.2vw + 20px, 72px);
+
+    /* -------------------------------------------------------------------
+       LINE HEIGHT
+       ------------------------------------------------------------------- */
+    --ca-leading-tight: 1.1;
+    --ca-leading-heading: 1.2;
+    --ca-leading-normal: 1.5;
+    --ca-leading-relaxed: 1.7;
 }

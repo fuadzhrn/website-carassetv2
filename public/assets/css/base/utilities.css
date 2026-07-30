@@ -1,0 +1,206 @@
+/* ==========================================================================
+   CarAsset — Utilities (utilities.css)
+   Utility class yang benar-benar dipakai berulang lintas halaman.
+   Bukan framework CSS baru — jangan menambah class yang tidak dipakai.
+   ========================================================================== */
+
+/* -------------------------------------------------------------------------
+   LAYOUT
+   ------------------------------------------------------------------------- */
+.ca-container {
+    width: 100%;
+    max-width: var(--ca-container-max);
+    margin-inline: auto;
+    padding-inline: var(--ca-container-padding);
+}
+
+.ca-container-wide {
+    width: 100%;
+    max-width: var(--ca-container-wide);
+    margin-inline: auto;
+    padding-inline: var(--ca-container-padding);
+}
+
+.ca-container-narrow {
+    width: 100%;
+    max-width: var(--ca-container-narrow);
+    margin-inline: auto;
+    padding-inline: var(--ca-container-padding);
+}
+
+.ca-section {
+    padding-block: var(--ca-section-space);
+}
+
+.ca-section-sm {
+    padding-block: var(--ca-section-space-small);
+}
+
+.ca-grid {
+    display: grid;
+    gap: var(--ca-space-8);
+}
+
+.ca-flex {
+    display: flex;
+}
+
+/* Stack — susunan vertikal dengan jarak konsisten */
+.ca-stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-6);
+}
+
+/* Cluster — susunan horizontal dengan jarak konsisten dan wrap aman */
+.ca-cluster {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ca-space-4);
+}
+
+/* -------------------------------------------------------------------------
+   ALIGNMENT
+   ------------------------------------------------------------------------- */
+.ca-text-center {
+    text-align: center;
+}
+
+.ca-text-left {
+    text-align: left;
+}
+
+.ca-items-center {
+    align-items: center;
+}
+
+.ca-justify-between {
+    justify-content: space-between;
+}
+
+.ca-mx-auto {
+    margin-inline: auto;
+}
+
+/* -------------------------------------------------------------------------
+   VISIBILITY
+   ------------------------------------------------------------------------- */
+.ca-visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* -------------------------------------------------------------------------
+   BACKGROUND
+   ------------------------------------------------------------------------- */
+.ca-bg-white {
+    background-color: var(--ca-color-white);
+}
+
+.ca-bg-navy {
+    background-color: var(--ca-color-navy);
+}
+
+.ca-bg-light {
+    background-color: var(--ca-color-extra-light-gray);
+}
+
+.ca-bg-green-soft {
+    background-color: var(--ca-bg-green-soft);
+}
+
+.ca-bg-gold-soft {
+    background-color: var(--ca-bg-gold-soft);
+}
+
+/* -------------------------------------------------------------------------
+   TEXT COLOR
+   ------------------------------------------------------------------------- */
+.ca-text-navy {
+    color: var(--ca-color-navy);
+}
+
+.ca-text-green {
+    color: var(--ca-color-green);
+}
+
+.ca-text-gold {
+    color: var(--ca-color-gold);
+}
+
+.ca-text-slate {
+    color: var(--ca-color-slate);
+}
+
+.ca-text-white {
+    color: var(--ca-color-white);
+}
+
+/* -------------------------------------------------------------------------
+   SPACING (set penting saja, bukan seluruh skala)
+   ------------------------------------------------------------------------- */
+.ca-mt-4 { margin-top: var(--ca-space-4); }
+.ca-mt-8 { margin-top: var(--ca-space-8); }
+.ca-mt-12 { margin-top: var(--ca-space-12); }
+
+.ca-mb-4 { margin-bottom: var(--ca-space-4); }
+.ca-mb-8 { margin-bottom: var(--ca-space-8); }
+.ca-mb-12 { margin-bottom: var(--ca-space-12); }
+
+.ca-gap-4 { gap: var(--ca-space-4); }
+.ca-gap-8 { gap: var(--ca-space-8); }
+.ca-gap-12 { gap: var(--ca-space-12); }
+
+/* -------------------------------------------------------------------------
+   IMAGE
+   ------------------------------------------------------------------------- */
+.ca-media-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ca-media-contain {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.ca-aspect-video {
+    aspect-ratio: 16 / 9;
+}
+
+.ca-aspect-square {
+    aspect-ratio: 1 / 1;
+}
+
+/* -------------------------------------------------------------------------
+   SURFACE
+   ------------------------------------------------------------------------- */
+.ca-surface {
+    background-color: var(--ca-color-white);
+    border-radius: var(--ca-radius-lg);
+    box-shadow: var(--ca-shadow-sm);
+}
+
+.ca-surface-dark {
+    background-color: var(--ca-color-navy);
+    color: var(--ca-text-inverse);
+    border-radius: var(--ca-radius-lg);
+}
+
+.ca-border {
+    border: 1px solid var(--ca-border-color);
+}
+
+.ca-rounded {
+    border-radius: var(--ca-radius-md);
+}
