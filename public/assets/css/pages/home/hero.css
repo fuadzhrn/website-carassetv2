@@ -1,0 +1,191 @@
+/* ==========================================================================
+   CarAsset — Home / Hero (hero.css)
+   ========================================================================== */
+
+.ca-hero {
+    position: relative;
+    background-color: var(--ca-color-navy);
+    overflow: hidden;
+    padding-block: var(--ca-space-24);
+}
+
+.ca-hero__inner {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    align-items: center;
+    gap: var(--ca-space-16);
+}
+
+/* -------------------------------------------------------------------------
+   CONTENT (kiri)
+   ------------------------------------------------------------------------- */
+.ca-hero__content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ca-space-5);
+}
+
+.ca-hero__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ca-space-2);
+    color: var(--ca-color-gold);
+}
+
+.ca-hero__eyebrow::before {
+    content: "";
+    display: inline-block;
+    width: 20px;
+    height: 2px;
+    background-color: var(--ca-color-gold);
+}
+
+.ca-hero__title {
+    color: var(--ca-color-white);
+    margin: 0;
+}
+
+.ca-hero__lead {
+    color: var(--ca-color-white);
+    font-family: var(--ca-font-ui);
+    font-weight: 500;
+}
+
+.ca-hero__description {
+    color: var(--ca-color-light-gray);
+    max-width: 46ch;
+}
+
+.ca-hero__actions {
+    margin-top: var(--ca-space-4);
+}
+
+/* Tombol outline perlu kontras di atas background navy */
+.ca-hero .ca-btn--outline {
+    border-color: rgba(255, 255, 255, 0.4);
+    color: var(--ca-color-white);
+}
+
+.ca-hero .ca-btn--outline:hover {
+    border-color: var(--ca-color-white);
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* -------------------------------------------------------------------------
+   VISUAL (kanan) — dominan, asimetris
+   ------------------------------------------------------------------------- */
+.ca-hero__visual {
+    position: relative;
+}
+
+.ca-hero__image-frame {
+    position: relative;
+    aspect-ratio: 2 / 3;
+    max-height: 560px;
+    margin-inline: auto;
+    border-radius: var(--ca-radius-xl);
+    overflow: hidden;
+    box-shadow: var(--ca-shadow-lg);
+}
+
+.ca-hero__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Floating information panels */
+.ca-hero__panels {
+    position: absolute;
+    left: var(--ca-space-8);
+    right: var(--ca-space-8);
+    bottom: calc(-1 * var(--ca-space-8));
+    display: flex;
+    justify-content: space-between;
+    gap: var(--ca-space-3);
+}
+
+.ca-hero__panel {
+    display: flex;
+    align-items: center;
+    gap: var(--ca-space-2);
+    padding: var(--ca-space-3) var(--ca-space-4);
+    background-color: rgba(255, 255, 255, 0.96);
+    border-radius: var(--ca-radius-md);
+    box-shadow: var(--ca-shadow-md);
+}
+
+.ca-hero__panel-icon {
+    display: inline-flex;
+    width: 18px;
+    height: 18px;
+    color: var(--ca-color-green);
+    flex-shrink: 0;
+}
+
+.ca-hero__panel-label {
+    color: var(--ca-color-navy);
+    white-space: nowrap;
+}
+
+/* -------------------------------------------------------------------------
+   DECORATIVE ROUTE LINE
+   ------------------------------------------------------------------------- */
+.ca-hero__route {
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.18) 30%, rgba(255, 255, 255, 0.18) 70%, transparent);
+}
+
+.ca-hero__route-dot {
+    position: absolute;
+    top: 50%;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    transform: translateY(-50%);
+}
+
+.ca-hero__route-dot--green {
+    left: 28%;
+    background-color: var(--ca-color-green);
+    box-shadow: 0 0 0 6px rgba(22, 163, 74, 0.15);
+}
+
+.ca-hero__route-dot--gold {
+    left: 62%;
+    background-color: var(--ca-color-gold);
+    box-shadow: 0 0 0 6px rgba(212, 175, 55, 0.15);
+}
+
+/* -------------------------------------------------------------------------
+   DESKTOP-SMALL SAFETY
+   ------------------------------------------------------------------------- */
+@media (max-width: 1180px) {
+    .ca-hero {
+        padding-block: var(--ca-space-16);
+    }
+
+    .ca-hero__inner {
+        grid-template-columns: 1fr;
+        gap: var(--ca-space-12);
+    }
+
+    .ca-hero__image-frame {
+        max-height: 440px;
+        max-width: 360px;
+    }
+
+    .ca-hero__panels {
+        position: static;
+        margin-top: var(--ca-space-6);
+        flex-wrap: wrap;
+    }
+}

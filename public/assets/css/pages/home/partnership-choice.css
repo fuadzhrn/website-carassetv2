@@ -1,0 +1,119 @@
+/* ==========================================================================
+   CarAsset — Home / Partnership choice (partnership-choice.css)
+   ========================================================================== */
+
+.ca-partnership-choice {
+    background-color: var(--ca-color-white);
+}
+
+.ca-partnership-choice__grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: var(--ca-space-8);
+    margin-top: var(--ca-space-16);
+}
+
+.ca-partnership-panel {
+    position: relative;
+    min-height: 560px;
+    border-radius: var(--ca-radius-xl);
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+}
+
+.ca-partnership-panel--driver {
+    min-height: 480px;
+    align-self: end;
+}
+
+.ca-partnership-panel__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ca-partnership-panel__overlay {
+    position: absolute;
+    inset: 0;
+}
+
+.ca-partnership-panel--owner .ca-partnership-panel__overlay {
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.55) 0%, rgba(15, 23, 42, 0.92) 100%);
+}
+
+.ca-partnership-panel--driver .ca-partnership-panel__overlay {
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.25) 0%, rgba(16, 163, 74, 0.88) 100%);
+}
+
+.ca-partnership-panel__content {
+    position: relative;
+    z-index: 1;
+    padding: var(--ca-space-10);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ca-space-4);
+    max-width: 440px;
+}
+
+.ca-partnership-panel__eyebrow {
+    color: var(--ca-color-gold);
+}
+
+.ca-partnership-panel--driver .ca-partnership-panel__eyebrow {
+    color: var(--ca-color-white);
+}
+
+.ca-partnership-panel__title {
+    color: var(--ca-color-white);
+    margin: 0;
+}
+
+.ca-partnership-panel__description {
+    color: var(--ca-color-light-gray);
+    margin: 0;
+}
+
+.ca-partnership-panel__benefits {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-2);
+    width: 100%;
+}
+
+.ca-partnership-panel__benefits li {
+    display: flex;
+    align-items: center;
+    gap: var(--ca-space-2);
+    color: var(--ca-color-white);
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-sm);
+}
+
+.ca-partnership-panel__benefit-icon {
+    display: inline-flex;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    color: var(--ca-color-gold);
+}
+
+.ca-partnership-panel--driver .ca-partnership-panel__benefit-icon {
+    color: var(--ca-color-white);
+}
+
+/* Desktop-small safety */
+@media (max-width: 1180px) {
+    .ca-partnership-choice__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .ca-partnership-panel,
+    .ca-partnership-panel--driver {
+        min-height: 440px;
+        align-self: auto;
+    }
+}

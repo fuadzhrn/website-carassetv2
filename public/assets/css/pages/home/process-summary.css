@@ -1,0 +1,143 @@
+/* ==========================================================================
+   CarAsset — Home / Process summary — Own, Operate, Grow (process-summary.css)
+   ========================================================================== */
+
+.ca-process {
+    background-color: var(--ca-color-extra-light-gray);
+}
+
+.ca-process__timeline {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--ca-space-10);
+    margin-top: var(--ca-space-20);
+}
+
+.ca-process__track {
+    position: absolute;
+    top: 76px;
+    left: 8%;
+    right: 8%;
+    height: 2px;
+    background: repeating-linear-gradient(
+        90deg,
+        var(--ca-color-light-gray) 0,
+        var(--ca-color-light-gray) 10px,
+        transparent 10px,
+        transparent 18px
+    );
+    z-index: 0;
+}
+
+.ca-process__step {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-3);
+}
+
+/* Staggered vertical position — kesan jalur perjalanan, bukan kartu sejajar */
+.ca-process__step--operate {
+    margin-top: var(--ca-space-8);
+}
+
+.ca-process__step--grow {
+    margin-top: var(--ca-space-2);
+}
+
+.ca-process__number {
+    font-family: var(--ca-font-heading);
+    font-weight: 700;
+    font-size: var(--ca-text-4xl);
+    color: var(--ca-color-light-gray);
+    line-height: 1;
+}
+
+.ca-process__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--ca-radius-md);
+    margin-bottom: var(--ca-space-1);
+}
+
+.ca-process__step--own .ca-process__icon {
+    background-color: var(--ca-bg-navy-soft);
+    color: var(--ca-color-navy);
+}
+
+.ca-process__step--operate .ca-process__icon {
+    background-color: var(--ca-bg-green-soft);
+    color: var(--ca-color-green);
+}
+
+.ca-process__step--grow .ca-process__icon {
+    background-color: var(--ca-bg-gold-soft);
+    color: var(--ca-color-navy);
+}
+
+.ca-process__title {
+    margin: 0;
+}
+
+.ca-process__description {
+    margin: 0;
+    color: var(--ca-color-slate);
+    max-width: 34ch;
+}
+
+.ca-process__cta {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--ca-space-16);
+}
+
+/* -------------------------------------------------------------------------
+   REVEAL (progressive enhancement — process-journey.js)
+   Tanpa JavaScript, seluruh step tetap terlihat penuh (opacity 1, no transform).
+   ------------------------------------------------------------------------- */
+[data-process-step] {
+    opacity: 1;
+    transform: none;
+}
+
+[data-process-journey].is-enhanced [data-process-step] {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity var(--ca-transition-slow), transform var(--ca-transition-slow);
+}
+
+[data-process-journey].is-enhanced [data-process-step].is-visible {
+    opacity: 1;
+    transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    [data-process-journey].is-enhanced [data-process-step] {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
+
+/* -------------------------------------------------------------------------
+   DESKTOP-SMALL SAFETY
+   ------------------------------------------------------------------------- */
+@media (max-width: 1180px) {
+    .ca-process__timeline {
+        gap: var(--ca-space-6);
+    }
+
+    .ca-process__step--operate,
+    .ca-process__step--grow {
+        margin-top: 0;
+    }
+
+    .ca-process__track {
+        top: 68px;
+    }
+}

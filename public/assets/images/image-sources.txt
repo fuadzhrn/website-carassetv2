@@ -33,4 +33,66 @@ CATATAN WAJIB
 - Catat sumber setiap gambar prototipe di bawah blok template di atas,
   jangan biarkan gambar tanpa catatan sumber.
 
-Belum ada entri gambar pada tahap fondasi/design system (PROMPT 01).
+ENTRI GAMBAR — HOME (PROMPT 03)
+================================
+
+------------------------------------------------------------------
+HALAMAN: Home
+SECTION: Hero & Value Proposition
+KEBUTUHAN GAMBAR: Visual kendaraan/EV dominan di sisi kanan hero
+KATA KUNCI PENCARIAN: electric vehicle, urban mobility
+SUMBER: Unsplash
+NAMA FOTOGRAFER: Precious Madubuike (@preciousm)
+URL SUMBER: https://unsplash.com/photos/N2Td7KpIvYc
+NAMA FILE TARGET: public/assets/images/home/hero-electric-car.webp
+LISENSI/CATATAN: Unsplash License (bebas pakai komersial). Diunduh &
+  disimpan lokal, dikonversi ke WebP via PHP GD. Akan diganti foto
+  kendaraan resmi CarAsset/BYD dari klien sebelum production.
+STATUS: Sudah diunduh
+------------------------------------------------------------------
+
+------------------------------------------------------------------
+HALAMAN: Home
+SECTION: Pentingnya Penghasilan Tambahan (income-opportunity)
+KEBUTUHAN GAMBAR: Visual editorial kendaraan produktif/EV charging
+KATA KUNCI PENCARIAN: ev charging, urban mobility
+SUMBER: Unsplash
+NAMA FOTOGRAFER: JUICE (@juice_world)
+URL SUMBER: https://unsplash.com/photos/JkTjKEVcckg
+NAMA FILE TARGET: public/assets/images/home/income-opportunity.webp
+LISENSI/CATATAN: Unsplash License. Diunduh & disimpan lokal, dikonversi
+  ke WebP via PHP GD.
+STATUS: Sudah diunduh
+------------------------------------------------------------------
+
+------------------------------------------------------------------
+HALAMAN: Home
+SECTION: Pilihan Program Kemitraan — Panel Mitra Owner
+KEBUTUHAN GAMBAR: Visual konsultasi bisnis/profesional, atmosfer navy
+KATA KUNCI PENCARIAN: business consultation, professional meeting
+SUMBER: Unsplash
+NAMA FOTOGRAFER: Priscilla Du Preez
+URL SUMBER: https://unsplash.com/photos/nNMBa7Y1Ymk
+NAMA FILE TARGET: public/assets/images/home/owner-program.webp
+LISENSI/CATATAN: Unsplash License. Diunduh & disimpan lokal, dikonversi
+  ke WebP via PHP GD. Overlay navy diterapkan lewat CSS.
+STATUS: Sudah diunduh
+------------------------------------------------------------------
+
+------------------------------------------------------------------
+HALAMAN: Home
+SECTION: Pilihan Program Kemitraan — Panel Mitra Driver
+KEBUTUHAN GAMBAR: Visual driver profesional mengemudi
+KATA KUNCI PENCARIAN: professional driver, driving car
+SUMBER: Unsplash
+NAMA FOTOGRAFER: Art Markiv (@artmarkiv)
+URL SUMBER: https://unsplash.com/photos/zAm1sdicGXc
+NAMA FILE TARGET: public/assets/images/home/driver-program.webp
+LISENSI/CATATAN: Unsplash License. Diunduh & disimpan lokal, dikonversi
+  ke WebP via PHP GD. Overlay green diterapkan lewat CSS.
+STATUS: Sudah diunduh
+------------------------------------------------------------------
+
+Seluruh gambar di atas adalah PROTOTIPE. Foto BYD atau kendaraan
+berbranding CarAsset final WAJIB diganti dengan aset resmi dari klien
+sebelum production.

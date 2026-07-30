@@ -1,0 +1,60 @@
+/* ==========================================================================
+   CarAsset — Home (home.css)
+   Hanya aturan bersama lintas section Home. Setiap section tetap punya
+   file CSS sendiri untuk gaya spesifiknya.
+   ========================================================================== */
+
+.ca-page--home {
+    background-color: var(--ca-color-white);
+}
+
+/* Section spacing bersama untuk section yang tidak mengatur padding sendiri */
+.ca-income,
+.ca-process,
+.ca-partnership-choice {
+    padding-block: var(--ca-section-space);
+}
+
+.ca-hero,
+.ca-consultation {
+    padding-block: var(--ca-section-space);
+}
+
+/* -------------------------------------------------------------------------
+   REVEAL bersama (progressive enhancement — home-reveal.js)
+   Tanpa JavaScript, elemen tetap terlihat penuh.
+   ------------------------------------------------------------------------- */
+[data-reveal] {
+    opacity: 1;
+    transform: none;
+}
+
+[data-reveal].is-enhanced {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity var(--ca-transition-slow), transform var(--ca-transition-slow);
+}
+
+[data-reveal].is-enhanced.is-visible {
+    opacity: 1;
+    transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    [data-reveal].is-enhanced {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
+
+/* Desktop-small safety bersama */
+@media (max-width: 1180px) {
+    .ca-income,
+    .ca-process,
+    .ca-partnership-choice,
+    .ca-hero,
+    .ca-consultation {
+        padding-block: var(--ca-section-space-small);
+    }
+}
