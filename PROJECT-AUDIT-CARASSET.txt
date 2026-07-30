@@ -1,0 +1,314 @@
+======================================================================
+PROJECT AUDIT — CARASSET FRONT-END (PROMPT 00)
+Tanggal audit: 2026-07-30
+======================================================================
+
+1. KONDISI PROYEK SAAT INI
+----------------------------------------------------------------------
+Proyek adalah instalasi Laravel skeleton BARU/DEFAULT (laravel/laravel)
+yang belum diubah sama sekali. Tidak ada halaman, route, controller,
+atau aset custom yang sudah dibuat. Ini adalah kondisi "clean slate"
+yang aman untuk memulai pembangunan front-end CarAsset.
+
+Bukti:
+- routes/web.php hanya berisi satu route default "/" yang mengembalikan
+  view "welcome".
+- resources/views/ hanya berisi welcome.blade.php (default Laravel,
+  223 baris, memakai markup & style Tailwind bawaan Laravel).
+- app/Http/Controllers/ hanya berisi Controller.php dasar (kosong,
+  belum ada controller custom).
+- app/Models/ hanya berisi User.php bawaan.
+- public/ hanya berisi file bawaan: .htaccess, favicon.ico, index.php,
+  robots.txt. Tidak ada folder public/assets, tidak ada public/build.
+- node_modules belum di-install (belum pernah dijalankan npm install).
+- vendor/ sudah ter-install (composer install sudah pernah dijalankan).
+- database menggunakan SQLite (DB_CONNECTION=sqlite) — bawaan default,
+  belum ada migrasi/tabel custom yang relevan dengan CarAsset.
+
+2. VERSI DAN TEKNOLOGI TERDETEKSI
+----------------------------------------------------------------------
+- Laravel Framework : ^13.8 (composer.json) — versi terbaru Laravel 13.
+- PHP               : 8.3.16 (CLI terdeteksi), requirement composer ^8.3.
+- Vite              : terpasang sebagai dev dependency (vite ^8.0.0,
+                       laravel-vite-plugin ^3.1) — BELUM di-build,
+                       belum ada public/build/manifest.json.
+- Tailwind CSS      : terpasang (tailwindcss ^4.0.0, @tailwindcss/vite
+                       ^4.0.0) via resources/css/app.css
+                       (`@import 'tailwindcss';`). ATURAN PROYEK
+                       CARASSET MELARANG TAILWIND — ini adalah bawaan
+                       starter kit default Laravel, BUKAN sesuatu yang
+                       sengaja ditambahkan untuk CarAsset.
+- Bootstrap         : TIDAK terpasang.
+- Font bawaan       : "Instrument Sans" via bunny fonts plugin (Vite) —
+                       akan digantikan oleh League Spartan / Poppins /
+                       DM Sans sesuai brand design system CarAsset.
+- JS front-end       : resources/js/app.js hanya berisi komentar kosong
+                       ("//"), belum ada logika apa pun.
+- Testing            : PHPUnit ^12.5, Pest plugin diaktifkan di
+                       allow-plugins tapi belum tentu dipakai aktif.
+
+3. STRUKTUR PROYEK SAAT INI
+----------------------------------------------------------------------
+routes/
+  web.php        -> 1 route default "/" (closure -> view('welcome'))
+  console.php    -> default Laravel console routes
+
+app/
+  Http/Controllers/Controller.php   (kelas dasar kosong)
+  Models/User.php                  (model bawaan)
+  Providers/AppServiceProvider.php (bawaan, tanpa modifikasi)
+
+resources/
+  css/app.css      -> hanya import Tailwind + theme font bawaan
+  js/app.js        -> kosong (hanya komentar)
+  views/welcome.blade.php -> halaman default Laravel (bukan CarAsset)
+
+public/
+  .htaccess, favicon.ico, index.php, robots.txt
+  (TIDAK ADA folder assets/, TIDAK ADA folder build/)
+
+Belum ada folder:
+  resources/views/layouts, partials, components, pages
+  public/assets (css, js, images)
+
+4. FILE PENTING YANG DITEMUKAN (JANGAN DIHAPUS)
+----------------------------------------------------------------------
+- artisan, composer.json, composer.lock, package.json, vite.config.js
+- bootstrap/app.php (konfigurasi routing & middleware inti Laravel 13
+  gaya baru — tidak perlu diubah untuk kebutuhan front-end statis)
+- .env, .env.example
+- app/Http/Controllers/Controller.php (kelas dasar, controller baru
+  akan extend dari sini)
+- app/Models/User.php, app/Providers/AppServiceProvider.php
+- routes/web.php, routes/console.php
+- resources/css/app.css, resources/js/app.js (bawaan Tailwind/Vite —
+  TIDAK akan dipakai oleh front-end CarAsset karena proyek memakai
+  CSS/JS biasa dari public/assets, tapi file ini dibiarkan ada agar
+  instalasi Laravel default tetap utuh dan tidak mempengaruhi build)
+- resources/views/welcome.blade.php (dibiarkan ada, tidak dipakai lagi
+  setelah route "/" diarahkan ke halaman Home CarAsset)
+- public/index.php, public/.htaccess, public/favicon.ico,
+  public/robots.txt (inti front controller Laravel, jangan disentuh)
+- database/ (SQLite default, tidak relevan tapi jangan dihapus)
+- storage/, bootstrap/cache/ (dibutuhkan Laravel untuk cache & view
+  compiled)
+
+5. POTENSI KONFLIK ATAU RISIKO
+----------------------------------------------------------------------
+a. Tailwind CSS terpasang di composer/package.json & diimpor di
+   resources/css/app.css. Ini BERTENTANGAN dengan ketentuan proyek
+   ("CSS biasa tanpa Tailwind"). MITIGASI: front-end CarAsset TIDAK
+   akan memakai resources/css/app.css maupun @vite directive sama
+   sekali; seluruh CSS CarAsset akan berada di public/assets/css dan
+   dimuat lewat tag <link> biasa dengan helper asset(). File Tailwind
+   bawaan dibiarkan tidak terpakai (tidak perlu dihapus di tahap ini,
+   sesuai batasan "jangan ubah file proyek yang sudah ada").
+b. Route "/" saat ini mengarah ke view('welcome') bawaan. Pada
+   PROMPT 01 route ini PERLU diarahkan ke halaman Home CarAsset —
+   ini akan jadi satu-satunya perubahan pada routes/web.php, dan
+   BUKAN "route yang sama dengan konflik", karena tidak ada route lain
+   yang bentrok. Tidak ditemukan route ganda/konflik penamaan.
+c. Belum ada layout Blade (layouts/app.blade.php) sama sekali —
+   perlu dibuat baru, tidak ada file lama yang akan tertimpa.
+d. Belum ada folder public/assets — aman dibuat baru tanpa risiko
+   menimpa apa pun.
+e. node_modules belum ter-install — jika suatu saat "npm run build"
+   dijalankan tanpa sengaja, Tailwind akan ikut ter-compile ke
+   public/build. Karena proyek CarAsset tidak memakai Vite untuk
+   front-end statisnya, sebaiknya proses build Vite/Tailwind ini
+   TIDAK dijalankan selama pengerjaan CarAsset agar tidak membingungkan
+   (tidak perlu dihapus, cukup tidak disentuh/dijalankan).
+f. Tidak ditemukan package backend lain yang berpotensi konflik
+   (tidak ada Livewire, Inertia, Filament, Breeze, Jetstream, dsb).
+g. Tidak ditemukan CSS/JS global lama, tidak ada folder
+   public/css atau public/js lama yang bisa bentrok nama dengan
+   public/assets.
+h. Kesimpulan: TIDAK ADA konflik struktural nyata. Risiko yang ada
+   murni berasal dari starter-kit Tailwind/Vite bawaan yang cukup
+   diabaikan (bukan dihapus) selama tahap front-end statis CarAsset.
+
+6. RENCANA STRUKTUR TARGET
+----------------------------------------------------------------------
+resources/views/
+  layouts/app.blade.php
+  partials/
+    seo-meta.blade.php
+    header.blade.php
+    desktop-navigation.blade.php
+    footer.blade.php
+    whatsapp-button.blade.php
+  components/
+    section-heading.blade.php
+    button.blade.php
+    icon-box.blade.php
+    faq-item.blade.php
+    stat-item.blade.php
+    form-field.blade.php
+  pages/
+    home/index.blade.php + sections/ (maks. 5 file section)
+    business/index.blade.php + sections/ (maks. 5 file section)
+    partnership/index.blade.php + sections/ (maks. 5 file section)
+    simulation/index.blade.php + sections/ (maks. 5 file section)
+    about-contact/index.blade.php + sections/ (maks. 5 file section)
+
+public/assets/
+  css/base/, layouts/, components/, pages/{home,business,partnership,
+       simulation,about-contact}/
+  js/global/, components/, pages/{home,business,partnership,
+       simulation,about-contact}/
+  images/brand/, home/, business/, partnership/, simulation/,
+       about-contact/, icons/, backgrounds/, image-sources.txt
+
+routes/web.php akan menambahkan 5 route halaman (GET) yang mengarah
+ke masing-masing view pages/*/index.blade.php.
+
+7. DAFTAR FILE YANG AKAN DIBUAT PADA TAHAP BERIKUTNYA (PROMPT 01+)
+----------------------------------------------------------------------
+LAYOUT
+  - resources/views/layouts/app.blade.php
+
+PARTIAL
+  - resources/views/partials/seo-meta.blade.php
+  - resources/views/partials/header.blade.php
+  - resources/views/partials/desktop-navigation.blade.php
+  - resources/views/partials/footer.blade.php
+  - resources/views/partials/whatsapp-button.blade.php
+
+COMPONENT
+  - resources/views/components/section-heading.blade.php
+  - resources/views/components/button.blade.php
+  - resources/views/components/icon-box.blade.php
+  - resources/views/components/faq-item.blade.php
+  - resources/views/components/stat-item.blade.php
+  - resources/views/components/form-field.blade.php
+
+HALAMAN (index per modul)
+  - resources/views/pages/home/index.blade.php
+  - resources/views/pages/business/index.blade.php
+  - resources/views/pages/partnership/index.blade.php
+  - resources/views/pages/simulation/index.blade.php
+  - resources/views/pages/about-contact/index.blade.php
+
+SECTION (maks. 5 per halaman, contoh penamaan — akan difinalisasi
+per-prompt halaman, mengikuti sitemap yang sudah dikunci)
+  home/sections/: hero.blade.php, value-proposition.blade.php,
+    why-side-income.blade.php, how-it-works.blade.php,
+    partnership-options.blade.php (CTA konsultasi digabung ke section
+    terakhir atau jadi bagian footer CTA agar tetap maks. 5 file)
+  business/sections/: opportunity.blade.php, own.blade.php,
+    operate.blade.php, grow.blade.php, business-flow.blade.php
+  partnership/sections/: choose-program.blade.php, mitra-owner.blade.php,
+    mitra-driver.blade.php, packages-benefit.blade.php,
+    terms-requirements.blade.php
+  simulation/sections/: calculation-basis.blade.php,
+    single-unit-simulation.blade.php, multi-unit-simulation.blade.php,
+    protection-monitoring.blade.php, disclaimer.blade.php
+  about-contact/sections/: about.blade.php, vision-mission-values.blade.php,
+    legality-partners.blade.php, faq.blade.php, contact-form.blade.php
+
+CSS (dibuat hanya bila diperlukan per section, prefix ca-)
+  public/assets/css/base/ (reset, typography, colors, variables)
+  public/assets/css/layouts/ (header, footer, navigation)
+  public/assets/css/components/ (button, section-heading, faq-item, dst)
+  public/assets/css/pages/{home,business,partnership,simulation,
+       about-contact}/ (satu file css per section jika section punya
+       styling khusus)
+
+JAVASCRIPT (dibuat hanya bila section punya interaksi, tidak boleh
+file kosong)
+  public/assets/js/global/ (mis. navigasi mobile toggle — nanti,
+       smooth scroll, whatsapp button)
+  public/assets/js/components/ (mis. faq-accordion.js)
+  public/assets/js/pages/{home,business,partnership,simulation,
+       about-contact}/ (mis. simulasi kalkulator interaktif di halaman
+       Simulasi)
+
+GAMBAR
+  public/assets/images/brand/ (logo — menunggu file asli dari klien;
+       gunakan placeholder rapi sementara)
+  public/assets/images/{home,business,partnership,simulation,
+       about-contact}/ (gambar prototipe dari Unsplash/Pexels sesuai
+       tema yang diizinkan)
+  public/assets/images/icons/ (jika pakai SVG lokal, bukan CDN Lucide)
+  public/assets/images/backgrounds/
+  public/assets/images/image-sources.txt (wajib dicatat sumber gambar)
+
+ROUTE
+  - routes/web.php: tambah 5 route GET (home "/", business, program-
+    kemitraan, simulasi-perlindungan, tentang-kontak) — nama route
+    disarankan mengikuti slug URL yang akan disepakati di PROMPT 01.
+
+CONTROLLER (opsional, lihat rekomendasi di bagian 8)
+
+8. REKOMENDASI ROUTE DAN CONTROLLER
+----------------------------------------------------------------------
+Kondisi: hanya 5 halaman statis, tanpa form backend, tanpa database,
+tanpa autentikasi. Tidak ada logika bisnis di server-side selain
+merender view.
+
+REKOMENDASI: gunakan SATU controller sederhana, mis.
+  app/Http/Controllers/PageController.php
+dengan 5 method (home, business, partnership, simulation, aboutContact)
+yang masing-masing hanya `return view(...)`.
+
+Alasan memilih controller dibanding closure route:
+- routes/web.php tetap ringkas dan mudah dibaca meski nanti perlu
+  ditambah data statis sederhana (mis. array FAQ, array paket) tanpa
+  mengotori file route.
+- Lebih mudah dites lewat PHPUnit bila diperlukan nanti.
+- Tetap sangat ringan (tidak melanggar batasan "tidak membuat backend
+  form/database/login/dashboard") karena controller hanya mengembalikan
+  view, tidak ada model/migration/query.
+
+Closure route juga valid dan lebih minimal, namun controller tunggal
+lebih rapi untuk 5 halaman + kemungkinan section dinamis di masa depan.
+Keputusan akhir tetap menunggu instruksi PROMPT 01 sebelum dieksekusi.
+
+9. REKOMENDASI PEMUATAN CSS, JAVASCRIPT, DAN FONT
+----------------------------------------------------------------------
+- TIDAK memakai @vite() dan TIDAK memakai resources/css/app.css /
+  resources/js/app.js bawaan. Direktif Vite pada welcome.blade.php
+  tidak akan digunakan pada layout CarAsset yang baru.
+- Seluruh CSS/JS dimuat lewat tag <link rel="stylesheet"> dan
+  <script src="..."> biasa di dalam layouts/app.blade.php, dengan
+  path memakai helper asset(), contoh:
+    asset('assets/css/base/reset.css')
+    asset('assets/js/global/main.js')
+- Font League Spartan, Poppins, dan DM Sans dimuat via Google Fonts
+  <link> (atau font lokal bila diminta klien nanti) di
+  partials/seo-meta.blade.php atau langsung di <head> layout, BUKAN
+  lewat @fonts/bunny plugin bawaan Vite.
+- Ikon Lucide dipanggil terpusat satu kali di layout (CDN script atau
+  local SVG sesuai keputusan nanti), tidak di-load ulang per halaman.
+- Vite TIDAK diperlukan untuk tahap awal sesuai ketentuan proyek;
+  npm install/npm run dev/build tidak perlu dijalankan selama proyek
+  CarAsset dikerjakan dengan pendekatan ini.
+
+10. STATUS KESIAPAN PROYEK
+----------------------------------------------------------------------
+STATUS: AMAN DILANJUTKAN.
+
+Proyek dalam kondisi bersih (fresh Laravel 13 skeleton), tidak ada
+konflik struktural nyata. Satu-satunya catatan adalah Tailwind/Vite
+bawaan starter kit yang cukup diabaikan (tidak perlu dihapus di tahap
+audit ini) karena front-end CarAsset akan sepenuhnya memakai jalur CSS/
+JS terpisah dari public/assets.
+
+11. CHECKLIST SEBELUM MASUK PROMPT 01
+----------------------------------------------------------------------
+[x] Versi Laravel & PHP terkonfirmasi kompatibel (Laravel 13, PHP 8.3)
+[x] Tidak ada route yang bentrok dengan rencana 5 halaman CarAsset
+[x] Tidak ada layout/Blade custom lama yang akan tertimpa
+[x] Tidak ada folder public/assets lama yang akan tertimpa
+[x] Tailwind/Bootstrap dikonfirmasi tidak akan dipakai oleh front-end
+    CarAsset meski terpasang sebagai dependency bawaan
+[x] Struktur folder target (Blade & public/assets) sudah dipetakan
+[x] Rekomendasi controller tunggal vs closure sudah disiapkan untuk
+    disetujui user
+[x] Rekomendasi pemuatan CSS/JS/font tanpa Vite sudah disiapkan
+[ ] Menunggu persetujuan user untuk mulai PROMPT 01 (pembuatan layout,
+    partial, dan struktur folder dasar — belum UI final)
+[ ] Menunggu ketersediaan file logo resmi (atau konfirmasi memakai
+    placeholder sementara)
+[ ] Menunggu konfirmasi teks & angka final untuk konten (jika belum
+    tersedia, akan memakai placeholder sesuai aturan konten)

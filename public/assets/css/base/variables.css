@@ -1,0 +1,26 @@
+/* CarAsset — Design Tokens (locked brand values) */
+:root {
+    /* Colors */
+    --ca-color-navy: #0F172A;
+    --ca-color-green: #16A34A;
+    --ca-color-slate: #64748B;
+    --ca-color-gold: #D4AF37;
+    --ca-color-white: #FFFFFF;
+    --ca-color-charcoal: #111827;
+    --ca-color-dark-gray: #334155;
+    --ca-color-light-gray: #E2E8F0;
+    --ca-color-extra-light-gray: #F1F5F9;
+
+    /* Typography */
+    --ca-font-heading: 'League Spartan', sans-serif;
+    --ca-font-subheading: 'Poppins', sans-serif;
+    --ca-font-body: 'DM Sans', sans-serif;
+
+    /* Layout */
+    --ca-container-max: 1280px;
+    --ca-section-spacing: 112px;
+
+    /* Effects */
+    --ca-shadow-soft: 0 4px 24px rgba(15, 23, 42, 0.08);
+    --ca-border-light: 1px solid var(--ca-color-light-gray);
+}

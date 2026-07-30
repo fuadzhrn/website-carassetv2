@@ -1,0 +1,36 @@
+/* CarAsset — Typography hierarchy (locked) */
+body {
+    font-family: var(--ca-font-body);
+    font-weight: 400;
+    color: var(--ca-color-charcoal);
+}
+
+.ca-hero-heading,
+.ca-page-title {
+    font-family: var(--ca-font-heading);
+    font-weight: 700;
+}
+
+.ca-section-title {
+    font-family: var(--ca-font-heading);
+    font-weight: 600;
+}
+
+.ca-card-title {
+    font-family: var(--ca-font-subheading);
+    font-weight: 600;
+}
+
+.ca-nav-text,
+.ca-button-text {
+    font-family: var(--ca-font-subheading);
+    font-weight: 500;
+}
+
+.ca-body-text,
+.ca-form-text,
+.ca-faq-text,
+.ca-disclaimer-text {
+    font-family: var(--ca-font-body);
+    font-weight: 400;
+}

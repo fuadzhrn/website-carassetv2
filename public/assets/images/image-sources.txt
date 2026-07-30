@@ -1,0 +1,9 @@
+CarAsset — Catatan Sumber Gambar
+==================================
+Format: [folder/nama-file] — sumber URL — fotografer/kontributor — lisensi
+
+Belum ada gambar yang dipasang pada tahap struktur dasar (PROMPT 01).
+Setiap gambar prototipe yang diambil dari Unsplash/Pexels pada tahap
+pengerjaan halaman WAJIB dicatat di sini sebelum digunakan, mengikuti
+format di atas. Foto BYD dan CarAsset resmi akan menggantikan gambar
+prototipe ini dan wajib dicatat ulang saat penggantian terjadi.
