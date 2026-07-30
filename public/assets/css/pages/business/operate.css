@@ -1,0 +1,179 @@
+/* ==========================================================================
+   CarAsset — Business / OPERATE (operate.css)
+   Pusat visual halaman Bisnis — dashboard adalah ILUSTRASI, bukan aplikasi.
+   ========================================================================== */
+
+.ca-operate {
+    background-color: var(--ca-color-navy);
+}
+
+.ca-operate__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    align-items: center;
+    gap: var(--ca-space-16);
+}
+
+/* -------------------------------------------------------------------------
+   CONTENT
+   ------------------------------------------------------------------------- */
+.ca-operate__content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ca-space-5);
+}
+
+.ca-operate__title {
+    color: var(--ca-color-white);
+    margin: 0;
+    max-width: 20ch;
+}
+
+.ca-operate__description {
+    color: var(--ca-color-light-gray);
+    max-width: 50ch;
+}
+
+.ca-operate__points {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-3);
+    width: 100%;
+    margin-top: var(--ca-space-2);
+}
+
+.ca-operate__point {
+    display: flex;
+    align-items: center;
+    gap: var(--ca-space-3);
+    color: var(--ca-color-white);
+}
+
+.ca-operate__point-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    border-radius: var(--ca-radius-sm);
+    background-color: var(--ca-bg-green-soft);
+    color: var(--ca-color-green);
+}
+
+/* -------------------------------------------------------------------------
+   DASHBOARD MINI (ilustratif)
+   ------------------------------------------------------------------------- */
+.ca-operate__dashboard {
+    background-color: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--ca-radius-xl);
+    padding: var(--ca-space-8);
+}
+
+.ca-operate__dashboard-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ca-space-4);
+    margin-bottom: var(--ca-space-6);
+}
+
+.ca-operate__dashboard-title {
+    color: var(--ca-color-white);
+}
+
+.ca-operate__dashboard-label {
+    color: var(--ca-color-light-gray);
+    padding: var(--ca-space-1) var(--ca-space-3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--ca-radius-pill);
+}
+
+.ca-operate__dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--ca-space-4);
+}
+
+.ca-operate__tile {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--ca-space-3);
+    background-color: var(--ca-color-white);
+    border-radius: var(--ca-radius-md);
+    padding: var(--ca-space-4);
+}
+
+.ca-operate__tile--wide {
+    grid-column: 1 / -1;
+}
+
+.ca-operate__tile-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    border-radius: var(--ca-radius-sm);
+    background-color: var(--ca-bg-navy-soft);
+    color: var(--ca-color-navy);
+}
+
+.ca-operate__tile-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.ca-operate__tile-label {
+    color: var(--ca-color-slate);
+}
+
+.ca-operate__tile-value {
+    color: var(--ca-color-navy);
+}
+
+.ca-operate__tile-status {
+    margin-left: auto;
+    font-family: var(--ca-font-ui);
+    font-weight: 500;
+    font-size: var(--ca-text-xs);
+    padding: var(--ca-space-1) var(--ca-space-3);
+    border-radius: var(--ca-radius-pill);
+    white-space: nowrap;
+}
+
+.ca-operate__tile-status--green {
+    background-color: var(--ca-bg-green-soft);
+    color: var(--ca-color-green);
+}
+
+.ca-operate__tile-status--slate {
+    background-color: var(--ca-color-extra-light-gray);
+    color: var(--ca-color-slate);
+}
+
+.ca-operate__dashboard-note {
+    margin-top: var(--ca-space-6);
+    color: rgba(226, 232, 240, 0.7);
+}
+
+/* Desktop-small safety */
+@media (max-width: 1180px) {
+    .ca-operate__inner {
+        grid-template-columns: 1fr;
+        gap: var(--ca-space-10);
+    }
+
+    .ca-operate__dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .ca-operate__tile--wide {
+        grid-column: auto;
+    }
+}

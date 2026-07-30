@@ -25,12 +25,56 @@
 }
 
 /* -------------------------------------------------------------------------
+   OVERLAY (khusus Home) — header transparan di atas Hero, tetap 80px,
+   tanpa layout shift saat berubah menjadi solid setelah discroll.
+   ------------------------------------------------------------------------- */
+.ca-header--overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.ca-header--overlay:not(.ca-header--scrolled) {
+    background-color: transparent;
+    border-bottom-color: transparent;
+}
+
+/* -------------------------------------------------------------------------
    BRAND / LOGO
    ------------------------------------------------------------------------- */
 .ca-header__brand {
+    position: relative;
     display: inline-flex;
     align-items: center;
     flex-shrink: 0;
+}
+
+.ca-header__logo {
+    display: inline-flex;
+    align-items: center;
+}
+
+.ca-header__logo--solid {
+    opacity: 1;
+    transition: opacity var(--ca-transition-base);
+}
+
+.ca-header__logo--transparent {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--ca-transition-base);
+}
+
+.ca-header--overlay:not(.ca-header--scrolled) .ca-header__logo--solid {
+    opacity: 0;
+}
+
+.ca-header--overlay:not(.ca-header--scrolled) .ca-header__logo--transparent {
+    opacity: 1;
+    pointer-events: auto;
 }
 
 .ca-header__logo-image {
@@ -75,6 +119,43 @@
     font-family: var(--ca-font-ui);
     font-size: var(--ca-text-xs);
     color: var(--ca-color-slate);
+}
+
+/* Fallback logo terang — dipakai di atas Hero Home (background gelap) */
+.ca-header__logo-fallback--on-dark .ca-header__logo-fallback-mark {
+    background-color: var(--ca-color-white);
+    color: var(--ca-color-navy);
+}
+
+.ca-header__logo-fallback--on-dark .ca-header__logo-fallback-name {
+    color: var(--ca-color-white);
+}
+
+.ca-header__logo-fallback--on-dark .ca-header__logo-fallback-tagline {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+/* -------------------------------------------------------------------------
+   NAVIGASI — warna terang khusus saat header transparan di atas Hero Home
+   ------------------------------------------------------------------------- */
+.ca-header--overlay:not(.ca-header--scrolled) .ca-navigation__link {
+    color: rgba(255, 255, 255, 0.92);
+}
+
+.ca-header--overlay:not(.ca-header--scrolled) .ca-navigation__link:hover {
+    color: var(--ca-color-green);
+}
+
+.ca-header--overlay:not(.ca-header--scrolled) .ca-navigation__link--active {
+    color: var(--ca-color-gold);
+}
+
+.ca-header--overlay:not(.ca-header--scrolled) .ca-navigation__link--active::after {
+    background-color: var(--ca-color-gold);
+}
+
+.ca-header--overlay:not(.ca-header--scrolled) .ca-navigation__link:focus-visible {
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5);
 }
 
 /* -------------------------------------------------------------------------

@@ -38,17 +38,36 @@ ENTRI GAMBAR — HOME (PROMPT 03)
 
 ------------------------------------------------------------------
 HALAMAN: Home
-SECTION: Hero & Value Proposition
-KEBUTUHAN GAMBAR: Visual kendaraan/EV dominan di sisi kanan hero
-KATA KUNCI PENCARIAN: electric vehicle, urban mobility
+SECTION: Hero & Value Proposition (REVISI — Cinematic Center-Stage)
+KEBUTUHAN GAMBAR: Kendaraan listrik modern sebagai visual utama center-stage hero
+KATA KUNCI PENCARIAN: premium electric car dark background, electric vehicle studio dark
 SUMBER: Unsplash
-NAMA FOTOGRAFER: Precious Madubuike (@preciousm)
-URL SUMBER: https://unsplash.com/photos/N2Td7KpIvYc
+NAMA FOTOGRAFER: Hyundai Motor Group (@hyundaimotorgroup)
+URL SUMBER: https://unsplash.com/photos/9GaVhQeJc00
 NAMA FILE TARGET: public/assets/images/home/hero-electric-car.webp
-LISENSI/CATATAN: Unsplash License (bebas pakai komersial). Diunduh &
-  disimpan lokal, dikonversi ke WebP via PHP GD. Akan diganti foto
-  kendaraan resmi CarAsset/BYD dari klien sebelum production.
+LISENSI/CATATAN: Unsplash License (free, bukan Unsplash+ premium). Subjek:
+  Genesis Electrified GV70. Diunduh pada resolusi 2000px sisi terpanjang
+  (asli tersedia lebih besar), dikonversi ke WebP kualitas 76 via PHP GD
+  (~60KB). Gambar prototipe — WAJIB diganti foto resmi kendaraan
+  CarAsset/BYD dari klien sebelum production, terutama karena unit ini
+  bukan kendaraan yang dipakai CarAsset.
+ALASAN PEMILIHAN: Dari 4 kandidat yang dibandingkan (Hyundai Ioniq 6 front-on
+  dengan tint hijau yang bentrok dengan Midnight Navy; Genesis GV60 sudut
+  belakang tiga-perempat; Genesis GV70 sudut depan tiga-perempat tapi
+  berorientasi potret/portrait sehingga gagal kriteria landscape), gambar
+  ini dipilih karena: (1) landscape 2000x1150, memenuhi syarat resolusi;
+  (2) warna background navy gelap nyaris identik dengan token
+  --ca-color-navy sehingga menyatu mulus tanpa terlihat seperti "foto
+  ditempel"; (3) terdapat garis cahaya horizontal melintasi di belakang
+  mobil yang selaras dengan motif garis perjalanan brand CarAsset;
+  (4) framing depan-tengah simetris memperkuat konsep "center-stage"
+  alih-alih sudut tiga-perempat konvensional; (5) pencahayaan sinematik,
+  ruang kosong luas di kiri-kanan-atas, tanpa watermark.
 STATUS: Sudah diunduh
+
+CATATAN: Entri gambar hero sebelumnya (Precious Madubuike, unsplash.com/
+  photos/N2Td7KpIvYc, komposisi dua-kolom) sudah TIDAK dipakai lagi sejak
+  revisi Cinematic Center-Stage Hero ini dan file lokalnya telah ditimpa.
 ------------------------------------------------------------------
 
 ------------------------------------------------------------------
@@ -92,6 +111,43 @@ LISENSI/CATATAN: Unsplash License. Diunduh & disimpan lokal, dikonversi
   ke WebP via PHP GD. Overlay green diterapkan lewat CSS.
 STATUS: Sudah diunduh
 ------------------------------------------------------------------
+
+ENTRI GAMBAR — BISNIS CARASSET (PROMPT 05)
+============================================
+
+------------------------------------------------------------------
+HALAMAN: Bisnis CarAsset
+SECTION: Peluang Bisnis Kendaraan Produktif (opportunity)
+KEBUTUHAN GAMBAR: Visual urban mobility/city road terbatas (bukan fokus utama)
+KATA KUNCI: urban mobility, city road, aerial road
+SUMBER: Unsplash
+FOTOGRAFER: Denys Nevozhai (@dnevozhai)
+URL: https://unsplash.com/photos/7nrsVjvALnA
+FILE TARGET: public/assets/images/business/business-opportunity.webp
+LISENSI/CATATAN: Unsplash License (free, bukan Unsplash+). Diunduh &
+  disimpan lokal, dikonversi ke WebP via PHP GD. Dipakai sebagai panel
+  visual terbatas, bukan fokus utama section.
+STATUS: Sudah diunduh
+------------------------------------------------------------------
+
+------------------------------------------------------------------
+HALAMAN: Bisnis CarAsset
+SECTION: OWN — Mitra Memiliki Aset (own)
+KEBUTUHAN GAMBAR: Visualisasi konsep kepemilikan kendaraan (netral, bukan dokumen legal asli)
+KATA KUNCI: car key handover, vehicle ownership
+SUMBER: Unsplash
+FOTOGRAFER: yahdi yasya (@yayi1077)
+URL: https://unsplash.com/photos/hands-exchanging-a-car-key-against-a-light-background-iDSsOlqFa8w
+FILE TARGET: public/assets/images/business/ownership-asset.webp
+LISENSI/CATATAN: Unsplash License. Diunduh & disimpan lokal, dikonversi
+  ke WebP via PHP GD.
+STATUS: Sudah diunduh
+------------------------------------------------------------------
+
+Section OPERATE, GROW, dan Alur Bisnis pada halaman Bisnis CarAsset
+TIDAK memakai foto — seluruh visual (dashboard ilustratif, jalur
+pertumbuhan, timeline) dibangun murni dengan HTML/CSS sesuai arahan
+desain (dashboard/growth journey adalah ilustrasi sistem, bukan foto).
 
 Seluruh gambar di atas adalah PROTOTIPE. Foto BYD atau kendaraan
 berbranding CarAsset final WAJIB diganti dengan aset resmi dari klien

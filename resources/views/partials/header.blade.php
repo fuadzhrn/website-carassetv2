@@ -1,20 +1,45 @@
-<header class="ca-header" data-header>
+<header class="ca-header {{ request()->routeIs('home') ? 'ca-header--overlay' : '' }}" data-header>
     <div class="ca-container ca-header__inner">
         <a href="{{ route('home') }}" class="ca-header__brand" aria-label="CarAsset — Beranda">
-            @if (file_exists(public_path('assets/images/brand/logo-horizontal.png')))
-                <img
-                    src="{{ asset('assets/images/brand/logo-horizontal.png') }}"
-                    alt="CarAsset"
-                    class="ca-header__logo-image"
-                >
-            @else
-                {{-- Ganti dengan logo resmi CarAsset (public/assets/images/brand/logo-horizontal.png) --}}
-                <span class="ca-header__logo-fallback">
-                    <span class="ca-header__logo-fallback-mark">CA</span>
-                    <span class="ca-header__logo-fallback-text">
-                        <span class="ca-header__logo-fallback-name">CarAsset</span>
-                        <span class="ca-header__logo-fallback-tagline">Smart Asset Mobility</span>
+            {{-- Varian solid (default & setelah scroll di Home) --}}
+            <span class="ca-header__logo ca-header__logo--solid">
+                @if (file_exists(public_path('assets/images/brand/logo-horizontal.png')))
+                    <img
+                        src="{{ asset('assets/images/brand/logo-horizontal.png') }}"
+                        alt="CarAsset"
+                        class="ca-header__logo-image"
+                    >
+                @else
+                    {{-- Ganti dengan logo resmi CarAsset (public/assets/images/brand/logo-horizontal.png) --}}
+                    <span class="ca-header__logo-fallback">
+                        <span class="ca-header__logo-fallback-mark">CA</span>
+                        <span class="ca-header__logo-fallback-text">
+                            <span class="ca-header__logo-fallback-name">CarAsset</span>
+                            <span class="ca-header__logo-fallback-tagline">Smart Asset Mobility</span>
+                        </span>
                     </span>
+                @endif
+            </span>
+
+            @if (request()->routeIs('home'))
+                {{-- Varian terang (hanya di atas Hero Home, sebelum discroll) --}}
+                <span class="ca-header__logo ca-header__logo--transparent">
+                    @if (file_exists(public_path('assets/images/brand/logo-on-dark.png')))
+                        <img
+                            src="{{ asset('assets/images/brand/logo-on-dark.png') }}"
+                            alt="CarAsset"
+                            class="ca-header__logo-image"
+                        >
+                    @else
+                        {{-- Ganti dengan logo resmi CarAsset (public/assets/images/brand/logo-on-dark.png) --}}
+                        <span class="ca-header__logo-fallback ca-header__logo-fallback--on-dark">
+                            <span class="ca-header__logo-fallback-mark">CA</span>
+                            <span class="ca-header__logo-fallback-text">
+                                <span class="ca-header__logo-fallback-name">CarAsset</span>
+                                <span class="ca-header__logo-fallback-tagline">Smart Asset Mobility</span>
+                            </span>
+                        </span>
+                    @endif
                 </span>
             @endif
         </a>

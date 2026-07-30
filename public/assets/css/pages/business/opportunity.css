@@ -1,0 +1,153 @@
+/* ==========================================================================
+   CarAsset — Business / Opportunity (opportunity.css)
+   Page hero halaman Bisnis — sengaja berbeda dari Hero Home (terang,
+   bukan navy penuh; visual berupa panel diagram, bukan gambar mobil besar).
+   ========================================================================== */
+
+.ca-opportunity {
+    background-color: var(--ca-color-white);
+}
+
+.ca-opportunity__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    align-items: center;
+    gap: var(--ca-space-16);
+}
+
+.ca-opportunity__content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ca-space-5);
+}
+
+.ca-opportunity__title {
+    margin: 0;
+    max-width: 18ch;
+}
+
+.ca-opportunity__description {
+    color: var(--ca-color-dark-gray);
+    max-width: 52ch;
+}
+
+.ca-opportunity__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ca-space-2);
+    color: var(--ca-color-green);
+    margin-top: var(--ca-space-2);
+    transition: gap var(--ca-transition-fast);
+}
+
+.ca-opportunity__cta:hover {
+    gap: var(--ca-space-3);
+}
+
+.ca-opportunity__cta:focus-visible {
+    outline: none;
+    box-shadow: var(--ca-shadow-focus);
+    border-radius: var(--ca-radius-sm);
+}
+
+.ca-opportunity__cta-icon {
+    display: inline-flex;
+    width: 16px;
+    height: 16px;
+}
+
+/* -------------------------------------------------------------------------
+   PANEL VISUAL (navy) — diagram alur bisnis
+   ------------------------------------------------------------------------- */
+.ca-opportunity__panel {
+    position: relative;
+    min-height: 480px;
+    border-radius: var(--ca-radius-xl);
+    overflow: hidden;
+    box-shadow: var(--ca-shadow-md);
+}
+
+.ca-opportunity__panel-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ca-opportunity__panel-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(160deg, rgba(15, 23, 42, 0.94) 20%, rgba(15, 23, 42, 0.86) 100%);
+}
+
+.ca-opportunity__diagram {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-8);
+    padding: var(--ca-space-10);
+}
+
+.ca-opportunity__diagram-track {
+    position: absolute;
+    top: 8px;
+    bottom: 8px;
+    left: calc(var(--ca-space-10) + 21px);
+    width: 2px;
+    background: repeating-linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.25) 0,
+        rgba(255, 255, 255, 0.25) 8px,
+        transparent 8px,
+        transparent 16px
+    );
+}
+
+.ca-opportunity__diagram-step {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: var(--ca-space-4);
+}
+
+.ca-opportunity__diagram-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    border-radius: var(--ca-radius-md);
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--ca-color-white);
+}
+
+.ca-opportunity__diagram-label {
+    color: var(--ca-color-white);
+}
+
+.ca-opportunity__diagram-step--accent .ca-opportunity__diagram-icon {
+    background-color: var(--ca-color-green);
+    color: var(--ca-color-white);
+}
+
+.ca-opportunity__diagram-step--gold .ca-opportunity__diagram-icon {
+    background-color: var(--ca-color-gold);
+    color: var(--ca-color-navy);
+}
+
+/* Desktop-small safety */
+@media (max-width: 1180px) {
+    .ca-opportunity__inner {
+        grid-template-columns: 1fr;
+        gap: var(--ca-space-10);
+    }
+
+    .ca-opportunity__panel {
+        min-height: 400px;
+    }
+}

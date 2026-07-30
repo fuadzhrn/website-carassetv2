@@ -1,0 +1,57 @@
+/* ==========================================================================
+   CarAsset — Business (business.css)
+   Hanya aturan bersama lintas section Bisnis. Setiap section tetap punya
+   file CSS sendiri untuk gaya spesifiknya.
+   ========================================================================== */
+
+.ca-page--business {
+    background-color: var(--ca-color-white);
+}
+
+/* Section spacing bersama */
+.ca-opportunity,
+.ca-own,
+.ca-operate,
+.ca-grow,
+.ca-business-flow {
+    padding-block: var(--ca-section-space);
+}
+
+/* Desktop-small safety bersama */
+@media (max-width: 1180px) {
+    .ca-opportunity,
+    .ca-own,
+    .ca-operate,
+    .ca-grow,
+    .ca-business-flow {
+        padding-block: var(--ca-section-space-small);
+    }
+}
+
+/* -------------------------------------------------------------------------
+   REVEAL bersama (progressive enhancement — business-reveal.js)
+   Tanpa JavaScript, elemen tetap terlihat penuh.
+   ------------------------------------------------------------------------- */
+[data-reveal] {
+    opacity: 1;
+    transform: none;
+}
+
+[data-reveal].is-enhanced {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity var(--ca-transition-slow), transform var(--ca-transition-slow);
+}
+
+[data-reveal].is-enhanced.is-visible {
+    opacity: 1;
+    transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    [data-reveal].is-enhanced {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}

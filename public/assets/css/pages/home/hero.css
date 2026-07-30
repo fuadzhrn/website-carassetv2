@@ -1,37 +1,49 @@
 /* ==========================================================================
    CarAsset — Home / Hero (hero.css)
+   Cinematic Center-Stage Hero — komposisi terpusat, kendaraan sebagai
+   pusat panggung. TIDAK menggunakan grid dua kolom kiri/kanan.
    ========================================================================== */
 
-.ca-hero {
+.ca-hero--center-stage {
     position: relative;
     background-color: var(--ca-color-navy);
     overflow: hidden;
-    padding-block: var(--ca-space-24);
+    /* 80px = tinggi header (lihat header.css). Header transparan Home bersifat
+       fixed di atas hero, sehingga hero butuh padding atas sebagai kompensasi. */
+    padding-top: calc(80px + var(--ca-space-16));
+    padding-bottom: var(--ca-space-20);
 }
 
-.ca-hero__inner {
+/* Kedalaman visual sangat halus — bukan glow warna-warni */
+.ca-hero__glow {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: radial-gradient(ellipse 60% 50% at 50% 38%, rgba(255, 255, 255, 0.05), transparent 70%);
+    pointer-events: none;
+}
+
+.ca-hero__container {
     position: relative;
-    z-index: 2;
-    display: grid;
-    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: var(--ca-space-16);
+    text-align: center;
 }
 
 /* -------------------------------------------------------------------------
-   CONTENT (kiri)
+   CONTENT (terpusat)
    ------------------------------------------------------------------------- */
 .ca-hero__content {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     gap: var(--ca-space-5);
+    max-width: 1050px;
 }
 
 .ca-hero__eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--ca-space-2);
     color: var(--ca-color-gold);
 }
 
@@ -46,21 +58,32 @@
 .ca-hero__title {
     color: var(--ca-color-white);
     margin: 0;
+    line-height: var(--ca-leading-tight);
+    max-width: 18ch;
 }
 
-.ca-hero__lead {
-    color: var(--ca-color-white);
+.ca-hero__title-accent {
+    color: var(--ca-color-green);
+}
+
+.ca-hero__subheadline {
     font-family: var(--ca-font-ui);
-    font-weight: 500;
+    font-weight: 600;
+    font-size: var(--ca-text-2xl);
+    color: var(--ca-color-white);
+    margin: 0;
 }
 
 .ca-hero__description {
     color: var(--ca-color-light-gray);
-    max-width: 46ch;
+    font-size: var(--ca-text-lg);
+    max-width: 720px;
+    margin: 0;
 }
 
 .ca-hero__actions {
-    margin-top: var(--ca-space-4);
+    justify-content: center;
+    margin-top: var(--ca-space-2);
 }
 
 /* Tombol outline perlu kontras di atas background navy */
@@ -75,50 +98,83 @@
 }
 
 /* -------------------------------------------------------------------------
-   VISUAL (kanan) — dominan, asimetris
+   STAGE — kendaraan sebagai pusat panggung
    ------------------------------------------------------------------------- */
-.ca-hero__visual {
+.ca-hero__stage {
     position: relative;
+    width: 100%;
+    max-width: 1000px;
+    margin-top: var(--ca-space-16);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.ca-hero__image-frame {
+.ca-hero__route {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+.ca-hero__route-path {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.18);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+}
+
+.ca-hero__route-dot {
+    filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.2));
+}
+
+.ca-hero__route-dot--green {
+    fill: var(--ca-color-green);
+}
+
+.ca-hero__route-dot--gold {
+    fill: var(--ca-color-gold);
+}
+
+.ca-hero__stage-image {
     position: relative;
-    aspect-ratio: 2 / 3;
-    max-height: 560px;
+    z-index: 1;
+    display: block;
+    width: min(880px, 60vw);
+    height: auto;
     margin-inline: auto;
+    filter: drop-shadow(0 24px 32px rgba(0, 0, 0, 0.35));
+    -webkit-mask-image: radial-gradient(ellipse 72% 82% at 50% 46%, black 58%, transparent 100%);
+    mask-image: radial-gradient(ellipse 72% 82% at 50% 46%, black 58%, transparent 100%);
+}
+
+/* -------------------------------------------------------------------------
+   STATUS BAR — satu kesatuan, bukan tiga kartu terpisah
+   ------------------------------------------------------------------------- */
+.ca-hero-status {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--ca-space-6);
+    margin-top: calc(-1 * var(--ca-space-10));
+    padding: var(--ca-space-4) var(--ca-space-8);
+    background-color: rgba(255, 255, 255, 0.97);
+    border: 1px solid rgba(255, 255, 255, 0.6);
     border-radius: var(--ca-radius-xl);
-    overflow: hidden;
     box-shadow: var(--ca-shadow-lg);
 }
 
-.ca-hero__image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-/* Floating information panels */
-.ca-hero__panels {
-    position: absolute;
-    left: var(--ca-space-8);
-    right: var(--ca-space-8);
-    bottom: calc(-1 * var(--ca-space-8));
-    display: flex;
-    justify-content: space-between;
-    gap: var(--ca-space-3);
-}
-
-.ca-hero__panel {
+.ca-hero-status__item {
     display: flex;
     align-items: center;
     gap: var(--ca-space-2);
-    padding: var(--ca-space-3) var(--ca-space-4);
-    background-color: rgba(255, 255, 255, 0.96);
-    border-radius: var(--ca-radius-md);
-    box-shadow: var(--ca-shadow-md);
+    white-space: nowrap;
 }
 
-.ca-hero__panel-icon {
+.ca-hero-status__icon {
     display: inline-flex;
     width: 18px;
     height: 18px;
@@ -126,66 +182,75 @@
     flex-shrink: 0;
 }
 
-.ca-hero__panel-label {
+.ca-hero-status__label {
     color: var(--ca-color-navy);
-    white-space: nowrap;
+}
+
+.ca-hero-status__separator {
+    width: 1px;
+    height: 20px;
+    background-color: var(--ca-color-light-gray);
+    flex-shrink: 0;
 }
 
 /* -------------------------------------------------------------------------
-   DECORATIVE ROUTE LINE
+   INTRO REVEAL (progressive enhancement — hero-intro.js)
+   Tanpa JavaScript, seluruh konten tetap terlihat penuh.
    ------------------------------------------------------------------------- */
-.ca-hero__route {
-    position: absolute;
-    z-index: 1;
-    top: 50%;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.18) 30%, rgba(255, 255, 255, 0.18) 70%, transparent);
+[data-hero-part] {
+    opacity: 1;
+    transform: none;
 }
 
-.ca-hero__route-dot {
-    position: absolute;
-    top: 50%;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    transform: translateY(-50%);
+[data-hero-intro].is-enhanced [data-hero-part] {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity var(--ca-transition-slow), transform var(--ca-transition-slow);
 }
 
-.ca-hero__route-dot--green {
-    left: 28%;
-    background-color: var(--ca-color-green);
-    box-shadow: 0 0 0 6px rgba(22, 163, 74, 0.15);
+[data-hero-intro].is-enhanced [data-hero-part].is-visible {
+    opacity: 1;
+    transform: none;
 }
 
-.ca-hero__route-dot--gold {
-    left: 62%;
-    background-color: var(--ca-color-gold);
-    box-shadow: 0 0 0 6px rgba(212, 175, 55, 0.15);
+@media (prefers-reduced-motion: reduce) {
+    [data-hero-intro].is-enhanced [data-hero-part] {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
 }
 
 /* -------------------------------------------------------------------------
-   DESKTOP-SMALL SAFETY
+   DESKTOP-SMALL SAFETY (1024px)
    ------------------------------------------------------------------------- */
 @media (max-width: 1180px) {
-    .ca-hero {
-        padding-block: var(--ca-space-16);
+    .ca-hero--center-stage {
+        padding-bottom: var(--ca-space-16);
     }
 
-    .ca-hero__inner {
-        grid-template-columns: 1fr;
-        gap: var(--ca-space-12);
+    .ca-hero__stage {
+        margin-top: var(--ca-space-10);
     }
 
-    .ca-hero__image-frame {
-        max-height: 440px;
-        max-width: 360px;
+    .ca-hero__stage-image {
+        width: min(640px, 70vw);
     }
 
-    .ca-hero__panels {
-        position: static;
-        margin-top: var(--ca-space-6);
+    .ca-hero-status {
+        gap: var(--ca-space-4);
+        padding: var(--ca-space-3) var(--ca-space-5);
+        margin-top: calc(-1 * var(--ca-space-8));
+    }
+}
+
+@media (max-width: 1024px) {
+    .ca-hero__description {
+        max-width: 60ch;
+    }
+
+    .ca-hero-status {
         flex-wrap: wrap;
+        row-gap: var(--ca-space-3);
     }
 }

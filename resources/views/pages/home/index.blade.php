@@ -27,6 +27,7 @@
 @endsection
 
 @push('scripts')
+    <script src="{{ asset('assets/js/pages/home/hero-intro.js') }}" defer></script>
     <script src="{{ asset('assets/js/pages/home/home-reveal.js') }}" defer></script>
     <script src="{{ asset('assets/js/pages/home/process-journey.js') }}" defer></script>
 @endpush

@@ -1,0 +1,112 @@
+/* ==========================================================================
+   CarAsset — Business / Alur Bisnis (business-flow.css)
+   ========================================================================== */
+
+.ca-business-flow {
+    background-color: var(--ca-color-white);
+}
+
+.ca-business-flow__timeline {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--ca-space-6);
+    margin-top: var(--ca-space-20);
+}
+
+.ca-business-flow__track {
+    position: absolute;
+    top: 68px;
+    left: 4%;
+    right: 4%;
+    height: 2px;
+    background: repeating-linear-gradient(
+        90deg,
+        var(--ca-color-light-gray) 0,
+        var(--ca-color-light-gray) 8px,
+        transparent 8px,
+        transparent 14px
+    );
+    z-index: 0;
+}
+
+.ca-business-flow__step {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-2);
+}
+
+/* Zig-zag ringan — hindari kesan lima kartu identik sejajar */
+.ca-business-flow__step--2,
+.ca-business-flow__step--4 {
+    margin-top: var(--ca-space-8);
+}
+
+.ca-business-flow__number {
+    font-family: var(--ca-font-heading);
+    font-weight: 700;
+    font-size: var(--ca-text-2xl);
+    color: var(--ca-color-light-gray);
+    line-height: 1;
+}
+
+.ca-business-flow__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--ca-radius-md);
+    background-color: var(--ca-bg-navy-soft);
+    color: var(--ca-color-navy);
+    margin-bottom: var(--ca-space-1);
+}
+
+.ca-business-flow__step--4 .ca-business-flow__icon,
+.ca-business-flow__step--5 .ca-business-flow__icon {
+    background-color: var(--ca-bg-green-soft);
+    color: var(--ca-color-green);
+}
+
+.ca-business-flow__title {
+    margin: 0;
+}
+
+.ca-business-flow__description {
+    margin: 0;
+    color: var(--ca-color-slate);
+    max-width: 24ch;
+}
+
+.ca-business-flow__footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--ca-space-4);
+    margin-top: var(--ca-space-16);
+    text-align: center;
+}
+
+.ca-business-flow__microcopy {
+    color: var(--ca-color-slate);
+    max-width: 60ch;
+}
+
+/* Desktop-small safety */
+@media (max-width: 1180px) {
+    .ca-business-flow__timeline {
+        grid-template-columns: repeat(3, 1fr);
+        row-gap: var(--ca-space-10);
+    }
+
+    .ca-business-flow__step--2,
+    .ca-business-flow__step--4 {
+        margin-top: 0;
+    }
+
+    .ca-business-flow__track {
+        display: none;
+    }
+}
