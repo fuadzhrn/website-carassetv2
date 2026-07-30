@@ -5,12 +5,12 @@
             theme="dark"
             eyebrow="Perbandingan Skala Operasional"
             title="Bandingkan Struktur Simulasi untuk Beberapa Skala Unit."
-            description="Perbandingan ini membantu calon mitra melihat bagaimana jumlah unit memengaruhi struktur pengelolaan. Nilai finansial tetap menunggu data final dan tidak boleh diasumsikan bertumbuh secara linear."
+            description="Perbandingan ini membantu calon mitra melihat bagaimana jumlah unit memengaruhi struktur pengelolaan. Nilai skala 5 dan 10 unit merupakan estimasi linear dari simulasi 1 unit, bukan angka resmi terpisah."
         />
 
         <span class="ca-simulation-status ca-simulation-status--dark">
             <span class="ca-simulation-status__icon" data-lucide="info" aria-hidden="true"></span>
-            Contoh tampilan — menunggu angka final klien
+            Contoh tampilan
         </span>
 
         <div class="ca-multiple-units__rail">
@@ -48,6 +48,11 @@
                 <span class="ca-multiple-units__label ca-label">Skala Pengembangan</span>
                 <h3 class="ca-multiple-units__unit ca-page-title">5 Unit</h3>
 
+                <span class="ca-multiple-units__estimate-badge">
+                    <span class="ca-multiple-units__estimate-icon" data-lucide="calculator" aria-hidden="true"></span>
+                    Estimasi Linear — Bukan Angka Resmi
+                </span>
+
                 <ul class="ca-multiple-units__rows ca-list-reset">
                     <li>
                         <span class="ca-simulation-label">Hasil operasional bruto</span>
@@ -76,6 +81,11 @@
                 <span class="ca-multiple-units__label ca-label">Skala Armada</span>
                 <h3 class="ca-multiple-units__unit ca-page-title">10 Unit</h3>
 
+                <span class="ca-multiple-units__estimate-badge">
+                    <span class="ca-multiple-units__estimate-icon" data-lucide="calculator" aria-hidden="true"></span>
+                    Estimasi Linear — Bukan Angka Resmi
+                </span>
+
                 <ul class="ca-multiple-units__rows ca-list-reset">
                     <li>
                         <span class="ca-simulation-label">Hasil operasional bruto</span>
@@ -102,9 +112,12 @@
         </div>
 
         <p class="ca-multiple-units__warning ca-simulation-note ca-simulation-note--dark">
-            Setiap skala dapat memiliki struktur biaya, kebutuhan operasional,
-            pembiayaan, dan pengelolaan yang berbeda. Nilai skenario tidak
-            dihitung dari perkalian linear terhadap simulasi 1 unit.
+            Nilai pada skala 5 dan 10 unit dihitung secara linear dari simulasi
+            1 unit (dikalikan sesuai jumlah unit) semata-mata untuk memberi
+            gambaran kasar skala operasional — <strong>bukan angka resmi</strong>
+            yang dikonfirmasi terpisah oleh perusahaan. Struktur biaya,
+            kebutuhan operasional, pembiayaan, dan pengelolaan pada skala yang
+            lebih besar dapat berbeda dari hasil kali sederhana ini.
         </p>
 
         <div class="ca-multiple-units__cta">

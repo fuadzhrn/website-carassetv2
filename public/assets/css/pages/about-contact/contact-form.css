@@ -136,6 +136,17 @@
     color: var(--ca-color-light-gray);
 }
 
+/* Data yang sudah terisi (bukan lagi placeholder "menunggu data resmi") */
+.ca-contact__info-value--filled {
+    font-style: normal;
+    color: var(--ca-color-white);
+}
+
+.ca-contact__info-value--address {
+    display: inline-block;
+    line-height: var(--ca-leading-relaxed);
+}
+
 .ca-contact__info-note {
     color: rgba(226, 232, 240, 0.6);
     margin-top: var(--ca-space-6);
@@ -144,36 +155,20 @@
 }
 
 /* -------------------------------------------------------------------------
-   MAP PLACEHOLDER
+   MAP EMBED — lokasi resmi (lihat komentar di contact-form.blade.php)
    ------------------------------------------------------------------------- */
-.ca-contact-map-placeholder {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: var(--ca-space-3);
-    min-height: 180px;
-    padding: var(--ca-space-8);
-    text-align: center;
-    background-color: var(--ca-color-extra-light-gray);
-    background-image:
-        linear-gradient(var(--ca-color-light-gray) 1px, transparent 1px),
-        linear-gradient(90deg, var(--ca-color-light-gray) 1px, transparent 1px);
-    background-size: 24px 24px;
+.ca-contact-map {
+    overflow: hidden;
     border: 1px solid var(--ca-color-light-gray);
     border-radius: var(--ca-radius-xl);
+    box-shadow: var(--ca-shadow-sm);
 }
 
-.ca-contact-map-placeholder__icon {
-    display: inline-flex;
-    width: 28px;
-    height: 28px;
-    color: var(--ca-color-slate);
-}
-
-.ca-contact-map-placeholder__text {
-    color: var(--ca-color-slate);
-    max-width: 28ch;
+.ca-contact-map__iframe {
+    display: block;
+    width: 100%;
+    height: 260px;
+    border: 0;
 }
 
 /* Desktop-small safety */

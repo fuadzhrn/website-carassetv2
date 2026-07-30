@@ -5,75 +5,90 @@
  * Simulasi & Perlindungan. Jangan menulis angka simulasi di file Blade,
  * CSS, atau file JS lain — semua section membaca dari object ini.
  *
- * Materi CarAsset saat ini masih memiliki beberapa angka yang berbeda
- * antar dokumen (contoh: 27 vs 28 hari operasional, cicilan Rp5.100.000
- * vs Rp5.200.000, setoran Rp60.000 vs Rp70.000). Karena belum ada angka
- * final yang disepakati, SELURUH nilai di bawah ini sengaja diisi
- * `null`. Jangan mengisi null dengan salah satu angka yang berbeda,
- * jangan menghitung angka baru, dan jangan menyimpulkan angka mana yang
- * benar — itu keputusan klien, bukan keputusan front-end.
+ * Sumber: "CarAsset — Product Knowledge & Business Scheme" (dokumen resmi
+ * yang diberikan klien, halaman "PROYEKSI INCOME"). Angka 1 unit di bawah
+ * adalah angka resmi dari dokumen tersebut.
  *
- * Ketika angka final sudah dikonfirmasi klien, developer cukup mengganti
- * nilai `null` di bawah ini dengan angka yang sudah disepakati. Seluruh
- * halaman akan otomatis menampilkan angka tersebut tanpa mengubah Blade.
+ * CATATAN — scenarios.fiveUnits & scenarios.tenUnits:
+ * Dokumen sumber TIDAK memberi rincian resmi untuk skala 5 atau 10 unit
+ * (skala leveraging dokumen adalah 1→3→9→27→81→243 unit, berbeda dari
+ * skala 1/5/10 yang dipakai website ini). Atas keputusan eksplisit
+ * pemilik proyek, nilai 5 dan 10 unit di bawah diisi dengan ESTIMASI
+ * LINEAR (angka 1 unit dikalikan 5 dan 10) HANYA untuk memberi gambaran
+ * kasar skala — BUKAN angka resmi terpisah dari klien. Setiap tampilan
+ * nilai ini WAJIB disertai badge/label "Estimasi Linear — Bukan Angka
+ * Resmi" di Blade (lihat sections/multiple-units.blade.php) agar tidak
+ * disalahartikan sebagai proyeksi resmi. Ganti dengan angka resmi begitu
+ * klien memberikan rincian khusus per skala.
+ *
+ * CATATAN LAIN:
+ * - protection.*: dokumen sumber tidak membahas asuransi/garansi/GPS,
+ *   sehingga tetap menunggu konfirmasi final.
+ * - Kontribusi/setoran driver (Rp60.000 vs Rp70.000 pada skema Mitra
+ *   Driver) TIDAK dibahas di dokumen ini (dokumen ini membahas skema
+ *   Mitra Owner) — konflik tersebut belum terselesaikan, tidak diisi di sini.
  */
 window.CarAssetSimulationConfig = {
-    // 'draft' = seluruh angka masih ilustrasi. Ubah proses rendering
-    // hanya setelah status ini diubah bersama tim yang berwenang.
+    // Masih 'draft' — skenario 5/10 unit berisi ESTIMASI (bukan angka
+    // resmi terkonfirmasi terpisah), sehingga halaman belum bisa
+    // dianggap final sepenuhnya.
     status: 'draft',
-    label: 'Contoh tampilan — menunggu angka final klien',
+    label: 'Contoh tampilan — sebagian angka bersumber dari dokumen resmi, skala 5/10 unit berupa estimasi linear',
 
-    // Asumsi operasional dasar yang memengaruhi seluruh simulasi.
-    // Lihat sections/assumptions.blade.php.
+    // Asumsi operasional dasar (ilustrasi 1 unit) — sumber: dokumen
+    // "PROYEKSI INCOME", pendapatan bulanan dihitung atas 27 hari
+    // operasional. Lihat sections/assumptions.blade.php.
     assumptions: {
-        operatingDays: null, // contoh perbedaan dokumen: 27 vs 28 hari — belum diputuskan
-        dailyDeposit: null, // setoran/hasil operasional harian
-        operationalCost: null, // biaya operasional
-        monthlyInstallment: null, // contoh perbedaan dokumen: Rp5.100.000 vs Rp5.200.000
-        managementShare: null, // komponen pengelolaan
-        ownerShare: null, // pembagian hasil untuk mitra
+        operatingDays: 27,
+        dailyDeposit: 230000, // harga sewa/hasil operasional harian
+        operationalCost: 500000, // biaya operasional per bulan
+        monthlyInstallment: 5100000, // cicilan kendaraan per bulan
+        managementShare: '40% dari hasil operasional (CarAsset)', // rasio bagi hasil, bukan nominal rupiah — dokumen belum merinci angka Rp-nya
+        ownerShare: '60% dari hasil operasional (Mitra)', // rasio bagi hasil, bukan nominal rupiah — dokumen belum merinci angka Rp-nya
     },
 
     // Skenario 1/5/10 unit. unitCount BUKAN hasil simulasi — ini nama
     // skala yang sudah pasti (1, 5, 10), sehingga boleh tampil sebagai
-    // angka meski nilai lain di bawahnya masih null. Jangan pernah
-    // mengisi nilai skenario dengan (nilai 1 unit × jumlah unit) karena
-    // struktur biaya/pengelolaan tiap skala bisa berbeda.
+    // angka meski nilai lain berupa estimasi.
     scenarios: {
         oneUnit: {
             unitCount: 1,
             label: 'Skala Awal',
-            grossOperationalResult: null,
-            operationalCost: null,
-            installment: null,
-            managementComponent: null,
-            projectedOwnerResult: null,
+            isEstimate: false, // angka resmi dari dokumen
+            grossOperationalResult: 6210000, // pendapatan bulanan (27 hari x Rp230.000)
+            operationalCost: 500000,
+            installment: 5100000,
+            managementComponent: '40% dari hasil operasional', // rasio, bukan nominal rupiah final
+            projectedOwnerResult: '60% dari hasil operasional', // rasio, bukan nominal rupiah final
         },
 
+        // ESTIMASI LINEAR (nilai 1 unit x 5) — lihat catatan di atas.
         fiveUnits: {
             unitCount: 5,
             label: 'Skala Pengembangan',
-            grossOperationalResult: null,
-            operationalCost: null,
-            installment: null,
-            managementComponent: null,
-            projectedOwnerResult: null,
+            isEstimate: true,
+            grossOperationalResult: 31050000, // 6.210.000 x 5 — estimasi linear
+            operationalCost: 2500000, // 500.000 x 5 — estimasi linear
+            installment: 25500000, // 5.100.000 x 5 — estimasi linear
+            managementComponent: '40% dari hasil operasional', // rasio diasumsikan tetap
+            projectedOwnerResult: '60% dari hasil operasional', // rasio diasumsikan tetap
         },
 
+        // ESTIMASI LINEAR (nilai 1 unit x 10) — lihat catatan di atas.
         tenUnits: {
             unitCount: 10,
             label: 'Skala Armada',
-            grossOperationalResult: null,
-            operationalCost: null,
-            installment: null,
-            managementComponent: null,
-            projectedOwnerResult: null,
+            isEstimate: true,
+            grossOperationalResult: 62100000, // 6.210.000 x 10 — estimasi linear
+            operationalCost: 5000000, // 500.000 x 10 — estimasi linear
+            installment: 51000000, // 5.100.000 x 10 — estimasi linear
+            managementComponent: '40% dari hasil operasional', // rasio diasumsikan tetap
+            projectedOwnerResult: '60% dari hasil operasional', // rasio diasumsikan tetap
         },
     },
 
-    // Lapisan perlindungan & monitoring. Nilai berupa string status,
-    // bukan klaim cakupan spesifik (nama asuransi, periode garansi,
-    // dsb.) sampai dikonfirmasi klien.
+    // Lapisan perlindungan & monitoring. Dokumen sumber belum membahas
+    // cakupan asuransi/garansi/GPS — tetap menunggu konfirmasi final.
     protection: {
         insurance: 'Menunggu konfirmasi final',
         warranty: 'Menunggu konfirmasi final',

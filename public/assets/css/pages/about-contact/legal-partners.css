@@ -96,6 +96,12 @@
     color: var(--ca-color-slate);
 }
 
+/* Data yang sudah terisi (bukan placeholder "menunggu data resmi") */
+.ca-legal__value--filled {
+    font-style: normal;
+    color: var(--ca-color-charcoal);
+}
+
 /* -------------------------------------------------------------------------
    PARTNER AREA
    ------------------------------------------------------------------------- */

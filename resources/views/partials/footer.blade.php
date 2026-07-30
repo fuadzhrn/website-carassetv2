@@ -45,7 +45,7 @@
             <ul class="ca-footer__links ca-list-reset">
                 <li class="ca-footer__contact-item">
                     <span class="ca-footer__contact-icon" data-lucide="phone" aria-hidden="true"></span>
-                    <span>WhatsApp: Menunggu data resmi</span>
+                    <span>WhatsApp: +123-456-7890</span>
                 </li>
                 <li class="ca-footer__contact-item">
                     <span class="ca-footer__contact-icon" data-lucide="mail" aria-hidden="true"></span>
@@ -53,7 +53,7 @@
                 </li>
                 <li class="ca-footer__contact-item">
                     <span class="ca-footer__contact-icon" data-lucide="map-pin" aria-hidden="true"></span>
-                    <span>Alamat: Menunggu data resmi</span>
+                    <span>Gajah Mada Tower, Lt. 19-01, Jl. Gajah Mada No.19-26, Jakarta Pusat 10130</span>
                 </li>
             </ul>
         </div>

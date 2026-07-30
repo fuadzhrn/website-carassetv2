@@ -106,7 +106,7 @@
                         <span class="ca-contact__info-icon" data-lucide="phone" aria-hidden="true"></span>
                         <div>
                             <span class="ca-contact__info-label">WhatsApp</span>
-                            <span class="ca-contact__info-value">Menunggu data resmi</span>
+                            <span class="ca-contact__info-value ca-contact__info-value--filled">+123-456-7890</span>
                         </div>
                     </li>
                     <li class="ca-contact__info-item">
@@ -119,30 +119,38 @@
                     <li class="ca-contact__info-item">
                         <span class="ca-contact__info-icon" data-lucide="map-pin" aria-hidden="true"></span>
                         <div>
-                            <span class="ca-contact__info-label">Alamat</span>
-                            <span class="ca-contact__info-value">Menunggu data resmi</span>
+                            <span class="ca-contact__info-label">Head Office</span>
+                            <span class="ca-contact__info-value ca-contact__info-value--filled ca-contact__info-value--address">
+                                Gajah Mada Tower, Lt. 19-01<br>
+                                Jl. Gajah Mada No.19-26, RT.2/RW.1, Petojo Utara,
+                                Kecamatan Gambir, Kota Jakarta Pusat,
+                                Daerah Khusus Ibukota Jakarta 10130
+                            </span>
                         </div>
                     </li>
                     <li class="ca-contact__info-item">
                         <span class="ca-contact__info-icon" data-lucide="clock-3" aria-hidden="true"></span>
                         <div>
                             <span class="ca-contact__info-label">Jam Layanan</span>
-                            <span class="ca-contact__info-value">Menunggu data resmi</span>
+                            <span class="ca-contact__info-value ca-contact__info-value--filled">Senin–Jumat, 09.00–17.00</span>
                         </div>
                     </li>
                 </ul>
 
+                {{-- Nomor WhatsApp masih format sementara — ganti setelah nomor resmi dikonfirmasi. Email belum tersedia. --}}
                 <p class="ca-contact__info-note ca-body-sm">
-                    Informasi kontak akan diperbarui sebelum publikasi.
+                    Nomor WhatsApp bersifat sementara. Email akan diperbarui sebelum publikasi.
                 </p>
             </div>
 
-            {{-- Ganti dengan embed peta resmi setelah alamat disetujui. --}}
-            <div class="ca-contact-map-placeholder">
-                <span class="ca-contact-map-placeholder__icon" data-lucide="map-pin" aria-hidden="true"></span>
-                <p class="ca-contact-map-placeholder__text ca-body-sm">
-                    Lokasi kantor akan ditampilkan setelah alamat resmi dikonfirmasi.
-                </p>
+            <div class="ca-contact-map">
+                <iframe
+                    class="ca-contact-map__iframe"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3093.878843926693!2d106.81870909999999!3d-6.1607189!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f5df4fccc6e7%3A0x66b6d7b7ea79dc8a!2sGajah%20Mada%20Plaza%20Mall!5e1!3m2!1sid!2sid!4v1785448057387!5m2!1sid!2sid"
+                    loading="lazy"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    title="Lokasi kantor CarAsset — Gajah Mada Tower"
+                ></iframe>
             </div>
         </div>
     </div>

@@ -61,6 +61,29 @@
     margin: 0 0 var(--ca-space-4);
 }
 
+/* Badge wajib pada skenario yang nilainya estimasi linear (bukan angka resmi) */
+.ca-multiple-units__estimate-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ca-space-2);
+    margin-bottom: var(--ca-space-5);
+    padding: var(--ca-space-1) var(--ca-space-3);
+    background-color: rgba(212, 175, 55, 0.12);
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    border-radius: var(--ca-radius-pill);
+    color: var(--ca-color-gold);
+    font-family: var(--ca-font-ui);
+    font-weight: 500;
+    font-size: var(--ca-text-xs);
+}
+
+.ca-multiple-units__estimate-icon {
+    display: inline-flex;
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
 .ca-multiple-units__rows {
     display: flex;
     flex-direction: column;

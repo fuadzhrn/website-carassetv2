@@ -35,7 +35,10 @@
                         <span class="ca-legal__item-icon" data-lucide="map-pin" aria-hidden="true"></span>
                         <div>
                             <dt class="ca-legal__label">Alamat Terdaftar</dt>
-                            <dd class="ca-legal__value">Menunggu data resmi perusahaan</dd>
+                            <dd class="ca-legal__value ca-legal__value--filled">
+                                Gajah Mada Tower, Lt. 19-01, Jl. Gajah Mada No.19-26,
+                                Kota Jakarta Pusat, DKI Jakarta 10130
+                            </dd>
                         </div>
                     </div>
                     <div class="ca-legal__item">

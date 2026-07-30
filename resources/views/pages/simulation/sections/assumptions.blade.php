@@ -16,7 +16,7 @@
 
             <span class="ca-simulation-status">
                 <span class="ca-simulation-status__icon" data-lucide="info" aria-hidden="true"></span>
-                Contoh tampilan — menunggu angka final klien
+                Contoh tampilan 
             </span>
         </div>
 
