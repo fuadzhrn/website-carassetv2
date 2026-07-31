@@ -147,6 +147,20 @@
     line-height: var(--ca-leading-relaxed);
 }
 
+a.ca-contact__info-value--filled {
+    transition: color var(--ca-transition-fast);
+}
+
+a.ca-contact__info-value--filled:hover {
+    color: var(--ca-color-green);
+}
+
+a.ca-contact__info-value--filled:focus-visible {
+    outline: none;
+    box-shadow: var(--ca-shadow-focus);
+    border-radius: var(--ca-radius-sm);
+}
+
 .ca-contact__info-note {
     color: rgba(226, 232, 240, 0.6);
     margin-top: var(--ca-space-6);

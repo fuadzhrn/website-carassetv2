@@ -21,6 +21,13 @@
     height: 32px;
     width: auto;
     margin-bottom: var(--ca-space-4);
+    /* Diperbesar secara visual tanpa mengubah ruang layout kolom footer
+       (box asli 32px tetap dihitung) — kolom navigasi/program/kontak
+       di sampingnya tidak ikut bergeser. Origin "left bottom" supaya
+       tepi bawah tetap diam (tidak menabrak tagline di bawahnya) dan
+       logo tumbuh ke atas + ke kanan. */
+    transform: scale(1.4);
+    transform-origin: left bottom;
 }
 
 .ca-footer__logo-fallback {

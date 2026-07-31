@@ -113,7 +113,7 @@
                         <span class="ca-contact__info-icon" data-lucide="mail" aria-hidden="true"></span>
                         <div>
                             <span class="ca-contact__info-label">Email</span>
-                            <span class="ca-contact__info-value">Menunggu data resmi</span>
+                            <a href="mailto:hello@carasset.id" class="ca-contact__info-value ca-contact__info-value--filled">hello@carasset.id</a>
                         </div>
                     </li>
                     <li class="ca-contact__info-item">

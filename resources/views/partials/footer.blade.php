@@ -49,7 +49,7 @@
                 </li>
                 <li class="ca-footer__contact-item">
                     <span class="ca-footer__contact-icon" data-lucide="mail" aria-hidden="true"></span>
-                    <span>Email: Menunggu data resmi</span>
+                    <span>Email: <a href="mailto:hello@carasset.id" class="ca-footer__link">hello@carasset.id</a></span>
                 </li>
                 <li class="ca-footer__contact-item">
                     <span class="ca-footer__contact-icon" data-lucide="map-pin" aria-hidden="true"></span>

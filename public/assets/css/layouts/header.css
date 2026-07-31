@@ -80,6 +80,10 @@
 .ca-header__logo-image {
     height: 36px;
     width: auto;
+    /* Diperbesar secara visual tanpa mengubah ruang layout (flex header
+       tetap menghitung box asli 36px) — sibling (nav, CTA) tidak bergeser. */
+    transform: scale(1.3);
+    transform-origin: left center;
 }
 
 .ca-header__logo-fallback {
