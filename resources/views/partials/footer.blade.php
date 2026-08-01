@@ -1,22 +1,41 @@
+@php
+    $brandName = $siteSettings['brand.name'] ?? 'CarAsset';
+    $brandTagline = $siteSettings['brand.tagline'] ?? 'Mobil Bekerja. Aset Bertumbuh.';
+    $logoOnDarkSrc = $siteLogoOnDarkUrl ?? (file_exists(public_path('assets/images/brand/logo-on-dark.png'))
+        ? asset('assets/images/brand/logo-on-dark.png')
+        : null);
+
+    $footerDescription = $siteSettings['footer.description']
+        ?? 'CarAsset adalah platform pengelolaan kendaraan produktif yang membantu mitra memiliki aset dan mengelola operasionalnya secara profesional.';
+
+    $footerCopyright = $siteSettings['footer.copyright'] ?? ('© '.date('Y').' '.$brandName.'. Seluruh hak dilindungi.');
+
+    // Nomor WhatsApp lama di front-end (+123-456-7890) adalah placeholder,
+    // bukan data resmi — hanya tampilkan baris WhatsApp bila admin sudah
+    // mengisi nomor asli lewat Pengaturan Website.
+    $whatsapp = $siteSettings['contact.whatsapp'] ?? null;
+    $whatsappUrl = $siteWhatsappUrl ?? null;
+
+    $email = $siteSettings['contact.email'] ?? 'hello@carasset.id';
+    $address = $siteSettings['contact.address'] ?? "Gajah Mada Tower, Lt. 19-01, Jl. Gajah Mada No.19-26, Jakarta Pusat 10130";
+@endphp
+
 <footer class="ca-footer">
     <div class="ca-container ca-footer__grid">
         <div class="ca-footer__brand">
-            @if (file_exists(public_path('assets/images/brand/logo-on-dark.png')))
+            @if ($logoOnDarkSrc)
                 <img
-                    src="{{ asset('assets/images/brand/logo-on-dark.png') }}"
-                    alt="CarAsset"
+                    src="{{ $logoOnDarkSrc }}"
+                    alt="{{ $siteLogoOnDarkAlt ?? $brandName }}"
                     class="ca-footer__logo"
                 >
             @else
                 {{-- Ganti dengan logo resmi CarAsset (public/assets/images/brand/logo-on-dark.png) --}}
-                <span class="ca-footer__logo-fallback ca-card-title">CarAsset</span>
+                <span class="ca-footer__logo-fallback ca-card-title">{{ $brandName }}</span>
             @endif
 
-            <p class="ca-footer__tagline">Mobil Bekerja. Aset Bertumbuh.</p>
-            <p class="ca-footer__summary">
-                CarAsset adalah platform pengelolaan kendaraan produktif yang membantu
-                mitra memiliki aset dan mengelola operasionalnya secara profesional.
-            </p>
+            <p class="ca-footer__tagline">{{ $brandTagline }}</p>
+            <p class="ca-footer__summary">{{ $footerDescription }}</p>
         </div>
 
         <div class="ca-footer__column">
@@ -43,25 +62,31 @@
         <div class="ca-footer__column ca-footer__contact">
             <h3 class="ca-footer__heading">Kontak</h3>
             <ul class="ca-footer__links ca-list-reset">
-                <li class="ca-footer__contact-item">
-                    <span class="ca-footer__contact-icon" data-lucide="phone" aria-hidden="true"></span>
-                    <span>WhatsApp: +123-456-7890</span>
-                </li>
-                <li class="ca-footer__contact-item">
-                    <span class="ca-footer__contact-icon" data-lucide="mail" aria-hidden="true"></span>
-                    <span>Email: <a href="mailto:hello@carasset.id" class="ca-footer__link">hello@carasset.id</a></span>
-                </li>
-                <li class="ca-footer__contact-item">
-                    <span class="ca-footer__contact-icon" data-lucide="map-pin" aria-hidden="true"></span>
-                    <span>Gajah Mada Tower, Lt. 19-01, Jl. Gajah Mada No.19-26, Jakarta Pusat 10130</span>
-                </li>
+                @if ($whatsappUrl)
+                    <li class="ca-footer__contact-item">
+                        <span class="ca-footer__contact-icon" data-lucide="phone" aria-hidden="true"></span>
+                        <span>WhatsApp: <a href="{{ $whatsappUrl }}" target="_blank" rel="noopener noreferrer" class="ca-footer__link">{{ $whatsapp }}</a></span>
+                    </li>
+                @endif
+                @if ($email)
+                    <li class="ca-footer__contact-item">
+                        <span class="ca-footer__contact-icon" data-lucide="mail" aria-hidden="true"></span>
+                        <span>Email: <a href="mailto:{{ $email }}" class="ca-footer__link">{{ $email }}</a></span>
+                    </li>
+                @endif
+                @if ($address)
+                    <li class="ca-footer__contact-item">
+                        <span class="ca-footer__contact-icon" data-lucide="map-pin" aria-hidden="true"></span>
+                        <span>{{ $address }}</span>
+                    </li>
+                @endif
             </ul>
         </div>
     </div>
 
     <div class="ca-footer__bottom">
         <div class="ca-container ca-footer__bottom-inner">
-            <p class="ca-footer__copyright">&copy; {{ date('Y') }} CarAsset. Seluruh hak dilindungi.</p>
+            <p class="ca-footer__copyright">{{ $footerCopyright }}</p>
             <p class="ca-footer__notice">Informasi legalitas dan kontak mengikuti ketentuan resmi perusahaan.</p>
         </div>
     </div>

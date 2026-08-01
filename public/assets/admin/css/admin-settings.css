@@ -1,0 +1,101 @@
+/* ==========================================================================
+   CarAsset Admin — Site Settings (admin-settings.css)
+   Settings shell, group navigation, group section, action bar.
+   Media picker (.ca-admin-media-picker*) dipindah ke admin-components.css
+   sejak PROMPT 17 karena dipakai juga oleh editor Home dan editor halaman
+   berikutnya, bukan cuma halaman Pengaturan.
+   Prefix wajib: ca-admin-
+   ========================================================================== */
+
+.ca-admin-settings-shell {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: var(--ca-space-8);
+    align-items: start;
+}
+
+.ca-admin-settings-rail {
+    position: sticky;
+    top: calc(74px + var(--ca-space-6));
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    background-color: var(--ca-color-white);
+    border: 1px solid var(--ca-border-color);
+    border-radius: var(--ca-radius-lg);
+    padding: var(--ca-space-3);
+}
+
+.ca-admin-settings-rail__link {
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-sm);
+    font-weight: 500;
+    color: var(--ca-text-secondary);
+    text-decoration: none;
+    padding: 10px 12px;
+    border-radius: var(--ca-radius-md);
+}
+
+.ca-admin-settings-rail__link:hover {
+    background-color: var(--ca-bg-navy-soft);
+    color: var(--ca-color-navy);
+}
+
+.ca-admin-settings-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-6);
+}
+
+.ca-admin-settings-group {
+    background-color: var(--ca-color-white);
+    border: 1px solid var(--ca-border-color);
+    border-radius: var(--ca-radius-lg);
+    padding: var(--ca-space-6);
+    scroll-margin-top: calc(74px + var(--ca-space-4));
+}
+
+.ca-admin-settings-group__title {
+    font-family: var(--ca-font-heading);
+    font-weight: 600;
+    font-size: var(--ca-text-lg);
+    color: var(--ca-color-navy);
+    margin: 0 0 var(--ca-space-5);
+    padding-bottom: var(--ca-space-3);
+    border-bottom: 1px solid var(--ca-border-color);
+}
+
+/* -------------------------------------------------------------------------
+   ACTION BAR
+   ------------------------------------------------------------------------- */
+.ca-admin-settings-actionbar {
+    position: sticky;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--ca-space-4);
+    background-color: var(--ca-color-white);
+    border: 1px solid var(--ca-border-color);
+    border-radius: var(--ca-radius-lg);
+    padding: var(--ca-space-4) var(--ca-space-6);
+    box-shadow: var(--ca-shadow-sm);
+}
+
+.ca-admin-settings-actionbar__status {
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-xs);
+    color: var(--ca-color-warning);
+}
+
+@media (max-width: 1180px) {
+    .ca-admin-settings-shell {
+        grid-template-columns: 1fr;
+    }
+
+    .ca-admin-settings-rail {
+        position: static;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+}

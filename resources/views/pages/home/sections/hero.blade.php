@@ -4,28 +4,47 @@
 
     <div class="ca-container ca-hero__container">
         <div class="ca-hero__content" data-hero-part="content">
-            <span class="ca-hero__eyebrow ca-eyebrow">Platform Aset Kendaraan Produktif</span>
+            @if ($data['eyebrow'])
+                <span class="ca-hero__eyebrow ca-eyebrow">{{ $data['eyebrow'] }}</span>
+            @endif
 
             <h1 id="ca-hero-heading" class="ca-hero__title ca-display">
-                Mobil Bekerja.<br>
-                Aset <span class="ca-hero__title-accent">Bertumbuh.</span>
+                {{ $data['title_line_1'] }}<br>
+                Aset <span class="ca-hero__title-accent">{{ $data['title_line_2'] }}</span>
             </h1>
 
-            <p class="ca-hero__subheadline">Miliki Asetnya. Biarkan Mobilnya Bekerja.</p>
+            @if ($data['subtitle'])
+                <p class="ca-hero__subheadline">{{ $data['subtitle'] }}</p>
+            @endif
 
             <p class="ca-hero__description ca-body-lg">
-                CarAsset membantu mitra memiliki kendaraan produktif yang dikelola secara
-                profesional untuk mendukung pertumbuhan aset secara bertahap dan transparan.
+                {{ $data['description'] }}
             </p>
 
-            <div class="ca-hero__actions ca-cluster">
-                <x-button href="{{ route('about-contact') }}#contact" variant="primary" size="lg">
-                    Konsultasi Sekarang
-                </x-button>
-                <x-button href="#cara-kerja" variant="outline" size="lg">
-                    Pelajari Cara Kerja
-                </x-button>
-            </div>
+            @if ($data['primary_cta'] || $data['secondary_cta'])
+                <div class="ca-hero__actions ca-cluster">
+                    @if ($data['primary_cta'])
+                        <x-button
+                            href="{{ $data['primary_cta']['url'] }}"
+                            target="{{ $data['primary_cta']['target'] }}"
+                            variant="primary"
+                            size="lg"
+                        >
+                            {{ $data['primary_cta']['label'] }}
+                        </x-button>
+                    @endif
+                    @if ($data['secondary_cta'])
+                        <x-button
+                            href="{{ $data['secondary_cta']['url'] }}"
+                            target="{{ $data['secondary_cta']['target'] }}"
+                            variant="outline"
+                            size="lg"
+                        >
+                            {{ $data['secondary_cta']['label'] }}
+                        </x-button>
+                    @endif
+                </div>
+            @endif
         </div>
 
         <div class="ca-hero__stage" data-hero-part="stage">
@@ -44,21 +63,21 @@
             </div>
         </div>
 
-        <div class="ca-hero-status" data-hero-part="status">
-            <div class="ca-hero-status__item">
-                <span class="ca-hero-status__icon" data-lucide="badge-check" aria-hidden="true"></span>
-                <span class="ca-hero-status__label ca-label">Aset Milik Mitra</span>
+        @php
+            $heroStatusIcons = [0 => 'badge-check', 1 => 'settings', 2 => 'activity'];
+        @endphp
+        @if ($data['status_items'])
+            <div class="ca-hero-status" data-hero-part="status">
+                @foreach ($data['status_items'] as $slot => $item)
+                    @if (! $loop->first)
+                        <span class="ca-hero-status__separator" aria-hidden="true"></span>
+                    @endif
+                    <div class="ca-hero-status__item">
+                        <span class="ca-hero-status__icon" data-lucide="{{ $heroStatusIcons[$slot] ?? 'badge-check' }}" aria-hidden="true"></span>
+                        <span class="ca-hero-status__label ca-label">{{ $item['label'] }}</span>
+                    </div>
+                @endforeach
             </div>
-            <span class="ca-hero-status__separator" aria-hidden="true"></span>
-            <div class="ca-hero-status__item">
-                <span class="ca-hero-status__icon" data-lucide="settings" aria-hidden="true"></span>
-                <span class="ca-hero-status__label ca-label">Dikelola Profesional</span>
-            </div>
-            <span class="ca-hero-status__separator" aria-hidden="true"></span>
-            <div class="ca-hero-status__item">
-                <span class="ca-hero-status__icon" data-lucide="activity" aria-hidden="true"></span>
-                <span class="ca-hero-status__label ca-label">Monitoring Transparan</span>
-            </div>
-        </div>
+        @endif
     </div>
 </section>

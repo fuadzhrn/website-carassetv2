@@ -19,11 +19,25 @@
 @endpush
 
 @section('content')
-    @include('pages.business.sections.opportunity')
-    @include('pages.business.sections.own')
-    @include('pages.business.sections.operate')
-    @include('pages.business.sections.grow')
-    @include('pages.business.sections.business-flow')
+    @if ($business['opportunity']['is_active'])
+        @include('pages.business.sections.opportunity', ['data' => $business['opportunity']])
+    @endif
+
+    @if ($business['own']['is_active'])
+        @include('pages.business.sections.own', ['data' => $business['own']])
+    @endif
+
+    @if ($business['operate']['is_active'])
+        @include('pages.business.sections.operate', ['data' => $business['operate']])
+    @endif
+
+    @if ($business['grow']['is_active'])
+        @include('pages.business.sections.grow', ['data' => $business['grow']])
+    @endif
+
+    @if ($business['business-flow']['is_active'])
+        @include('pages.business.sections.business-flow', ['data' => $business['business-flow']])
+    @endif
 @endsection
 
 @push('scripts')

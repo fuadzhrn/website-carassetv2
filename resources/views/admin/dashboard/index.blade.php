@@ -86,14 +86,26 @@
             </li>
             <li class="ca-admin-status-list__item">
                 <span>Database CMS</span>
-                <x-admin::status-badge variant="neutral">Tahap Berikutnya</x-admin::status-badge>
+                <x-admin::status-badge variant="active">Aktif</x-admin::status-badge>
+            </li>
+            <li class="ca-admin-status-list__item">
+                <span>Content Service</span>
+                <x-admin::status-badge variant="active">Aktif</x-admin::status-badge>
             </li>
             <li class="ca-admin-status-list__item">
                 <span>Media Library</span>
-                <x-admin::status-badge variant="pending">Belum Tersedia</x-admin::status-badge>
+                <x-admin::status-badge variant="active">Aktif</x-admin::status-badge>
             </li>
             <li class="ca-admin-status-list__item">
-                <span>Editor Konten</span>
+                <span>Home Editor</span>
+                <x-admin::status-badge variant="active">Aktif</x-admin::status-badge>
+            </li>
+            <li class="ca-admin-status-list__item">
+                <span>Bisnis Editor</span>
+                <x-admin::status-badge variant="active">Aktif</x-admin::status-badge>
+            </li>
+            <li class="ca-admin-status-list__item">
+                <span>Editor Program Kemitraan</span>
                 <x-admin::status-badge variant="pending">Belum Tersedia</x-admin::status-badge>
             </li>
             <li class="ca-admin-status-list__item">

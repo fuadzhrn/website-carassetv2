@@ -1,0 +1,200 @@
+/* ==========================================================================
+   CarAsset Admin — Home Section Editor (admin-home-editor.css)
+   Prefix wajib: ca-admin-
+   ========================================================================== */
+
+.ca-admin-home-editor-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--ca-space-4);
+}
+
+.ca-admin-home-editor-notice {
+    display: flex;
+    align-items: center;
+    gap: var(--ca-space-3);
+    padding: 12px 16px;
+    background-color: var(--ca-bg-navy-soft);
+    border: 1px solid rgba(15, 23, 42, 0.15);
+    border-radius: var(--ca-radius-md);
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-sm);
+    color: var(--ca-color-navy);
+}
+
+.ca-admin-home-editor-notice svg {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+}
+
+/* -------------------------------------------------------------------------
+   SHELL — nav rail + panels
+   ------------------------------------------------------------------------- */
+.ca-admin-home-editor {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: var(--ca-space-8);
+    align-items: start;
+}
+
+.ca-admin-home-nav {
+    position: sticky;
+    top: calc(74px + var(--ca-space-6));
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    background-color: var(--ca-color-white);
+    border: 1px solid var(--ca-border-color);
+    border-radius: var(--ca-radius-lg);
+    padding: var(--ca-space-3);
+}
+
+.ca-admin-home-nav__link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ca-space-2);
+    padding: 10px 12px;
+    border-radius: var(--ca-radius-md);
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-sm);
+    font-weight: 500;
+    color: var(--ca-text-secondary);
+    text-decoration: none;
+}
+
+.ca-admin-home-nav__link:hover {
+    background-color: var(--ca-bg-navy-soft);
+    color: var(--ca-color-navy);
+}
+
+.ca-admin-home-panels {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-8);
+}
+
+.ca-admin-home-panel {
+    background-color: var(--ca-color-white);
+    border: 1px solid var(--ca-border-color);
+    border-radius: var(--ca-radius-lg);
+    padding: var(--ca-space-6);
+    scroll-margin-top: calc(74px + var(--ca-space-4));
+}
+
+.ca-admin-home-panel__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--ca-space-4);
+    padding-bottom: var(--ca-space-4);
+    margin-bottom: var(--ca-space-5);
+    border-bottom: 1px solid var(--ca-border-color);
+}
+
+.ca-admin-home-panel__title {
+    font-family: var(--ca-font-heading);
+    font-weight: 600;
+    font-size: var(--ca-text-lg);
+    color: var(--ca-color-navy);
+    margin: 0;
+}
+
+.ca-admin-home-panel__meta {
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-xs);
+    color: var(--ca-text-secondary);
+    margin: 4px 0 0;
+}
+
+.ca-admin-home-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-2);
+}
+
+.ca-admin-home-form__actions {
+    margin-top: var(--ca-space-4);
+    padding-top: var(--ca-space-4);
+    border-top: 1px solid var(--ca-border-color);
+}
+
+/* -------------------------------------------------------------------------
+   REPEATER / CTA GROUPING — whitespace + border, bukan kartu berat
+   ------------------------------------------------------------------------- */
+.ca-admin-repeater-group,
+.ca-admin-cta-fields {
+    border: 1px solid var(--ca-border-color);
+    border-radius: var(--ca-radius-md);
+    padding: var(--ca-space-5);
+    margin: 0 0 var(--ca-space-5);
+}
+
+.ca-admin-repeater-group--nested {
+    background-color: var(--ca-color-extra-light-gray);
+    border-style: dashed;
+}
+
+.ca-admin-cta-fields__legend,
+.ca-admin-repeater-group > legend {
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-xs);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ca-color-slate);
+    padding: 0 6px;
+}
+
+.ca-admin-repeater-row {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--ca-space-4);
+    padding-bottom: var(--ca-space-3);
+    margin-bottom: var(--ca-space-3);
+    border-bottom: 1px dashed var(--ca-border-color);
+}
+
+.ca-admin-repeater-row:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.ca-admin-repeater-row .ca-admin-field {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+.ca-admin-repeater-row .ca-admin-checkbox {
+    flex-shrink: 0;
+    padding-bottom: 12px;
+    white-space: nowrap;
+}
+
+[data-cta-group] {
+    display: none;
+}
+
+[data-cta-group].is-visible {
+    display: block;
+}
+
+@media (max-width: 1180px) {
+    .ca-admin-home-editor {
+        grid-template-columns: 1fr;
+    }
+
+    .ca-admin-home-nav {
+        position: static;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .ca-admin-repeater-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}

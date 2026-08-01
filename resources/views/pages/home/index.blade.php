@@ -19,11 +19,25 @@
 @endpush
 
 @section('content')
-    @include('pages.home.sections.hero')
-    @include('pages.home.sections.income-opportunity')
-    @include('pages.home.sections.process-summary')
-    @include('pages.home.sections.partnership-choice')
-    @include('pages.home.sections.consultation-cta')
+    @if ($home['hero']['is_active'])
+        @include('pages.home.sections.hero', ['data' => $home['hero']])
+    @endif
+
+    @if ($home['income-opportunity']['is_active'])
+        @include('pages.home.sections.income-opportunity', ['data' => $home['income-opportunity']])
+    @endif
+
+    @if ($home['process-summary']['is_active'])
+        @include('pages.home.sections.process-summary', ['data' => $home['process-summary']])
+    @endif
+
+    @if ($home['partnership-choice']['is_active'])
+        @include('pages.home.sections.partnership-choice', ['data' => $home['partnership-choice']])
+    @endif
+
+    @if ($home['consultation-cta']['is_active'])
+        @include('pages.home.sections.consultation-cta', ['data' => $home['consultation-cta']])
+    @endif
 @endsection
 
 @push('scripts')

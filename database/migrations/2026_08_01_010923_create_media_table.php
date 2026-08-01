@@ -13,7 +13,19 @@ return new class extends Migration
     {
         Schema::create('media', function (Blueprint $table) {
             $table->id();
+            $table->string('original_name');
+            $table->string('file_name')->unique();
+            $table->string('file_path');
+            $table->string('mime_type');
+            $table->unsignedBigInteger('file_size');
+            $table->unsignedInteger('width')->nullable();
+            $table->unsignedInteger('height')->nullable();
+            $table->string('alt_text')->nullable();
+            $table->text('caption')->nullable();
+            $table->foreignId('uploaded_by')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
+
+            $table->index('file_path');
         });
     }
 

@@ -3,49 +3,42 @@
     <div class="ca-container">
         <x-section-heading
             align="center"
-            eyebrow="Cara CarAsset Bekerja"
-            title="Satu Sistem. Tiga Langkah untuk Membuat Aset Tetap Produktif."
-            description="CarAsset menghubungkan kepemilikan kendaraan, pengelolaan operasional, dan pertumbuhan aset dalam satu sistem kemitraan."
+            :eyebrow="$data['eyebrow']"
+            :title="$data['title']"
+            :description="$data['description']"
         />
 
-        <div class="ca-process__timeline" data-process-journey>
-            <div class="ca-process__track" aria-hidden="true"></div>
+        @php
+            $processStepMeta = [
+                'own' => ['number' => '01', 'icon' => 'key-round'],
+                'operate' => ['number' => '02', 'icon' => 'settings'],
+                'grow' => ['number' => '03', 'icon' => 'trending-up'],
+            ];
+        @endphp
 
-            <div class="ca-process__step ca-process__step--own" data-process-step>
-                <span class="ca-process__number" aria-hidden="true">01</span>
-                <span class="ca-process__icon" data-lucide="key-round" aria-hidden="true"></span>
-                <h3 class="ca-process__title ca-card-title">Miliki Asetnya</h3>
-                <p class="ca-process__description ca-body-sm">
-                    Kendaraan menjadi aset milik mitra dengan struktur kepemilikan yang
-                    jelas sesuai ketentuan program.
-                </p>
+        @if ($data['steps'])
+            <div class="ca-process__timeline" data-process-journey>
+                <div class="ca-process__track" aria-hidden="true"></div>
+
+                @foreach ($data['steps'] as $stepKey => $step)
+                    <div class="ca-process__step ca-process__step--{{ $stepKey }}" data-process-step>
+                        <span class="ca-process__number" aria-hidden="true">{{ $processStepMeta[$stepKey]['number'] }}</span>
+                        <span class="ca-process__icon" data-lucide="{{ $processStepMeta[$stepKey]['icon'] }}" aria-hidden="true"></span>
+                        <h3 class="ca-process__title ca-card-title">{{ $step['title'] }}</h3>
+                        <p class="ca-process__description ca-body-sm">
+                            {{ $step['description'] }}
+                        </p>
+                    </div>
+                @endforeach
             </div>
+        @endif
 
-            <div class="ca-process__step ca-process__step--operate" data-process-step>
-                <span class="ca-process__number" aria-hidden="true">02</span>
-                <span class="ca-process__icon" data-lucide="settings" aria-hidden="true"></span>
-                <h3 class="ca-process__title ca-card-title">Kami Kelola Operasionalnya</h3>
-                <p class="ca-process__description ca-body-sm">
-                    CarAsset membantu mengelola driver, operasional, perawatan, dan
-                    monitoring kendaraan secara profesional.
-                </p>
+        @if ($data['cta'])
+            <div class="ca-process__cta">
+                <x-button href="{{ $data['cta']['url'] }}" target="{{ $data['cta']['target'] }}" variant="outline" size="md">
+                    {{ $data['cta']['label'] }}
+                </x-button>
             </div>
-
-            <div class="ca-process__step ca-process__step--grow" data-process-step>
-                <span class="ca-process__number" aria-hidden="true">03</span>
-                <span class="ca-process__icon" data-lucide="trending-up" aria-hidden="true"></span>
-                <h3 class="ca-process__title ca-card-title">Kembangkan Kepemilikannya</h3>
-                <p class="ca-process__description ca-body-sm">
-                    Nilai aset dan hasil operasional dapat mendukung rencana pertumbuhan
-                    unit secara bertahap sesuai kondisi dan ketentuan program.
-                </p>
-            </div>
-        </div>
-
-        <div class="ca-process__cta">
-            <x-button href="{{ route('business') }}" variant="outline" size="md">
-                Pelajari Bisnis CarAsset
-            </x-button>
-        </div>
+        @endif
     </div>
 </section>

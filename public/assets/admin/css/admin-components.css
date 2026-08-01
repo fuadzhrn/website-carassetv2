@@ -422,6 +422,174 @@
     margin-top: var(--ca-space-3);
 }
 
+/* -------------------------------------------------------------------------
+   MODAL (native <dialog> — dipakai untuk konfirmasi hapus & media picker)
+   ------------------------------------------------------------------------- */
+.ca-admin-modal {
+    border: none;
+    border-radius: var(--ca-radius-lg);
+    padding: 0;
+    width: min(480px, calc(100vw - var(--ca-space-8)));
+    box-shadow: var(--ca-shadow-lg);
+}
+
+.ca-admin-modal--wide {
+    width: min(720px, calc(100vw - var(--ca-space-8)));
+}
+
+.ca-admin-modal::backdrop {
+    background-color: rgba(15, 23, 42, 0.55);
+}
+
+.ca-admin-modal__inner {
+    padding: var(--ca-space-6);
+}
+
+.ca-admin-modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--ca-space-4);
+}
+
+.ca-admin-modal__title {
+    font-family: var(--ca-font-heading);
+    font-weight: 600;
+    font-size: var(--ca-text-lg);
+    color: var(--ca-color-navy);
+    margin: 0;
+}
+
+.ca-admin-modal__description {
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-sm);
+    color: var(--ca-text-secondary);
+    margin: 0 0 var(--ca-space-5);
+}
+
+.ca-admin-modal__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: none;
+    border-radius: var(--ca-radius-sm);
+    color: var(--ca-color-slate);
+    cursor: pointer;
+}
+
+.ca-admin-modal__close:hover {
+    background-color: var(--ca-bg-navy-soft);
+    color: var(--ca-color-navy);
+}
+
+.ca-admin-modal__close svg {
+    width: 18px;
+    height: 18px;
+}
+
+.ca-admin-modal__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--ca-space-3);
+}
+
+/* -------------------------------------------------------------------------
+   MEDIA PICKER (dipakai lintas halaman: Pengaturan, editor Home, dst.)
+   ------------------------------------------------------------------------- */
+.ca-admin-media-picker {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-2);
+    margin-bottom: var(--ca-space-6);
+}
+
+.ca-admin-media-picker__preview {
+    display: flex;
+    align-items: center;
+    gap: var(--ca-space-3);
+    min-height: 72px;
+    padding: var(--ca-space-3);
+    background-color: var(--ca-color-extra-light-gray);
+    border-radius: var(--ca-radius-md);
+    border: 1px solid var(--ca-border-color);
+}
+
+.ca-admin-media-picker__preview img {
+    max-height: 56px;
+    max-width: 140px;
+    width: auto;
+    border-radius: var(--ca-radius-sm);
+}
+
+.ca-admin-media-picker__alt {
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-xs);
+    color: var(--ca-text-secondary);
+}
+
+.ca-admin-media-picker__empty {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ca-space-2);
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-sm);
+    color: var(--ca-color-slate);
+}
+
+.ca-admin-media-picker__empty svg {
+    width: 18px;
+    height: 18px;
+}
+
+.ca-admin-media-picker__actions {
+    display: flex;
+    gap: var(--ca-space-2);
+    flex-wrap: wrap;
+}
+
+.ca-admin-media-picker__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: var(--ca-space-3);
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.ca-admin-media-picker__item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    background: none;
+    border: 1px solid var(--ca-border-color);
+    border-radius: var(--ca-radius-md);
+    padding: var(--ca-space-2);
+    cursor: pointer;
+    text-align: left;
+}
+
+.ca-admin-media-picker__item:hover {
+    border-color: var(--ca-color-green);
+}
+
+.ca-admin-media-picker__item img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: var(--ca-radius-sm);
+}
+
+.ca-admin-media-picker__item span {
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-xs);
+    color: var(--ca-text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 @media (prefers-reduced-motion: reduce) {
     .ca-admin-btn,
     .ca-admin-field__control {

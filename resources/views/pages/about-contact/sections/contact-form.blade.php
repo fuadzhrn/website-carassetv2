@@ -97,50 +97,59 @@
             </form>
         </div>
 
+        @php
+            $whatsapp = $siteSettings['contact.whatsapp'] ?? null;
+            $whatsappUrl = $siteWhatsappUrl ?? null;
+            $email = $siteSettings['contact.email'] ?? 'hello@carasset.id';
+            $address = $siteSettings['contact.address']
+                ?? "Gajah Mada Tower, Lt. 19-01, Jl. Gajah Mada No.19-26, RT.2/RW.1, Petojo Utara, Kecamatan Gambir, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10130";
+            $businessHours = $siteSettings['contact.business_hours'] ?? 'Senin–Jumat, 09.00–17.00';
+        @endphp
+
         <div class="ca-contact__rail">
             <div class="ca-contact__info-panel">
                 <h3 class="ca-contact__info-title ca-card-title">Informasi Kontak</h3>
 
                 <ul class="ca-contact__info-list ca-list-reset">
-                    <li class="ca-contact__info-item">
-                        <span class="ca-contact__info-icon" data-lucide="phone" aria-hidden="true"></span>
-                        <div>
-                            <span class="ca-contact__info-label">WhatsApp</span>
-                            <span class="ca-contact__info-value ca-contact__info-value--filled">+123-456-7890</span>
-                        </div>
-                    </li>
-                    <li class="ca-contact__info-item">
-                        <span class="ca-contact__info-icon" data-lucide="mail" aria-hidden="true"></span>
-                        <div>
-                            <span class="ca-contact__info-label">Email</span>
-                            <a href="mailto:hello@carasset.id" class="ca-contact__info-value ca-contact__info-value--filled">hello@carasset.id</a>
-                        </div>
-                    </li>
-                    <li class="ca-contact__info-item">
-                        <span class="ca-contact__info-icon" data-lucide="map-pin" aria-hidden="true"></span>
-                        <div>
-                            <span class="ca-contact__info-label">Head Office</span>
-                            <span class="ca-contact__info-value ca-contact__info-value--filled ca-contact__info-value--address">
-                                Gajah Mada Tower, Lt. 19-01<br>
-                                Jl. Gajah Mada No.19-26, RT.2/RW.1, Petojo Utara,
-                                Kecamatan Gambir, Kota Jakarta Pusat,
-                                Daerah Khusus Ibukota Jakarta 10130
-                            </span>
-                        </div>
-                    </li>
-                    <li class="ca-contact__info-item">
-                        <span class="ca-contact__info-icon" data-lucide="clock-3" aria-hidden="true"></span>
-                        <div>
-                            <span class="ca-contact__info-label">Jam Layanan</span>
-                            <span class="ca-contact__info-value ca-contact__info-value--filled">Senin–Jumat, 09.00–17.00</span>
-                        </div>
-                    </li>
+                    @if ($whatsappUrl)
+                        <li class="ca-contact__info-item">
+                            <span class="ca-contact__info-icon" data-lucide="phone" aria-hidden="true"></span>
+                            <div>
+                                <span class="ca-contact__info-label">WhatsApp</span>
+                                <a href="{{ $whatsappUrl }}" target="_blank" rel="noopener noreferrer" class="ca-contact__info-value ca-contact__info-value--filled">{{ $whatsapp }}</a>
+                            </div>
+                        </li>
+                    @endif
+                    @if ($email)
+                        <li class="ca-contact__info-item">
+                            <span class="ca-contact__info-icon" data-lucide="mail" aria-hidden="true"></span>
+                            <div>
+                                <span class="ca-contact__info-label">Email</span>
+                                <a href="mailto:{{ $email }}" class="ca-contact__info-value ca-contact__info-value--filled">{{ $email }}</a>
+                            </div>
+                        </li>
+                    @endif
+                    @if ($address)
+                        <li class="ca-contact__info-item">
+                            <span class="ca-contact__info-icon" data-lucide="map-pin" aria-hidden="true"></span>
+                            <div>
+                                <span class="ca-contact__info-label">Head Office</span>
+                                <span class="ca-contact__info-value ca-contact__info-value--filled ca-contact__info-value--address">
+                                    {{ $address }}
+                                </span>
+                            </div>
+                        </li>
+                    @endif
+                    @if ($businessHours)
+                        <li class="ca-contact__info-item">
+                            <span class="ca-contact__info-icon" data-lucide="clock-3" aria-hidden="true"></span>
+                            <div>
+                                <span class="ca-contact__info-label">Jam Layanan</span>
+                                <span class="ca-contact__info-value ca-contact__info-value--filled">{{ $businessHours }}</span>
+                            </div>
+                        </li>
+                    @endif
                 </ul>
-
-                {{-- Nomor WhatsApp masih format sementara — ganti setelah nomor resmi dikonfirmasi. Email belum tersedia. --}}
-                <p class="ca-contact__info-note ca-body-sm">
-                    Nomor WhatsApp bersifat sementara. Email akan diperbarui sebelum publikasi.
-                </p>
             </div>
 
             <div class="ca-contact-map">

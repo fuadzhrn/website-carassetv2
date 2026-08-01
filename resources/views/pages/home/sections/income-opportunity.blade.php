@@ -3,49 +3,49 @@
     <div class="ca-container ca-income__inner" data-reveal>
         <div class="ca-income__content">
             <x-section-heading
-                eyebrow="Mengapa Aset Produktif Penting"
-                title="Menambah Penghasilan Tidak Selalu Berarti Menambah Jam Kerja."
+                :eyebrow="$data['eyebrow']"
+                :title="$data['title']"
             />
 
-            <div class="ca-income__narrative">
-                <p class="ca-body">
-                    Biaya hidup terus bertumbuh, sementara mengandalkan satu sumber
-                    penghasilan dapat membuat kondisi finansial lebih rentan terhadap
-                    perubahan. Menambah penghasilan tidak selalu harus berarti menambah
-                    jam kerja.
-                </p>
-                <p class="ca-body">
-                    Aset yang dikelola secara tepat dapat membantu membangun sumber
-                    penghasilan tambahan secara bertahap. CarAsset menghadirkan kendaraan
-                    sebagai aset produktif yang dikelola secara profesional, sehingga
-                    mitra tidak perlu menjalankan operasionalnya sendiri.
-                </p>
-            </div>
+            @if ($data['narrative_paragraphs'])
+                <div class="ca-income__narrative">
+                    @foreach ($data['narrative_paragraphs'] as $paragraph)
+                        <p class="ca-body">{{ $paragraph }}</p>
+                    @endforeach
+                </div>
+            @endif
 
-            <div class="ca-income__panel">
-                <p class="ca-body">
-                    Kendaraan tidak hanya digunakan.<br>
-                    Kendaraan juga dapat dikelola menjadi aset produktif.
-                </p>
-            </div>
+            @if ($data['editorial_lines'])
+                <div class="ca-income__panel">
+                    <p class="ca-body">
+                        @foreach ($data['editorial_lines'] as $line)
+                            {{ $line }}@if (! $loop->last)<br>@endif
+                        @endforeach
+                    </p>
+                </div>
+            @endif
 
-            <a href="{{ route('business') }}" class="ca-income__cta ca-nav-text">
-                Kenali Bisnis CarAsset
-                <span class="ca-income__cta-icon" data-lucide="arrow-up-right" aria-hidden="true"></span>
-            </a>
+            @if ($data['cta'])
+                <a href="{{ $data['cta']['url'] }}" target="{{ $data['cta']['target'] }}" class="ca-income__cta ca-nav-text">
+                    {{ $data['cta']['label'] }}
+                    <span class="ca-income__cta-icon" data-lucide="arrow-up-right" aria-hidden="true"></span>
+                </a>
+            @endif
         </div>
 
         <div class="ca-income__visual">
             <span class="ca-income__bg-text" aria-hidden="true">ASET PRODUKTIF</span>
-            <img
-                src="{{ asset('assets/images/home/income-opportunity.webp') }}"
-                alt="Kendaraan listrik sedang mengisi daya sebagai ilustrasi kendaraan produktif"
-                width="1400"
-                height="933"
-                loading="lazy"
-                decoding="async"
-                class="ca-income__image"
-            >
+            @if ($data['image']['url'])
+                <img
+                    src="{{ $data['image']['url'] }}"
+                    alt="{{ $data['image']['alt'] }}"
+                    width="1400"
+                    height="933"
+                    loading="lazy"
+                    decoding="async"
+                    class="ca-income__image"
+                >
+            @endif
         </div>
     </div>
 </section>

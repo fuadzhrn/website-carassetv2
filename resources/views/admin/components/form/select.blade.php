@@ -7,16 +7,18 @@
     'required' => false,
     'disabled' => false,
     'helper' => null,
+    'errorKey' => null,
 ])
 
 @php
-    $id = $id ?? $name;
-    $errorMessage = $errors->first($name);
+    $errorKey = $errorKey ?? $name;
+    $id = $id ?? $errorKey;
+    $errorMessage = $errors->first($errorKey);
     $describedBy = collect([
-        $helper ? $name.'-helper' : null,
-        $errorMessage ? $name.'-error' : null,
+        $helper ? $errorKey.'-helper' : null,
+        $errorMessage ? $errorKey.'-error' : null,
     ])->filter()->implode(' ') ?: null;
-    $current = old($name, $selected);
+    $current = old($errorKey, $selected);
 @endphp
 
 <select

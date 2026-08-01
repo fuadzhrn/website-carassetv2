@@ -2,94 +2,107 @@
 <section id="operate" class="ca-operate">
     <div class="ca-container ca-operate__inner">
         <div class="ca-operate__content">
-            <span class="ca-operate__eyebrow ca-eyebrow">02 — OPERATE</span>
+            @if ($data['eyebrow'])
+                <span class="ca-operate__eyebrow ca-eyebrow">{{ $data['eyebrow'] }}</span>
+            @endif
 
             <h2 class="ca-operate__title ca-section-title">
-                Operasional Dikelola agar Aset Tetap Produktif.
+                {{ $data['title'] }}
             </h2>
 
             <p class="ca-operate__description ca-body">
-                CarAsset membantu mengelola berbagai kebutuhan operasional kendaraan,
-                mulai dari pengelolaan driver, pemantauan aktivitas, jadwal perawatan,
-                hingga penyusunan laporan operasional sesuai sistem dan ketentuan
-                program.
+                {{ $data['description'] }}
             </p>
 
-            <ul class="ca-operate__points ca-list-reset">
-                <li class="ca-operate__point">
-                    <span class="ca-operate__point-icon" data-lucide="user-check" aria-hidden="true"></span>
-                    <span class="ca-body-sm">Pengelolaan Driver</span>
-                </li>
-                <li class="ca-operate__point">
-                    <span class="ca-operate__point-icon" data-lucide="map" aria-hidden="true"></span>
-                    <span class="ca-body-sm">Monitoring Aktivitas Kendaraan</span>
-                </li>
-                <li class="ca-operate__point">
-                    <span class="ca-operate__point-icon" data-lucide="wrench" aria-hidden="true"></span>
-                    <span class="ca-body-sm">Perawatan Berkala</span>
-                </li>
-                <li class="ca-operate__point">
-                    <span class="ca-operate__point-icon" data-lucide="file-bar-chart" aria-hidden="true"></span>
-                    <span class="ca-body-sm">Laporan Operasional</span>
-                </li>
-            </ul>
+            @php
+                $operatePointIcons = [0 => 'user-check', 1 => 'map', 2 => 'wrench', 3 => 'file-bar-chart'];
+            @endphp
+            @if ($data['key_points'])
+                <ul class="ca-operate__points ca-list-reset">
+                    @foreach ($data['key_points'] as $slot => $point)
+                        <li class="ca-operate__point">
+                            <span class="ca-operate__point-icon" data-lucide="{{ $operatePointIcons[$slot] ?? 'user-check' }}" aria-hidden="true"></span>
+                            <span class="ca-body-sm">{{ $point['text'] }}</span>
+                        </li>
+                    @endforeach
+                </ul>
+            @endif
         </div>
 
+        @php $blocks = $data['monitoring_panel']['blocks']; @endphp
         <div class="ca-operate__dashboard" data-monitoring-dashboard>
             <div class="ca-operate__dashboard-header">
-                <span class="ca-operate__dashboard-title ca-card-title">CarAsset Fleet Overview</span>
-                <span class="ca-operate__dashboard-label ca-label">Ilustrasi Sistem Monitoring</span>
+                @if ($data['monitoring_panel']['panel_title'])
+                    <span class="ca-operate__dashboard-title ca-card-title">{{ $data['monitoring_panel']['panel_title'] }}</span>
+                @endif
+                <span class="ca-operate__dashboard-label ca-label">{{ $data['monitoring_panel']['illustration_label'] }}</span>
             </div>
 
             <div class="ca-operate__dashboard-grid">
-                <div class="ca-operate__tile ca-operate__tile--wide">
-                    <span class="ca-operate__tile-icon" data-lucide="car-front" aria-hidden="true"></span>
-                    <div class="ca-operate__tile-body">
-                        <span class="ca-operate__tile-label ca-label">Status Unit</span>
-                        <span class="ca-operate__tile-value ca-body-sm">Unit Contoh</span>
+                @if (isset($blocks['unit_status']))
+                    <div class="ca-operate__tile ca-operate__tile--wide">
+                        <span class="ca-operate__tile-icon" data-lucide="car-front" aria-hidden="true"></span>
+                        <div class="ca-operate__tile-body">
+                            <span class="ca-operate__tile-label ca-label">{{ $blocks['unit_status']['label'] }}</span>
+                            <span class="ca-operate__tile-value ca-body-sm">{{ $blocks['unit_status']['value'] }}</span>
+                        </div>
+                        @if ($blocks['unit_status']['helper'])
+                            <span class="ca-operate__tile-status ca-operate__tile-status--green" data-monitoring-status>
+                                {{ $blocks['unit_status']['helper'] }}
+                            </span>
+                        @endif
                     </div>
-                    <span class="ca-operate__tile-status ca-operate__tile-status--green" data-monitoring-status>
-                        Dalam Operasional
-                    </span>
-                </div>
+                @endif
 
-                <div class="ca-operate__tile">
-                    <span class="ca-operate__tile-icon" data-lucide="user-check" aria-hidden="true"></span>
-                    <div class="ca-operate__tile-body">
-                        <span class="ca-operate__tile-label ca-label">Profil Driver</span>
-                        <span class="ca-operate__tile-value ca-body-sm">Driver Terdaftar</span>
+                @if (isset($blocks['driver_profile']))
+                    <div class="ca-operate__tile">
+                        <span class="ca-operate__tile-icon" data-lucide="user-check" aria-hidden="true"></span>
+                        <div class="ca-operate__tile-body">
+                            <span class="ca-operate__tile-label ca-label">{{ $blocks['driver_profile']['label'] }}</span>
+                            <span class="ca-operate__tile-value ca-body-sm">{{ $blocks['driver_profile']['value'] }}</span>
+                        </div>
                     </div>
-                </div>
+                @endif
 
-                <div class="ca-operate__tile">
-                    <span class="ca-operate__tile-icon" data-lucide="map" aria-hidden="true"></span>
-                    <div class="ca-operate__tile-body">
-                        <span class="ca-operate__tile-label ca-label">Aktivitas Kendaraan</span>
-                        <span class="ca-operate__tile-value ca-body-sm">Ringkasan Aktivitas</span>
+                @if (isset($blocks['vehicle_activity']))
+                    <div class="ca-operate__tile">
+                        <span class="ca-operate__tile-icon" data-lucide="map" aria-hidden="true"></span>
+                        <div class="ca-operate__tile-body">
+                            <span class="ca-operate__tile-label ca-label">{{ $blocks['vehicle_activity']['label'] }}</span>
+                            <span class="ca-operate__tile-value ca-body-sm">{{ $blocks['vehicle_activity']['value'] }}</span>
+                        </div>
                     </div>
-                </div>
+                @endif
 
-                <div class="ca-operate__tile">
-                    <span class="ca-operate__tile-icon" data-lucide="wrench" aria-hidden="true"></span>
-                    <div class="ca-operate__tile-body">
-                        <span class="ca-operate__tile-label ca-label">Jadwal Perawatan</span>
-                        <span class="ca-operate__tile-value ca-body-sm">Jadwal Berikutnya</span>
+                @if (isset($blocks['maintenance_schedule']))
+                    <div class="ca-operate__tile">
+                        <span class="ca-operate__tile-icon" data-lucide="wrench" aria-hidden="true"></span>
+                        <div class="ca-operate__tile-body">
+                            <span class="ca-operate__tile-label ca-label">{{ $blocks['maintenance_schedule']['label'] }}</span>
+                            <span class="ca-operate__tile-value ca-body-sm">{{ $blocks['maintenance_schedule']['value'] }}</span>
+                        </div>
+                        @if ($blocks['maintenance_schedule']['helper'])
+                            <span class="ca-operate__tile-status ca-operate__tile-status--slate">
+                                {{ $blocks['maintenance_schedule']['helper'] }}
+                            </span>
+                        @endif
                     </div>
-                    <span class="ca-operate__tile-status ca-operate__tile-status--slate">
-                        Jadwal Perawatan
-                    </span>
-                </div>
+                @endif
 
-                <div class="ca-operate__tile">
-                    <span class="ca-operate__tile-icon" data-lucide="file-bar-chart" aria-hidden="true"></span>
-                    <div class="ca-operate__tile-body">
-                        <span class="ca-operate__tile-label ca-label">Laporan Operasional</span>
-                        <span class="ca-operate__tile-value ca-body-sm">Ringkasan Operasional</span>
+                @if (isset($blocks['operational_report']))
+                    <div class="ca-operate__tile">
+                        <span class="ca-operate__tile-icon" data-lucide="file-bar-chart" aria-hidden="true"></span>
+                        <div class="ca-operate__tile-body">
+                            <span class="ca-operate__tile-label ca-label">{{ $blocks['operational_report']['label'] }}</span>
+                            <span class="ca-operate__tile-value ca-body-sm">{{ $blocks['operational_report']['value'] }}</span>
+                        </div>
+                        @if ($blocks['operational_report']['helper'])
+                            <span class="ca-operate__tile-status ca-operate__tile-status--green">
+                                {{ $blocks['operational_report']['helper'] }}
+                            </span>
+                        @endif
                     </div>
-                    <span class="ca-operate__tile-status ca-operate__tile-status--green">
-                        Laporan Tersedia
-                    </span>
-                </div>
+                @endif
             </div>
 
             <p class="ca-operate__dashboard-note ca-disclaimer-text">

@@ -92,16 +92,6 @@ class PageWorkspaceController extends Controller
         ]);
     }
 
-    public function home(): View
-    {
-        return $this->workspace('home');
-    }
-
-    public function business(): View
-    {
-        return $this->workspace('business');
-    }
-
     public function partnership(): View
     {
         return $this->workspace('partnership');

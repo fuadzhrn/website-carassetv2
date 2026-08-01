@@ -9,16 +9,21 @@
     'disabled' => false,
     'readonly' => false,
     'helper' => null,
+    // Key dot-notation untuk old()/$errors saat $name memakai sintaks
+    // array HTML (mis. settings[brand][name]) yang tidak dikenali old()/
+    // $errors secara langsung. Default ke $name untuk field biasa.
+    'errorKey' => null,
 ])
 
 @php
-    $id = $id ?? $name;
-    $errorMessage = $errors->first($name);
+    $errorKey = $errorKey ?? $name;
+    $id = $id ?? $errorKey;
+    $errorMessage = $errors->first($errorKey);
     $describedBy = collect([
-        $helper ? $name.'-helper' : null,
-        $errorMessage ? $name.'-error' : null,
+        $helper ? $errorKey.'-helper' : null,
+        $errorMessage ? $errorKey.'-error' : null,
     ])->filter()->implode(' ') ?: null;
-    $resolvedValue = $type === 'password' ? null : old($name, $value);
+    $resolvedValue = $type === 'password' ? null : old($errorKey, $value);
 @endphp
 
 <input

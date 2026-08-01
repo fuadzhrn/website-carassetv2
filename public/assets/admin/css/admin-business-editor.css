@@ -1,0 +1,23 @@
+/* ==========================================================================
+   CarAsset Admin — Business Section Editor (admin-business-editor.css)
+   Shell/nav/panel/CTA/repeater generik dipakai ulang dari
+   admin-home-editor.css (PROMPT 17, dimuat bersama file ini). Di sini
+   hanya berisi penyesuaian khusus konten Bisnis (grup monitoring
+   bersarang, dsb.).
+   Prefix wajib: ca-admin-
+   ========================================================================== */
+
+/* Blok monitoring OPERATE dibungkus dua tingkat fieldset (panel > blok) —
+   beri sedikit jarak antar blok agar tidak menyatu secara visual. */
+.ca-admin-repeater-group .ca-admin-repeater-group--nested {
+    margin-bottom: var(--ca-space-4);
+}
+
+.ca-admin-repeater-group .ca-admin-repeater-group--nested:last-child {
+    margin-bottom: 0;
+}
+
+/* Catatan informasi non-teknis di atas grup monitoring. */
+.ca-admin-repeater-group > .ca-admin-field__helper:first-of-type {
+    margin: 0 0 var(--ca-space-4);
+}

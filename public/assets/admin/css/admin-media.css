@@ -1,0 +1,296 @@
+/* ==========================================================================
+   CarAsset Admin — Media Library (admin-media.css)
+   Toolbar, search, grid, thumbnail, upload/edit form, usage list, delete.
+   Prefix wajib: ca-admin-
+   ========================================================================== */
+
+.ca-admin-media-toolbar {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--ca-space-4);
+}
+
+.ca-admin-media-search {
+    display: flex;
+    align-items: center;
+    gap: var(--ca-space-3);
+    max-width: 480px;
+}
+
+.ca-admin-media-search .ca-admin-field__control {
+    flex: 1;
+}
+
+/* -------------------------------------------------------------------------
+   GRID / CARD
+   ------------------------------------------------------------------------- */
+.ca-admin-media-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: var(--ca-space-5);
+}
+
+.ca-admin-media-card {
+    background-color: var(--ca-color-white);
+    border: 1px solid var(--ca-border-color);
+    border-radius: var(--ca-radius-lg);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.ca-admin-media-card__preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 4 / 3;
+    background-color: var(--ca-color-extra-light-gray);
+    overflow: hidden;
+}
+
+.ca-admin-media-card__preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.ca-admin-media-card__missing {
+    display: inline-flex;
+    width: 32px;
+    height: 32px;
+    color: var(--ca-color-slate);
+}
+
+.ca-admin-media-card__body {
+    padding: var(--ca-space-4);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.ca-admin-media-card__name {
+    font-family: var(--ca-font-ui);
+    font-weight: 600;
+    font-size: var(--ca-text-sm);
+    color: var(--ca-color-charcoal);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ca-admin-media-card__meta {
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-xs);
+    color: var(--ca-text-secondary);
+    margin: 0;
+}
+
+.ca-admin-media-card__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: var(--ca-space-2);
+}
+
+/* -------------------------------------------------------------------------
+   PAGINATION
+   ------------------------------------------------------------------------- */
+.ca-admin-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--ca-space-4);
+}
+
+.ca-admin-pagination__link {
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-sm);
+    font-weight: 500;
+    color: var(--ca-color-navy);
+    text-decoration: none;
+    padding: 8px 14px;
+    border: 1px solid var(--ca-border-color);
+    border-radius: var(--ca-radius-md);
+}
+
+.ca-admin-pagination__link:hover {
+    background-color: var(--ca-bg-navy-soft);
+}
+
+.ca-admin-pagination__link.is-disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.ca-admin-pagination__info {
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-sm);
+    color: var(--ca-text-secondary);
+}
+
+/* -------------------------------------------------------------------------
+   UPLOAD / EDIT FORM
+   ------------------------------------------------------------------------- */
+.ca-admin-media-form-card {
+    background-color: var(--ca-color-white);
+    border: 1px solid var(--ca-border-color);
+    border-radius: var(--ca-radius-lg);
+    padding: var(--ca-space-6);
+    max-width: 640px;
+}
+
+.ca-admin-media-form-card--danger {
+    border-color: rgba(220, 38, 38, 0.25);
+}
+
+.ca-admin-media-form-info {
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-sm);
+    color: var(--ca-text-secondary);
+    margin: 0 0 var(--ca-space-5);
+}
+
+.ca-admin-media-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.ca-admin-media-form__actions {
+    display: flex;
+    gap: var(--ca-space-3);
+    margin-top: var(--ca-space-2);
+}
+
+.ca-admin-media-preview {
+    margin: 0 0 var(--ca-space-5);
+    border-radius: var(--ca-radius-md);
+    overflow: hidden;
+    border: 1px solid var(--ca-border-color);
+    max-width: 320px;
+}
+
+.ca-admin-media-preview img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.ca-admin-media-usage-warning {
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-sm);
+    color: var(--ca-color-error);
+    background-color: rgba(220, 38, 38, 0.08);
+    padding: 12px 14px;
+    border-radius: var(--ca-radius-sm);
+    margin: 0 0 var(--ca-space-4);
+}
+
+/* -------------------------------------------------------------------------
+   EDIT LAYOUT
+   ------------------------------------------------------------------------- */
+.ca-admin-media-edit {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-6);
+}
+
+.ca-admin-media-detail {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: var(--ca-space-6);
+    background-color: var(--ca-color-white);
+    border: 1px solid var(--ca-border-color);
+    border-radius: var(--ca-radius-lg);
+    padding: var(--ca-space-6);
+}
+
+.ca-admin-media-detail__preview {
+    border-radius: var(--ca-radius-md);
+    overflow: hidden;
+    background-color: var(--ca-color-extra-light-gray);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 240px;
+}
+
+.ca-admin-media-detail__preview img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.ca-admin-media-detail__missing {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--ca-space-2);
+    color: var(--ca-color-slate);
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-sm);
+    padding: var(--ca-space-8);
+}
+
+.ca-admin-media-meta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-3);
+    margin: 0;
+}
+
+.ca-admin-media-meta > div {
+    display: flex;
+    align-items: baseline;
+    gap: var(--ca-space-3);
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-sm);
+}
+
+.ca-admin-media-meta dt {
+    width: 140px;
+    flex-shrink: 0;
+    font-family: var(--ca-font-ui);
+    font-weight: 600;
+    color: var(--ca-color-charcoal);
+}
+
+.ca-admin-media-meta dd {
+    margin: 0;
+    color: var(--ca-text-secondary);
+    word-break: break-all;
+}
+
+.ca-admin-media-usage-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-2);
+}
+
+.ca-admin-media-usage-list__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ca-space-3);
+    padding: 10px 14px;
+    background-color: var(--ca-color-extra-light-gray);
+    border-radius: var(--ca-radius-sm);
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-sm);
+}
+
+.ca-admin-media-usage-list__label {
+    color: var(--ca-color-charcoal);
+    font-weight: 500;
+}
+
+@media (max-width: 1180px) {
+    .ca-admin-media-detail {
+        grid-template-columns: 1fr;
+    }
+}

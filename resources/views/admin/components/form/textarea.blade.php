@@ -9,14 +9,16 @@
     'disabled' => false,
     'readonly' => false,
     'helper' => null,
+    'errorKey' => null,
 ])
 
 @php
-    $id = $id ?? $name;
-    $errorMessage = $errors->first($name);
+    $errorKey = $errorKey ?? $name;
+    $id = $id ?? $errorKey;
+    $errorMessage = $errors->first($errorKey);
     $describedBy = collect([
-        $helper ? $name.'-helper' : null,
-        $errorMessage ? $name.'-error' : null,
+        $helper ? $errorKey.'-helper' : null,
+        $errorMessage ? $errorKey.'-error' : null,
     ])->filter()->implode(' ') ?: null;
 @endphp
 
@@ -32,4 +34,4 @@
     @if ($errorMessage) aria-invalid="true" @endif
     @if ($describedBy) aria-describedby="{{ $describedBy }}" @endif
     {{ $attributes->merge(['class' => 'ca-admin-field__control ca-admin-field__control--textarea']) }}
->{{ old($name, $value) }}</textarea>
+>{{ old($errorKey, $value) }}</textarea>
