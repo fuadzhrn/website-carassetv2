@@ -1,0 +1,245 @@
+/* ==========================================================================
+   CarAsset Admin — Minimal Layout (admin-minimal.css)
+   Dipakai untuk halaman admin sementara sebelum sidebar final (PROMPT 14).
+   Prefix wajib: ca-admin-
+   ========================================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+.ca-admin-minimal-body {
+    font-family: var(--ca-font-body);
+    background-color: var(--ca-color-extra-light-gray);
+    color: var(--ca-color-charcoal);
+    min-height: 100vh;
+}
+
+.ca-admin-minimal {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* -------------------------------------------------------------------------
+   TOPBAR
+   ------------------------------------------------------------------------- */
+.ca-admin-minimal__topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ca-space-4);
+    height: 72px;
+    padding: 0 var(--ca-space-8);
+    background-color: var(--ca-color-white);
+    border-bottom: 1px solid var(--ca-border-color);
+}
+
+.ca-admin-minimal__brand {
+    display: flex;
+    align-items: center;
+    gap: var(--ca-space-3);
+}
+
+.ca-admin-minimal__brand-logo {
+    height: 30px;
+    width: auto;
+}
+
+.ca-admin-minimal__brand-fallback {
+    font-family: var(--ca-font-heading);
+    font-weight: 700;
+    font-size: var(--ca-text-lg);
+    color: var(--ca-color-navy);
+}
+
+.ca-admin-minimal__brand-suffix {
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-sm);
+    font-weight: 500;
+    color: var(--ca-color-slate);
+    padding-left: var(--ca-space-3);
+    border-left: 1px solid var(--ca-border-color);
+}
+
+.ca-admin-minimal__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ca-space-2);
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-xs);
+    font-weight: 600;
+    color: #0f5b30;
+    background-color: var(--ca-bg-green-soft);
+    padding: 8px 14px;
+    border-radius: var(--ca-radius-pill);
+}
+
+.ca-admin-minimal__badge svg {
+    width: 14px;
+    height: 14px;
+}
+
+/* -------------------------------------------------------------------------
+   MAIN / FLASH
+   ------------------------------------------------------------------------- */
+.ca-admin-minimal__main {
+    flex: 1;
+    padding: var(--ca-space-12) var(--ca-space-8);
+}
+
+.ca-admin-minimal__flash {
+    max-width: 720px;
+    margin: 0 auto var(--ca-space-6);
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-sm);
+    color: #0f5b30;
+    background-color: var(--ca-bg-green-soft);
+    padding: 12px 16px;
+    border-radius: var(--ca-radius-sm);
+}
+
+/* -------------------------------------------------------------------------
+   PLACEHOLDER DASHBOARD
+   ------------------------------------------------------------------------- */
+.ca-admin-placeholder {
+    max-width: 720px;
+    margin: 0 auto;
+    background-color: var(--ca-color-white);
+    border: 1px solid var(--ca-border-color);
+    border-radius: var(--ca-radius-lg);
+    box-shadow: var(--ca-shadow-sm);
+    padding: var(--ca-space-10);
+}
+
+.ca-admin-placeholder__badge {
+    display: inline-block;
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-xs);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ca-color-gold);
+    background-color: var(--ca-bg-gold-soft);
+    padding: 6px 14px;
+    border-radius: var(--ca-radius-pill);
+    margin-bottom: var(--ca-space-4);
+}
+
+.ca-admin-placeholder__title {
+    font-family: var(--ca-font-heading);
+    font-weight: 600;
+    font-size: var(--ca-text-3xl);
+    color: var(--ca-color-navy);
+    margin: 0 0 var(--ca-space-3);
+}
+
+.ca-admin-placeholder__text {
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-base);
+    line-height: var(--ca-leading-relaxed);
+    color: var(--ca-text-secondary);
+    margin: 0 0 var(--ca-space-8);
+    max-width: 60ch;
+}
+
+.ca-admin-placeholder__info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-3);
+    margin: 0 0 var(--ca-space-8);
+    padding: var(--ca-space-5);
+    background-color: var(--ca-color-extra-light-gray);
+    border-radius: var(--ca-radius-md);
+}
+
+.ca-admin-placeholder__info-row {
+    display: flex;
+    align-items: baseline;
+    gap: var(--ca-space-3);
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-sm);
+}
+
+.ca-admin-placeholder__info-row dt {
+    width: 140px;
+    flex-shrink: 0;
+    font-family: var(--ca-font-ui);
+    font-weight: 600;
+    color: var(--ca-color-charcoal);
+}
+
+.ca-admin-placeholder__info-row dd {
+    margin: 0;
+    color: var(--ca-text-secondary);
+}
+
+.ca-admin-placeholder__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--ca-space-3);
+    flex-wrap: wrap;
+}
+
+/* -------------------------------------------------------------------------
+   BUTTONS (dipakai lintas halaman minimal layout)
+   ------------------------------------------------------------------------- */
+.ca-admin-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-sm);
+    font-weight: 600;
+    padding: 12px 20px;
+    border-radius: var(--ca-radius-md);
+    border: 1px solid transparent;
+    cursor: pointer;
+    text-decoration: none;
+    transition: filter var(--ca-transition-fast), background-color var(--ca-transition-fast), border-color var(--ca-transition-fast);
+}
+
+.ca-admin-btn--primary {
+    background-color: var(--ca-color-green);
+    color: var(--ca-color-white);
+}
+
+.ca-admin-btn--primary:hover {
+    filter: brightness(0.94);
+}
+
+.ca-admin-btn--ghost {
+    background-color: var(--ca-color-white);
+    color: var(--ca-color-navy);
+    border-color: var(--ca-border-color);
+}
+
+.ca-admin-btn--ghost:hover {
+    background-color: var(--ca-bg-navy-soft);
+}
+
+.ca-admin-btn--danger {
+    background-color: var(--ca-color-white);
+    color: var(--ca-color-error);
+    border-color: rgba(220, 38, 38, 0.3);
+}
+
+.ca-admin-btn--danger:hover {
+    background-color: rgba(220, 38, 38, 0.06);
+}
+
+.ca-admin-btn:focus-visible {
+    outline: none;
+    box-shadow: var(--ca-shadow-focus);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ca-admin-btn {
+        transition: none;
+    }
+}

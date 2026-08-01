@@ -1,0 +1,2300 @@
+======================================================================
+PROJECT AUDIT — BACKEND & CUSTOM STRUCTURED CMS CARASSET (PROMPT 12)
+Tanggal audit: 2026-07-31
+======================================================================
+
+CATATAN FORMAT:
+Inventaris field (Tugas 8) disajikan sebagai TABEL per section, bukan
+blok per-field, karena jumlah field lintas 25 section sangat banyak.
+Setiap kolom tabel tetap memuat seluruh atribut yang diminta: FIELD,
+TIPE DATA, WAJIB/OPSIONAL, DINAMIS/TERKUNCI, BATAS PANJANG,
+DEFAULT/FALLBACK, VALIDASI, CATATAN. Tidak ada perubahan file front-end,
+route, controller, model, migration, atau database yang dilakukan pada
+tahap ini — dokumen ini murni hasil audit dan rencana.
+
+======================================================================
+1. INFORMASI PROYEK
+======================================================================
+
+Brand           : CarAsset — Mobil Bekerja. Aset Bertumbuh.
+Jenis proyek    : Company profile + kemitraan kendaraan produktif
+Tahap sekarang  : Front-end publik (5 halaman) SELESAI. Backend/CMS
+                  BELUM ada sama sekali.
+Fokus perangkat : Desktop/laptop (1024–1920px). Mobile belum dikerjakan.
+
+======================================================================
+2. VERSI TEKNOLOGI
+======================================================================
+
+ITEM                  | VERSI/STATUS        | CATATAN
+----------------------|----------------------|----------------------------
+Laravel               | 13.23.0              | php artisan --version
+PHP (CLI)             | 8.3.16 (ZTS, Win64)  | php -v
+Composer              | 2.8.11               | composer --version
+Database driver       | sqlite               | database/database.sqlite (~127KB)
+APP_ENV               | local                | belum production
+APP_DEBUG             | true                 | WAJIB false sebelum production
+APP_KEY               | tersedia (base64:...)| tidak ditampilkan (rahasia)
+APP_URL               | http://localhost     | perlu update saat deploy
+SESSION_DRIVER        | database             | tabel `sessions` sudah ada
+CACHE_STORE           | database             | tabel `cache`, `cache_locks` ada
+QUEUE_CONNECTION      | database             | tabel `jobs`, `job_batches` ada
+MAIL_MAILER           | log                  | belum ada SMTP — email admin non-aktif
+FILESYSTEM_DISK       | local                | disk `public` terkonfigurasi, belum di-link
+Vite                  | terpasang, TIDAK dipakai | tidak ada public/build, node_modules absen
+Tailwind/Bootstrap    | TIDAK terpasang di alur kerja | Tailwind bawaan starter kit tidak dipakai (lihat PROJECT-AUDIT-CARASSET.txt)
+GD extension          | aktif                | dipakai sepanjang proyek untuk proses gambar
+Imagick                | tidak aktif           | GD sudah cukup untuk kebutuhan saat ini
+Node/npm dependency    | tidak terpasang       | tidak relevan untuk backend CMS
+
+Perintah yang dijalankan (aman, read-only):
+php -v · composer --version · php artisan --version · php artisan about ·
+php artisan route:list · php artisan migrate:status · php artisan tinker
+(hanya query count/listing, tanpa insert/update/delete).
+
+Tidak ada error saat menjalankan Artisan. Tidak ada instalasi package baru.
+Tidak ada migrate:fresh/reset/rollback/db:wipe yang dijalankan.
+
+======================================================================
+3. KONDISI ROUTE PUBLIK
+======================================================================
+
+METHOD   | URI                     | NAME           | ACTION                              | MIDDLEWARE
+---------|-------------------------|----------------|--------------------------------------|------------
+GET|HEAD | /                       | home           | Website\PageController@home          | web
+GET|HEAD | bisnis-carasset         | business       | Website\PageController@business      | web
+GET|HEAD | program-kemitraan       | partnership    | Website\PageController@partnership   | web
+GET|HEAD | simulasi-perlindungan   | simulation     | Website\PageController@simulation    | web
+GET|HEAD | tentang-kontak          | about-contact  | Website\PageController@aboutContact  | web
+GET|HEAD | storage/{path}          | storage.local  | Filesystem\FilesystemServiceProvider | web (bawaan framework)
+PUT      | storage/{path}          | storage.local.upload | Filesystem\FilesystemServiceProvider | web (bawaan framework)
+GET|HEAD | up                      | -              | Health check bawaan Laravel          | -
+
+Kesesuaian dengan yang diharapkan PROMPT 12: SESUAI PERSIS — 5 URL dan
+5 nama route sama dengan yang diminta (home, business, partnership,
+simulation, about-contact). Tidak ada perubahan diperlukan.
+
+Hanya ada 2 file route: routes/web.php (5 route publik) dan
+routes/console.php (bawaan, 1 command "inspire"). Tidak ada routes/api.php,
+routes/auth.php, atau file route admin apa pun.
+
+Tidak ada middleware eksplisit pada route publik (hanya grup "web" bawaan
+dari bootstrap/app.php). Tidak ada route cache aktif (route:list dijalankan
+langsung dari file, bukan dari cache).
+
+======================================================================
+4. KONDISI ROUTE ADMIN YANG SUDAH ADA
+======================================================================
+
+TIDAK ADA. Prefix /admin sama sekali belum terdaftar di mana pun.
+Tidak ada route login, tidak ada route wildcard/fallback yang berpotensi
+menangkap /admin/*, tidak ada route resource, tidak ada route API.
+
+Keamanan rencana route admin (dievaluasi, BELUM dibuat):
+- /admin/login          → AMAN dibuat, tidak bentrok apa pun.
+- /admin                → AMAN, belum ada apa pun di path ini.
+- /admin/pages/*         → AMAN.
+- /admin/media          → AMAN.
+- /admin/settings        → AMAN.
+- /admin/messages        → AMAN.
+Kesimpulan: proyek dalam kondisi paling bersih yang mungkin untuk mulai
+menambahkan struktur route admin — tidak ada risiko konflik penamaan.
+
+======================================================================
+5. KONDISI CONTROLLER
+======================================================================
+
+Seluruh isi app/Http/Controllers/:
+- Controller.php (kelas dasar abstrak, kosong — jangan dihapus, jadi
+  parent class seluruh controller termasuk controller admin nanti).
+- Website/PageController.php (5 method: home, business, partnership,
+  simulation, aboutContact). Setiap method HANYA `return view(...)`,
+  tidak ada query, tidak ada dependency injection, tidak ada logic bisnis.
+
+Tidak ditemukan:
+- Controller lama/tidak terpakai.
+- Query langsung di controller.
+- Service, Repository, Helper custom, View Composer, atau Middleware
+  custom (folder app/Http/Middleware bahkan belum ada).
+
+Kesimpulan:
+- Controller yang dipakai 5 halaman publik: Website\PageController (utuh,
+  aman dipertahankan, TIDAK BOLEH dihapus).
+- Tidak ada yang perlu direfaktor pada tahap ini — controller sudah
+  sangat minimal (thin controller), justru ideal sebagai titik masuk
+  ContentService nanti.
+- ContentService DAPAT ditambahkan tanpa konflik sama sekali (tidak ada
+  nama kelas/namespace yang bentrok).
+- Controller publik PERLU diperbarui BERTAHAP (satu halaman per satu
+  waktu, sesuai urutan resmi PROMPT 12 tahap 6–10) — pola perubahannya:
+  setiap method PageController akan memanggil ContentService untuk
+  mengambil data page+section published, lalu mengirim ke view yang
+  SAMA PERSIS (nama & lokasi view tidak berubah). Contoh konsep (bukan
+  implementasi sekarang):
+      public function home(ContentService $content)
+      {
+          return view('pages.home.index', [
+              'sections' => $content->sectionsFor('home'),
+          ]);
+      }
+
+======================================================================
+6. KONDISI MODEL DAN MIGRATION
+======================================================================
+
+Model Eloquent yang ada: HANYA app/Models/User.php (bawaan Laravel 13,
+memakai atribut #[Fillable]/#[Hidden] gaya baru, cast email_verified_at
+& password, trait HasFactory + Notifiable). Tidak ada kolom `role` atau
+`is_active` — perlu ditambahkan lewat migration baru nanti (bukan sekarang).
+
+Migration yang sudah RAN (migrate:status):
+1) 0001_01_01_000000_create_users_table — users, password_reset_tokens,
+   sessions
+2) 0001_01_01_000001_create_cache_table — cache, cache_locks
+3) 0001_01_01_000002_create_jobs_table — jobs, job_batches, failed_jobs
+   (catatan: failed_jobs dibuat migration ini meski tidak selalu
+   tercantum eksplisit di listing tabel)
+
+Seeder: hanya DatabaseSeeder.php bawaan (membuat 1 user contoh) — TIDAK
+PERNAH DIJALANKAN (users: 0 baris, diverifikasi via tinker read-only).
+Factory: hanya UserFactory.php bawaan.
+
+Tabel aktual di database (Schema::getTableListing()): cache, cache_locks,
+failed_jobs, job_batches, jobs, migrations, password_reset_tokens,
+sessions, users. TIDAK ADA data produksi/penting — database masih 100%
+kosong dari sisi data (0 user, 0 baris konten apa pun). Aman untuk mulai
+menambahkan migration CMS.
+
+Kesiapan nama tabel yang direncanakan:
+
+TABEL                | STATUS      | REKOMENDASI
+----------------------|-------------|---------------------------------
+users                 | SUDAH ADA (bawaan) | Gunakan tabel ini apa adanya,
+                      |             | tambahkan kolom `role`,
+                      |             | `is_active` lewat migration baru
+                      |             | (add-column), jangan buat ulang.
+pages                 | AMAN        | Boleh dipakai langsung.
+page_sections         | AMAN        | Boleh dipakai langsung.
+media                 | AMAN        | Boleh dipakai langsung.
+site_settings         | AMAN        | Boleh dipakai langsung.
+content_revisions     | AMAN        | Boleh dipakai langsung.
+contact_messages      | AMAN        | Boleh dipakai langsung.
+activity_logs         | AMAN        | Boleh dipakai langsung.
+
+Tidak ada satu pun nama di atas yang bentrok — tidak perlu nama alternatif.
+
+Engine/charset: SQLite (dev). SQLite mendukung kolom JSON sebagai TEXT
+dengan fungsi JSON1 (Laravel `casts => ['content' => 'array']` bekerja
+normal). Foreign key constraints AKTIF (`DB_FOREIGN_KEYS` default true di
+config/database.php) — relasi FK akan benar-benar ditegakkan di SQLite.
+Untuk production, perlu dikonfirmasi apakah hosting final memakai MySQL/
+MariaDB/PostgreSQL — jika ya, tipe JSON native tersedia di ketiganya
+(MySQL 5.7+/MariaDB 10.2+/PostgreSQL semua mendukung JSON), sehingga
+struktur yang direncanakan tetap portable.
+
+Soft delete & UUID: belum dipakai di mana pun (bawaan Laravel pakai
+auto-increment `id`). Rencana: gunakan auto-increment untuk seluruh
+tabel CMS (konsisten, sederhana); pertimbangkan `SoftDeletes` khusus pada
+`media` dan `contact_messages` (lihat Tugas 11).
+
+======================================================================
+7. KONDISI AUTHENTICATION
+======================================================================
+
+Tidak terpasang: Laravel Breeze, Jetstream, Fortify, Laravel UI, Sanctum,
+Passport, atau package role/permission (Spatie dsb.) — diverifikasi lewat
+composer.json (hanya laravel/framework + laravel/tinker sebagai dependency
+inti). Tidak ada middleware `auth`/`guest` custom terdaftar (folder
+app/Http/Middleware belum ada), namun ALIAS bawaan Laravel 13
+('auth', 'guest', 'throttle', dll.) tetap tersedia otomatis dari framework
+tanpa perlu didaftarkan manual di bootstrap/app.php.
+
+Jawaban poin audit:
+1. Login sudah tersedia?               TIDAK.
+2. Login publik dipertahankan/dihapus? Tidak ada login publik sama sekali
+                                        saat ini — tidak relevan.
+3. Bisa dipakai khusus admin?          Ya, guard `web` bawaan bisa dipakai
+                                        untuk admin (satu tabel users,
+                                        dibedakan lewat kolom `role`).
+4. Route login lama berpotensi konflik? TIDAK ADA route login lama.
+5. Guard default cukup?                Ya untuk fase pertama (1 role admin).
+6. Perlu guard admin terpisah?         TIDAK perlu di fase pertama —
+                                        cukup middleware `admin` di atas
+                                        guard `web` bawaan, kolom `role`
+                                        pada tabel users sudah memadai.
+7. Satu tabel users cukup?             Ya, dengan tambahan kolom
+                                        `role` (string/enum) dan
+                                        `is_active` (boolean).
+8. Kolom role & is_active diperlukan?  Ya, keduanya direkomendasikan.
+9. Middleware admin diperlukan?        Ya (mis. `EnsureUserIsAdmin`).
+10. Rate limiter login sudah ada?      Belum — perlu ditambahkan
+                                        (Laravel menyediakan
+                                        `RateLimiter`/`throttle` bawaan,
+                                        tinggal dikonfigurasi).
+11. Session driver aman?               `database` — aman, tabel `sessions`
+                                        sudah tersedia dan sedang dipakai.
+12. Password hashing sesuai Laravel?   Ya, `User::casts()` sudah
+                                        mendeklarasikan `'password' =>
+                                        'hashed'` (Laravel otomatis hash
+                                        saat assignment).
+13. Reset password dibutuhkan fase awal? TIDAK wajib fase pertama (jumlah
+                                        admin diperkirakan sangat sedikit;
+                                        bisa direset manual lewat tinker/
+                                        seeder bila perlu). Tabel
+                                        `password_reset_tokens` sudah
+                                        tersedia bila ingin diaktifkan
+                                        belakangan.
+
+Rekomendasi awal (dinilai dari audit): SEMUA rekomendasi di prompt SESUAI
+dan LAYAK diikuti — satu tabel users, guard web, middleware auth + admin,
+satu role admin di fase pertama, login hanya lewat /admin/login (tidak
+ditautkan dari halaman publik mana pun).
+
+======================================================================
+8. KONDISI STORAGE DAN UPLOAD
+======================================================================
+
+- Disk `public` di config/filesystems.php sudah terkonfigurasi benar
+  (root: storage/app/public, url: {APP_URL}/storage, visibility public).
+- storage/app/public: ADA, masih kosong.
+- public/storage (symlink): BELUM ADA ("NOT LINKED" — dikonfirmasi lewat
+  `php artisan about`). Perlu `php artisan storage:link` SEBELUM fitur
+  upload admin dibangun (bukan sekarang).
+- Permission storage/app & bootstrap/cache: dapat ditulis (seluruh
+  perintah Artisan selama proyek berjalan lancar tanpa error permission).
+- Tidak ada folder upload lama.
+- GD tersedia untuk manipulasi gambar (resize/convert WebP) — sudah
+  dipakai berulang kali sepanjang proyek front-end untuk memproses aset
+  dari Unsplash.
+- upload_max_filesize & post_max_size: 2G (default dev, sangat longgar —
+  perlu ditinjau ulang/dibatasi eksplisit di validasi Form Request nanti,
+  jangan mengandalkan php.ini saja).
+- Tidak ada dukungan WebP eksplisit dicek di server (GD di lingkungan ini
+  terbukti mendukung `imagewebp()`, dipakai berkali-kali selama proyek).
+
+Prinsip pemisahan yang DIKONFIRMASI AMAN dan tanpa konflik:
+- public/assets → tetap untuk CSS/JS/ikon statis/aset desain bawaan
+  (TIDAK BOLEH dicampur dengan upload admin).
+- storage/app/public/media → lokasi upload admin (folder belum dibuat,
+  akan dibuat otomatis saat fitur upload berjalan).
+- public/storage/media → akses publik via symlink (belum dibuat).
+
+Tidak ada gambar yang dipindahkan. Tidak ada symlink yang dibuat pada
+tahap audit ini (sesuai batasan).
+
+======================================================================
+9. KONDISI FRONT-END PUBLIK
+======================================================================
+
+Struktur resources/views/ SESUAI rencana:
+layouts/app.blade.php · partials/{seo-meta,header,desktop-navigation,
+footer,whatsapp-button}.blade.php · components/{button,section-heading,
+icon-box,form-field,faq-item,stat-item}.blade.php · pages/{home,business,
+partnership,simulation,about-contact}/{index.blade.php,sections/*.blade.php}
+
+Seluruh 25 file section DITEMUKAN dan UTUH (lihat daftar Bagian 11).
+index.blade.php tiap halaman HANYA berisi @extends, title/meta/body-class,
+@push('styles'/'scripts'), dan lima @include — TIDAK ADA markup section
+langsung di index manapun (memenuhi prasyarat integrasi CMS bertahap).
+
+Catatan penting yang memengaruhi rencana CMS:
+- Halaman Simulasi memakai SATU SUMBER DATA terpisah:
+  public/assets/js/pages/simulation/simulation-config.js
+  (window.CarAssetSimulationConfig) + simulation-render.js membaca
+  data-simulation-field dari DOM. ARSITEKTUR INI HARUS DIPERTAHANKAN
+  KONSEPNYA saat migrasi ke database — lihat Bagian 27 (Strategi Simulasi).
+- Section "Bisnis / Opportunity" baru saja direvisi klien menjadi
+  full-width image hero (bukan lagi split panel) — field CMS mengikuti
+  struktur TERBARU (lihat tabel Bagian 12).
+- Kontak (footer, about-contact/contact-form, legal-partners) SUDAH
+  memuat sebagian data nyata dari klien (WhatsApp sementara
+  +123-456-7890, email hello@carasset.id, alamat Gajah Mada Tower, jam
+  layanan Senin–Jumat 09.00–17.00, embed Google Maps aktif). Field-field
+  ini SEBAIKNYA disimpan sebagai SITE_SETTINGS (global, satu sumber),
+  BUKAN diduplikasi per section, karena dipakai di ≥2 tempat (footer +
+  halaman kontak).
+- Logo brand (logo-horizontal.png, logo-on-dark.png) SUDAH ADA di
+  public/assets/images/brand/ (dipilih via `file_exists()` di Blade).
+  Untuk CMS, path ini idealnya tetap sebagai fallback statis; Media
+  Library boleh menimpa referensi logo lewat site_settings nanti tanpa
+  mengubah mekanisme fallback.
+
+======================================================================
+10. DAFTAR 25 SECTION YANG DITEMUKAN
+======================================================================
+
+HOME: hero · income-opportunity · process-summary · partnership-choice ·
+consultation-cta
+
+BISNIS CARASSET: opportunity (REVISI: full-width hero) · own · operate ·
+grow · business-flow
+
+PROGRAM KEMITRAAN: program-selector · owner-program · driver-program ·
+packages-benefits · terms
+
+SIMULASI & PERLINDUNGAN: assumptions · one-unit · multiple-units ·
+protection-monitoring · disclaimer
+
+TENTANG & KONTAK: about · vision-mission-values · legal-partners · faq ·
+contact-form
+
+Total: 25 section, seluruhnya file Blade terpisah, seluruhnya memakai
+CSS terpisah per section, JavaScript hanya ada pada section yang benar-
+benar butuh interaksi (accordion, tab monitoring, reveal, validasi form).
+
+======================================================================
+11. KONTEN STATIS YANG AKAN DIJADIKAN DINAMIS (RINGKASAN)
+======================================================================
+
+Hampir seluruh teks (eyebrow/title/description/label), gambar+alt,
+CTA (label+tujuan), dan item repeater (benefit/timeline/FAQ/paket/
+milestone/callout/nilai/legalitas/partner) pada 25 section akan menjadi
+dinamis melalui page_sections.content (JSON) + tabel khusus untuk data
+berulang yang butuh pengelolaan tersendiri (FAQ, partner, paket,
+pengaturan simulasi). Rincian lengkap per section ada di Bagian 12.
+
+======================================================================
+12. KONTEN YANG TETAP DIKUNCI (TIDAK BOLEH DIUBAH ADMIN)
+======================================================================
+
+- Jumlah halaman (5), URL utama, nama route (home/business/partnership/
+  simulation/about-contact).
+- Jumlah section per halaman (5) dan urutan dasarnya.
+- Layout Blade, struktur HTML/section markup, class CSS (prefix `ca-`),
+  file CSS/JS, font (League Spartan/Poppins/DM Sans), 9 warna brand,
+  komponen visual (button/section-heading/icon-box/form-field), struktur
+  header & footer.
+- Jumlah item pada repeater yang desainnya memang dirancang untuk jumlah
+  tetap: proses Own-Operate-Grow (3), value constellation (4, urutan
+  TRUST→GROWTH→PRODUCTIVE→PARTNERSHIP terkunci), alur bisnis (5 tahap),
+  checkpoint persyaratan (4, urutan Dokumen→Verifikasi→Pembayaran→
+  Operasional terkunci), paket kemitraan (3: 1/5/10 unit — jumlah &
+  urutan unit terkunci, isi/label/benefit tetap dinamis), lapisan
+  perlindungan (6 titik orbit), node cash-flow 1 unit (6, urutan
+  terkunci), status bar Home (3), roles panel OWN/Owner (2 sisi tetap:
+  Mitra vs CarAsset), legal_items (4 field tetap: Nama Badan Usaha/
+  Nomor Legalitas/Alamat Terdaftar/Dokumen Pendukung).
+- Formula/angka simulasi yang belum disetujui klien (lihat Bagian 27).
+- Kode HTML/CSS/JS mentah — admin TIDAK diberi editor rich-text bebas
+  atau input HTML apa pun (lihat Tugas 8, larangan editor HTML bebas).
+
+Repeater yang BOLEH admin tambah/hapus/urutkan bebas (jumlah TIDAK
+dikunci): FAQ (about-contact, disarankan batas wajar mis. maks 20),
+Partner logo (maks 4 slot sesuai desain saat ini, tapi isi per slot
+bebas diisi/dikosongkan), accordion Persyaratan Program Kemitraan (desain
+saat ini 5 item — bisa dikunci di jumlah demi konsistensi checkpoint,
+ATAU dibuka terbatas 3–7 item; direkomendasikan DIKUNCI di 5 untuk
+menjaga korelasi dengan checkpoint 4 tahap).
+
+======================================================================
+13. INVENTARIS FIELD CMS PER HALAMAN (TUGAS 8)
+======================================================================
+
+Kolom tabel: FIELD | TIPE | WAJIB | DINAMIS/TERKUNCI | BATAS | DEFAULT/FALLBACK | VALIDASI | CATATAN
+
+----------------------------------------------------------------------
+HALAMAN: HOME — SECTION: hero — KEY: home.hero
+----------------------------------------------------------------------
+eyebrow            | text     | wajib   | dinamis | 60   | "Platform Aset Kendaraan Produktif" | string,max:60          | tanpa HTML
+title_line_1       | text     | wajib   | dinamis | 40   | "Mobil Bekerja."                     | string,max:40          | H1, satu-satunya di halaman
+title_line_2       | text     | wajib   | dinamis | 40   | "Aset Bertumbuh."                    | string,max:40          | kata terakhir beraksen hijau (locked style)
+subheadline        | text     | wajib   | dinamis | 80   | "Miliki Asetnya. Biarkan Mobilnya Bekerja." | string,max:80    | -
+description        | textarea | wajib   | dinamis | 240  | teks default proyek                 | string,max:240         | tanpa HTML
+cta_primary        | cta      | wajib   | dinamis | -    | label "Konsultasi Sekarang" → #contact | lihat Tugas 17       | link selector, bukan free text
+cta_secondary      | cta      | wajib   | dinamis | -    | label "Pelajari Cara Kerja" → #cara-kerja | lihat Tugas 17     | anchor whitelist
+status_items[3]    | repeater | wajib   | terkunci(jumlah=3)/dinamis(isi) | label 30 | 3 item bawaan | string,max:30 per label | icon dari daftar terbatas (select)
+hero_mark_icon     | select   | opsional| terkunci | -    | "car-front"                          | in:allowed_icon_list   | ikon abstrak, bukan foto — TERKUNCI desain, admin sebaiknya TIDAK mengubah (readonly di UI)
+
+----------------------------------------------------------------------
+HALAMAN: HOME — SECTION: income-opportunity — KEY: home.income_opportunity
+----------------------------------------------------------------------
+eyebrow            | text     | wajib | dinamis | 60  | default proyek | string,max:60 | -
+title              | text     | wajib | dinamis | 90  | default proyek | string,max:90 | -
+narrative[2]       | repeater(textarea) | wajib | dinamis | 400/item | 2 paragraf default | string,max:400 | tanpa HTML, tanpa klaim keuntungan
+panel_text         | textarea | opsional | dinamis | 160 | default proyek | string,max:160 | -
+cta_link           | cta      | wajib | dinamis | - | "Kenali Bisnis CarAsset" → route(business) | internal whitelist | -
+image              | media    | wajib | dinamis | - | income-opportunity.webp | image,max:4MB | lazy-load (bukan hero)
+image_alt          | alt_text | wajib | dinamis | 125 | deskriptif | string,max:125 | wajib relevan, bukan nama file
+
+----------------------------------------------------------------------
+HALAMAN: HOME — SECTION: process-summary — KEY: home.process_summary
+----------------------------------------------------------------------
+eyebrow            | text | wajib | dinamis | 60 | default | string,max:60 | -
+title              | text | wajib | dinamis | 90 | default | string,max:90 | -
+description        | textarea | wajib | dinamis | 200 | default | string,max:200 | -
+steps[3]           | repeater | wajib | TERKUNCI(jumlah=3, urutan Own→Operate→Grow) | - | - | - | jumlah tidak boleh admin ubah
+steps[].number     | text(readonly) | wajib | terkunci | 2 | "01"/"02"/"03" | in:01,02,03 | auto, tidak diinput admin
+steps[].title      | text | wajib | dinamis | 40 | default per tahap | string,max:40 | -
+steps[].description | textarea | wajib | dinamis | 160 | default per tahap | string,max:160 | -
+steps[].icon       | select | wajib | dinamis(pilihan terbatas) | - | key-round/settings/trending-up | in:allowed_icon_list | -
+steps[].accent     | select(readonly) | wajib | TERKUNCI | - | navy/green/gold sesuai tahap | in:navy,green,gold | pola warna tidak boleh diacak admin
+cta                | cta | wajib | dinamis | - | "Pelajari Bisnis CarAsset" → route(business) | whitelist | -
+
+----------------------------------------------------------------------
+HALAMAN: HOME — SECTION: partnership-choice — KEY: home.partnership_choice
+----------------------------------------------------------------------
+eyebrow            | text | wajib | dinamis | 60 | default | string,max:60 | -
+title              | text | wajib | dinamis | 90 | default | string,max:90 | -
+description        | textarea | wajib | dinamis | 160 | default | string,max:160 | -
+panel_owner.title  | text | wajib | dinamis | 40 | "Mitra Owner" | string,max:40 | -
+panel_owner.description | textarea | wajib | dinamis | 200 | default | string,max:200 | -
+panel_owner.benefits[3] | repeater(text) | wajib | terkunci(jumlah=3)/dinamis(isi) | 60/item | default | string,max:60 | -
+panel_owner.image  | media + alt | wajib | dinamis | - | owner-program.webp | image,max:4MB | -
+panel_owner.cta    | cta | wajib | dinamis | - | → route(partnership)#mitra-owner | whitelist | anchor terkunci ke section Owner
+panel_driver.*     | (struktur sama dengan panel_owner) | | | | | | -
+
+----------------------------------------------------------------------
+HALAMAN: HOME — SECTION: consultation-cta — KEY: home.consultation_cta
+----------------------------------------------------------------------
+eyebrow            | text | wajib | dinamis | 60 | default | string,max:60 | -
+title              | text | wajib | dinamis | 90 | default | string,max:90 | -
+description        | textarea | wajib | dinamis | 200 | default | string,max:200 | -
+trust_points[4]    | repeater | wajib | terkunci(jumlah=4)/dinamis(isi) | label 30 | 4 item default | string,max:30 | icon select terbatas
+cta_primary        | cta | wajib | dinamis | - | → #contact | whitelist | -
+cta_secondary      | cta | wajib | dinamis | - | → route(simulation) | whitelist | -
+microcopy          | text | opsional | dinamis | 160 | default | string,max:160 | -
+
+----------------------------------------------------------------------
+HALAMAN: BISNIS — SECTION: opportunity (REVISI: full-width hero) — KEY: business.opportunity
+----------------------------------------------------------------------
+eyebrow            | text | wajib | dinamis | 60 | default | string,max:60 | -
+title              | text | wajib | dinamis | 70 | default (H1) | string,max:70 | H1 halaman
+description        | textarea | wajib | dinamis | 260 | default | string,max:260 | -
+hero_image         | media | wajib | dinamis | - | business-opportunity-hero.webp | image,max:6MB | full-bleed, TIDAK lazy (above fold)
+hero_image_alt     | alt_text | opsional | dinamis | 125 | "" (dekoratif, overlay teks) | string,max:125 | boleh kosong krn dekoratif
+cta                | cta(anchor) | wajib | dinamis | - | → #operate | whitelist anchor | -
+diagram_steps[4]   | repeater | wajib | TERKUNCI(jumlah=4, urutan Kepemilikan→Operasional→Hasil→Pengembangan) | label 24/item | default | string,max:24 | accent warna per index terkunci (normal/normal/green/gold)
+
+----------------------------------------------------------------------
+HALAMAN: BISNIS — SECTION: own — KEY: business.own
+----------------------------------------------------------------------
+eyebrow            | text | wajib | dinamis | 30 | "01 — OWN" | string,max:30 | pola "NN — KODE" disarankan semi-terkunci
+title              | text | wajib | dinamis | 60 | default (H2) | string,max:60 | -
+description        | textarea | wajib | dinamis | 260 | default | string,max:260 | -
+image              | media+alt | wajib | dinamis | alt 125 | ownership-asset.webp | image,max:4MB | -
+badge_label        | text | opsional | dinamis | 30 | "Aset Milik Mitra" | string,max:30 | -
+stage_caption      | text | opsional | dinamis | 60 | "Visualisasi Struktur Program Mitra Owner" | string,max:60 | -
+role_mitra.title   | text | wajib | dinamis | 30 | "Peran Mitra" | string,max:30 | -
+role_mitra.items[4]| repeater(text) | wajib | dinamis(isi)/batas disarankan maks 6 | 100/item | 4 default | string,max:100 | list, bukan paragraf
+role_carasset.*    | (struktur sama role_mitra) | | | | | | -
+benefits[3]        | repeater(text) | wajib | terkunci(jumlah=3)/dinamis(isi) | 60/item | default | string,max:60 | -
+cta                | cta | wajib | dinamis | - | → #contact | whitelist | -
+microcopy          | text | opsional | dinamis | 160 | default | string,max:160 | -
+
+----------------------------------------------------------------------
+HALAMAN: BISNIS — SECTION: operate — KEY: business.operate
+----------------------------------------------------------------------
+eyebrow/title/description | text/text/textarea | wajib | dinamis | 30/60/260 | default | string | pola sama seperti own
+points[4]          | repeater | wajib | terkunci(jumlah=4)/dinamis(isi) | label 30 | default | string,max:30 | icon select terbatas
+dashboard_title     | text | opsional | dinamis | 40 | "CarAsset Fleet Overview" | string,max:40 | ILUSTRASI, bukan nama sistem nyata
+dashboard_label     | text(readonly disarankan) | wajib | TERKUNCI | 40 | "Ilustrasi Sistem Monitoring" | - | wajib tetap ada, tidak boleh dihapus admin (aturan kejujuran)
+tiles[5]            | repeater | wajib | TERKUNCI(jumlah=5, urutan tetap) | label 24, value 30 | default per tile | string,max | field `status` opsional (pill teks generik, BUKAN data real-time)
+dashboard_note      | textarea(readonly disarankan) | wajib | TERKUNCI | 200 | disclaimer bawaan | - | wajib tampil, tidak boleh dihapus
+
+----------------------------------------------------------------------
+HALAMAN: BISNIS — SECTION: grow — KEY: business.grow
+----------------------------------------------------------------------
+eyebrow/title/description/caption | text/text(H2)/textarea/text | wajib | dinamis | 30/60/260/60 | default | string | -
+stages[3]           | repeater | wajib | TERKUNCI(jumlah=3, urutan+warna aksen tetap: normal/green/gold) | title 40/item | default | string,max:40 | eyebrow "Tahap N" auto/readonly
+disclaimer          | textarea(readonly disarankan) | wajib | TERKUNCI | 220 | teks bawaan | - | wajib tampil (aturan kejujuran proyeksi)
+cta                 | cta | wajib | dinamis | - | → route(partnership) | whitelist | -
+
+----------------------------------------------------------------------
+HALAMAN: BISNIS — SECTION: business-flow — KEY: business.business_flow
+----------------------------------------------------------------------
+eyebrow/title/description | text/text/textarea | wajib | dinamis | 30/70/220 | default | string | -
+steps[5]            | repeater | wajib | TERKUNCI(jumlah=5, urutan Konsultasi→Verifikasi→Pengadaan→Operasional→Monitoring) | title 30/desc 140 | default | string,max | icon select per item, number auto
+cta_primary         | cta | wajib | dinamis | - | → route(partnership) | whitelist | -
+cta_secondary       | cta | wajib | dinamis | - | → #contact | whitelist | -
+microcopy           | text | opsional | dinamis | 160 | default | string,max:160 | -
+
+----------------------------------------------------------------------
+HALAMAN: PROGRAM KEMITRAAN — SECTION: program-selector — KEY: partnership.program_selector
+----------------------------------------------------------------------
+eyebrow/title(H1)/description | text/text/textarea | wajib | dinamis | 30/60/220 | default | string | H1 halaman ini
+path_owner.title/description/icon | text/textarea/select | wajib | dinamis | 30/140/- | default | string | -
+path_owner.cta       | cta(anchor) | wajib | TERKUNCI target(#mitra-owner)/dinamis label | label 30 | "Jelajahi Mitra Owner" | string,max:30 | target tidak boleh diubah (harus tetap ke section Owner di halaman yang sama)
+path_driver.*         | (struktur sama path_owner, target #mitra-driver) | | | | | | -
+nav_label_owner/driver | text | wajib | dinamis | 20 | "Mitra Owner"/"Mitra Driver" | string,max:20 | dipakai juga oleh sticky nav — sinkron dgn path_owner/driver.title disarankan
+
+----------------------------------------------------------------------
+HALAMAN: PROGRAM KEMITRAAN — SECTION: owner-program — KEY: partnership.owner_program
+----------------------------------------------------------------------
+(struktur mirip business.own, dengan tambahan callouts)
+eyebrow/title/description | text/text(H2)/textarea | wajib | dinamis | 30/60/260 | default | string | -
+image+alt             | media | wajib | dinamis | alt 125 | owner-program.webp | image,max:4MB | -
+callouts[4]           | repeater | wajib | TERKUNCI(jumlah=4) | label 30/item | default | string,max:30 | icon per item (select)
+stage_caption         | text | opsional | dinamis | 60 | default | string,max:60 | -
+role_mitra/role_carasset | repeater | wajib | dinamis(isi) | 100/item | default | string,max:100 | sama pola dgn business.own
+benefits[3]           | repeater | wajib | terkunci(jumlah=3) | 60/item | default | string,max:60 | -
+cta/microcopy         | cta/text | wajib/opsional | dinamis | -/160 | default | - | -
+
+----------------------------------------------------------------------
+HALAMAN: PROGRAM KEMITRAAN — SECTION: driver-program — KEY: partnership.driver_program
+----------------------------------------------------------------------
+eyebrow/title/description | text/text(H2)/textarea | wajib | dinamis | 30/60/260 | default | string | -
+image+alt              | media | wajib | dinamis | alt 125 | driver-program.webp | image,max:4MB | -
+milestones[5]          | repeater | wajib | TERKUNCI(jumlah=5, urutan tetap, milestone terakhir beraksen gold) | title 30/desc 160 | default | string,max | icon per item (select)
+after_panel.title/lead  | text/text | wajib | dinamis | 40/100 | default | string | -
+after_panel.items[3]    | repeater(text) | wajib | terkunci(jumlah=3) | 100/item | default | string,max:100 | bahasa "dapat mempertimbangkan" wajib dipertahankan
+cta                     | cta | wajib | dinamis | - | → #contact | whitelist | -
+note                    | textarea(readonly disarankan) | wajib | TERKUNCI | 200 | catatan wajib skema | - | tidak boleh dihapus (aturan kejujuran)
+
+----------------------------------------------------------------------
+HALAMAN: PROGRAM KEMITRAAN — SECTION: packages-benefits — KEY: partnership.packages_benefits
+----------------------------------------------------------------------
+title/description       | text(H2)/textarea | wajib | dinamis | 70/220 | default | string | -
+packages[3]              | repeater | wajib | TERKUNCI(jumlah=3, urutan 1/5/10 unit tetap) | - | - | - | unit_count per index TIDAK boleh diubah admin
+packages[].label         | text | wajib | dinamis | 30/item | "Langkah Awal"/dst | string,max:30 | -
+packages[].description   | textarea | wajib | dinamis | 160/item | default | string,max:160 | -
+packages[].benefits[3]   | repeater(text) | wajib | terkunci(jumlah=3)/dinamis(isi) | 60/item | default | string,max:60 | -
+packages[].cta_label      | text | wajib | dinamis | 30/item | "Konsultasi N Unit" | string,max:30 | tujuan CTA TERKUNCI ke #contact
+packages[].featured_badge | text | opsional | dinamis | 30 | "Pilihan Pengembangan" (hanya paket index=1) | string,max:30 | LARANGAN kata "Paling Untung/Best Seller" divalidasi server (blacklist kata)
+footnote_badge/text       | text/textarea | wajib | TERKUNCI | 30/160 | "Benefit Menunggu Konfirmasi" + teks bawaan | - | wajib tampil selama cashback/undian belum final
+
+----------------------------------------------------------------------
+HALAMAN: PROGRAM KEMITRAAN — SECTION: terms — KEY: partnership.terms
+----------------------------------------------------------------------
+eyebrow/title/description | text/text(H2)/textarea | wajib | dinamis | 30/70/220 | default | string | -
+checkpoints[4]            | repeater | wajib | TERKUNCI(jumlah=4, urutan Dokumen→Verifikasi→Pembayaran→Operasional) | label 20/item | default | string,max:20 | icon per item (select tetap)
+accordion_items[5]        | repeater | wajib | disarankan TERKUNCI(jumlah=5, selaras checkpoint) | title 60/content 800 | default | string | content berupa list terstruktur (repeater teks), BUKAN rich-text bebas
+cta_title/description      | text/textarea | wajib | dinamis | 60/200 | default | string | -
+cta_primary/cta_secondary  | cta/cta | wajib | dinamis | - | → route(partnership)/#contact, → route(simulation) | whitelist | -
+
+----------------------------------------------------------------------
+HALAMAN: SIMULASI — SECTION: assumptions — KEY: simulation.assumptions
+(CATATAN: field numerik section ini TIDAK disimpan di page_sections —
+lihat Bagian 27, disimpan di tabel khusus `simulation_settings`)
+----------------------------------------------------------------------
+eyebrow/title(H1)/description | text/text/textarea | wajib | dinamis | 30/70/220 | default | string | H1 halaman
+status_badge_text          | text(readonly disarankan) | wajib | TERKUNCI | 60 | "Contoh tampilan — menunggu angka final klien" | - | wajib konsisten di 3 section (assumptions/one-unit/multiple-units)
+zones[3]                   | repeater | wajib | TERKUNCI(jumlah=3, urutan Aktivitas→Kewajiban→Pengelolaan) | title 40/item | default | string,max:40 | -
+zones[].items[2]           | repeater | wajib | TERKUNCI(jumlah=2/zone) label saja; VALUE dari simulation_settings | label 40/item | - | string,max:40 | value_key merujuk ke SimulationSetting
+note                       | textarea | opsional | dinamis | 200 | default | string,max:200 | -
+cta                        | cta(anchor) | wajib | TERKUNCI target(#simulasi-satu-unit) | label 40 | default | string,max:40 | -
+
+----------------------------------------------------------------------
+HALAMAN: SIMULASI — SECTION: one-unit — KEY: simulation.one_unit
+----------------------------------------------------------------------
+eyebrow/title/description  | text/text(H2)/textarea | wajib | dinamis | 30/70/220 | default | string | -
+status_badge                | text | wajib | TERKUNCI(sinkron assumptions) | 60 | - | - | -
+nodes[6]                    | repeater | wajib | TERKUNCI(jumlah=6, urutan tetap) | title 30/desc 140 | default | string,max | icon per node (select tetap); value dari simulation_settings.scenarios.oneUnit.*
+summary_panel[4]            | repeater | wajib | TERKUNCI(jumlah=4) | label 20/value 60 | "Jumlah Unit"=1 (readonly), 3 lainnya dinamis | string,max | "Jumlah Unit" TIDAK boleh diubah (selalu 1 di section ini)
+cta                         | cta | wajib | dinamis | - | → #contact | whitelist | -
+
+----------------------------------------------------------------------
+HALAMAN: SIMULASI — SECTION: multiple-units — KEY: simulation.multiple_units
+----------------------------------------------------------------------
+eyebrow/title/description   | text/text(H2)/textarea | wajib | dinamis | 30/70/260 | default | string | -
+status_badge                 | text | wajib | TERKUNCI | 60 | - | - | -
+scenarios[3]                 | repeater | wajib | TERKUNCI(jumlah=3, unit_count 1/5/10 tetap) | label 30/item | default | string,max:30 | rows value dari simulation_settings; flag is_estimate per scenario (boolean, TERKUNCI true utk index 1&2)
+warning_text                 | textarea(readonly disarankan) | wajib | TERKUNCI | 300 | disclaimer estimasi linear | - | wajib tampil selama 5/10 unit = estimasi
+cta                          | cta | wajib | dinamis | - | → #contact | whitelist | -
+
+----------------------------------------------------------------------
+HALAMAN: SIMULASI — SECTION: protection-monitoring — KEY: simulation.protection_monitoring
+----------------------------------------------------------------------
+eyebrow/title/description    | text/text(H2)/textarea | wajib | dinamis | 30/70/260 | default | string | -
+image                         | media | opsional | dinamis | alt "" (dekoratif) | protection-monitoring.webp | image,max:4MB | -
+protection_points[6]          | repeater | wajib | TERKUNCI(jumlah=6, posisi orbit tetap) | label 30/item | default | string,max:30 | icon per titik (select tetap)
+orbit_caption                 | text(readonly disarankan) | wajib | TERKUNCI | 60 | "Ilustrasi Lapisan Perlindungan Aset" | - | wajib (aturan kejujuran label ilustrasi)
+monitoring_title              | text(readonly disarankan) | wajib | TERKUNCI | 60 | "Ilustrasi Sistem Tracking dan Monitoring" | - | wajib
+tabs[5]                       | repeater | wajib | TERKUNCI(jumlah=5, urutan tetap) | label 20/item | default | string,max:20 | -
+content_rows[5]               | repeater | wajib | TERKUNCI(jumlah=5, selaras tabs) | label 20/value 40 | value dari simulation_settings.protection.* | string,max | value BUKAN data real-time, hanya status generik
+note                          | textarea(readonly disarankan) | wajib | TERKUNCI | 220 | disclaimer ilustrasi | - | wajib
+
+----------------------------------------------------------------------
+HALAMAN: SIMULASI — SECTION: disclaimer — KEY: simulation.disclaimer
+----------------------------------------------------------------------
+eyebrow/title(H2)              | text/text | wajib | dinamis | 30/70 | default | string | -
+body_paragraphs[3]              | repeater(textarea) | wajib | TERKUNCI(jumlah=3, makna tidak boleh diubah) | 400/item | teks wajib bawaan | string,max:400 | perubahan REDAKSI RINGAN diperbolehkan, MAKNA tidak boleh berubah (validasi manual/editorial, bukan otomatis)
+points[4]                       | repeater(text) | wajib | terkunci(jumlah=4) | 60/item | default | string,max:60 | -
+cta_title/description            | text/textarea | wajib | dinamis | 60/200 | default | string | -
+cta_primary/cta_secondary         | cta/cta | wajib | dinamis | - | → #contact, → route(partnership) | whitelist | -
+microcopy                          | text | opsional | dinamis | 160 | default | string,max:160 | -
+
+----------------------------------------------------------------------
+HALAMAN: TENTANG & KONTAK — SECTION: about — KEY: about-contact.about
+----------------------------------------------------------------------
+eyebrow/title(H1)                | text/text | wajib | dinamis | 30/90 | default | string | H1 halaman
+narrative[2]                       | repeater(textarea) | wajib | dinamis | 300/item | default | string,max:300 | tanpa klaim sejarah/statistik palsu
+positioning_quote                  | textarea | wajib | dinamis | 140 | default | string,max:140 | -
+cta_primary/cta_secondary           | cta/cta | wajib | dinamis | - | → route(partnership), → #contact | whitelist | -
+strip_image + alt                    | media | opsional | dinamis | alt "" (dekoratif) | about-carasset.webp | image,max:5MB | -
+tagline_display                     | text(readonly, GLOBAL) | wajib | TERKUNCI | - | "Mobil Bekerja. Aset Bertumbuh." | - | ambil dari site_settings.tagline, bukan field section
+
+----------------------------------------------------------------------
+HALAMAN: TENTANG & KONTAK — SECTION: vision-mission-values — KEY: about-contact.vision_mission_values
+----------------------------------------------------------------------
+vision.label(readonly)/statement/note | text/textarea/text | wajib | label TERKUNCI, statement DINAMIS, note TERKUNCI | 220 | default | string,max:220 | note "Redaksi visi menunggu persetujuan..." WAJIB tampil selama status draft
+mission.label(readonly)/items[3]      | text/repeater(text) | wajib | label TERKUNCI, items dinamis(isi) | 140/item | default | string,max:140 | maksimal 3 (terkunci jumlah)
+values[4]                              | repeater | wajib | TERKUNCI(jumlah=4, urutan & accent warna tetap) | title 20/desc 140 | default | string,max | eyebrow kode (TRUST/GROWTH/dst) readonly, icon per item select terbatas
+
+----------------------------------------------------------------------
+HALAMAN: TENTANG & KONTAK — SECTION: legal-partners — KEY: about-contact.legal_partners
+----------------------------------------------------------------------
+eyebrow/title/description         | text/text(H2)/textarea | wajib | dinamis | 30/70/220 | default | string | -
+status_badge                       | text(readonly disarankan) | wajib | TERKUNCI | 40 | "Data Legalitas Menunggu Konfirmasi" | - | ganti otomatis jadi hijau/"Terverifikasi" HANYA jika admin submit toggle status legal (lihat Bagian 27 strategi status)
+legal_items[4]                     | repeater | wajib | TERKUNCI(jumlah=4, label & urutan tetap: Nama Badan Usaha/Nomor Legalitas/Alamat Terdaftar/Dokumen Pendukung) | value 200/item | placeholder "Menunggu data resmi perusahaan" | string,max:200 | value BOLEH diisi admin, LABEL tidak boleh diubah
+partner_note                        | textarea | wajib | dinamis | 160 | default | string,max:160 | -
+partner_logos[≤4]                    | repeater(media+text) | opsional | dinamis(isi)/batas jumlah 4 (terkunci slot, boleh sebagian kosong) | nama 60/item | placeholder "Logo Partner Resmi" | image,max:2MB;nama string,max:60 | TIDAK BOLEH logo palsu — validasi manual editorial sebelum publish
+closing_note                         | textarea(readonly disarankan) | wajib | TERKUNCI | 200 | catatan wajib update sebelum publikasi | - | -
+
+----------------------------------------------------------------------
+HALAMAN: TENTANG & KONTAK — SECTION: faq — KEY: about-contact.faq
+(disimpan di tabel khusus `faqs`, BUKAN JSON — lihat Bagian 16/20)
+----------------------------------------------------------------------
+eyebrow/title(H2)/description       | text/text/textarea | wajib | dinamis | 30/70/160 | default | string | -
+faq_items[]                          | repeater (tabel `faqs`) | wajib | dinamis PENUH (tambah/hapus/urutkan) | question 150/answer 800 | 8 default | string,max | batas disarankan maks 20 item aktif; urutan via kolom `sort_order`
+
+----------------------------------------------------------------------
+HALAMAN: TENTANG & KONTAK — SECTION: contact-form — KEY: about-contact.contact_form
+----------------------------------------------------------------------
+title/description                     | text(H2)/textarea | wajib | dinamis | 70/200 | default | string | -
+form_status_label                      | text(readonly disarankan) | wajib | TERKUNCI | 60 | "Form Konsultasi — Tampilan Front-end" | - | wajib selama backend form belum aktif
+form_microcopy                          | text(readonly disarankan) | wajib | TERKUNCI | 100 | "Form belum terhubung ke sistem pengiriman atau database." | - | wajib dihapus HANYA saat backend form benar2 aktif
+program_options[]                        | repeater(select options) | wajib | TERKUNCI(sinkron dgn nama program resmi: Mitra Owner/Mitra Driver/Simulasi 1/5/10 Unit/Konsultasi Umum) | label 30/item | 7 opsi bawaan | string,max:30 | admin tidak menambah opsi bebas, list ini semi-terkunci
+submit_button_label/note                  | text/text(readonly) | wajib | dinamis/terkunci | 30/60 | "Siapkan Pesan Konsultasi" / "Form versi prototipe. Pengiriman belum aktif." | string,max | note wajib tampil selama form belum aktif
+contact_info.whatsapp/email/address/hours | (GLOBAL, lihat site_settings) | wajib | dinamis | lihat Bagian 14 | data klien saat ini | lihat Bagian 14 | JANGAN diduplikasi sebagai field section — pull dari site_settings
+map_embed_src                             | (GLOBAL, site_settings, url khusus) | opsional | dinamis TERBATAS | - | Google Maps embed saat ini | url,starts_with:https://www.google.com/maps/embed | HANYA domain Google Maps diizinkan — TIDAK BOLEH iframe/HTML bebas (risiko XSS/embed berbahaya)
+
+======================================================================
+14. KONTEN GLOBAL (SITE_SETTINGS) — HASIL TUGAS 9 (Klasifikasi A)
+======================================================================
+
+KEY                     | NILAI SEKARANG (front-end)              | TIPE
+------------------------|------------------------------------------|--------
+brand_name              | "CarAsset"                                | string (readonly disarankan)
+tagline                 | "Mobil Bekerja. Aset Bertumbuh."           | string (readonly disarankan)
+logo_horizontal         | public/assets/images/brand/logo-horizontal.png | media reference
+logo_on_dark            | public/assets/images/brand/logo-on-dark.png | media reference
+favicon                 | belum ada file (fallback favicon.ico)     | media reference (opsional)
+whatsapp_number         | "+123-456-7890" (placeholder sementara)    | string, format terbatas
+whatsapp_link_mode      | belum ada (saat ini selalu → #contact)     | boolean/enum: "anchor" | "wa_link" — SETTING BARU yang direkomendasikan agar tombol WhatsApp otomatis jadi wa.me link begitu nomor resmi valid dikonfirmasi
+email                   | "hello@carasset.id"                        | email
+address                 | "Gajah Mada Tower, Lt. 19-01, Jl. Gajah Mada No.19-26, ..." | textarea
+service_hours           | "Senin–Jumat, 09.00–17.00"                 | string
+map_embed_src            | URL embed Google Maps aktif                | url terbatas domain
+footer_copyright_note    | "© {tahun otomatis} CarAsset. Seluruh hak dilindungi." | string (tahun tetap dihitung otomatis via kode, BUKAN field)
+seo_default_title/description | per index.blade.php masing2 halaman   | lihat Bagian 21
+
+Rekomendasi: SATU baris di site_settings per key (pola key-value, tabel
+`site_settings` dengan kolom `key` unik + `value` JSON/text), BUKAN satu
+baris per pengaturan dengan kolom terpisah-pisah — lebih fleksibel untuk
+menambah setting baru tanpa migration baru.
+
+======================================================================
+15. KLASIFIKASI KONTEN LENGKAP (TUGAS 9)
+======================================================================
+
+A. Konten global      → tabel `site_settings` (key-value), media
+                         direferensikan via `media` table.
+B. Konten halaman      → tabel `pages` (meta_title, meta_description,
+                         status draft/published, slug/route_name readonly).
+C. Konten section      → `page_sections.content` (JSON), 1 baris per
+                         section per halaman (25 baris data untuk 25
+                         section + section_key unik).
+D. Konten berulang      → SEBAGIAN di dalam JSON page_sections (repeater
+                         terkunci jumlah, mis. steps/tiles/milestones),
+                         SEBAGIAN di tabel khusus untuk yang benar2 bebas
+                         tambah/hapus/urutkan tanpa batas kaku: `faqs`
+                         (FAQ about-contact), `partners` (logo partner).
+E. Data khusus          → `simulation_settings` (data simulasi terpisah
+                         dari CMS umum, lihat Bagian 27), `contact_messages`
+                         (pesan form, belum aktif), status draft/publish
+                         → kolom pada `pages`/`page_sections` itu sendiri
+                         (bukan tabel terpisah, lihat Bagian 20).
+
+======================================================================
+16. RENCANA ERD CMS (TUGAS 10)
+======================================================================
+
+USERS
+  │
+  ├── uploads         → MEDIA
+  ├── updates         → PAGE_SECTIONS (updated_by)
+  ├── creates         → CONTENT_REVISIONS (created_by)
+  ├── publishes       → PAGE_SECTIONS (published_by, published_at)
+  └── performs        → ACTIVITY_LOGS
+
+PAGES
+  │
+  └── has many        → PAGE_SECTIONS
+
+PAGE_SECTIONS
+  │
+  ├── belongs to       → PAGES
+  ├── references (opsional) → MEDIA (untuk field media di dalam JSON,
+  │                        disimpan sebagai media_id di dalam JSON atau
+  │                        tabel pivot bila butuh query balik "dipakai di
+  │                        mana")
+  └── has many          → CONTENT_REVISIONS
+
+MEDIA
+  │
+  └── uploaded by       → USERS
+
+SITE_SETTINGS
+  └── references (opsional) → MEDIA (logo, favicon)
+
+FAQS  (about-contact.faq — repeater tak terbatas)
+  └── belongs to (implisit) → PAGES (about-contact) via page_id ATAU
+                              cukup flat table tanpa FK ke pages karena
+                              hanya 1 halaman yang memakainya (evaluasi:
+                              FK opsional, lebih simpel tanpa FK dulu)
+
+PARTNERS (about-contact.legal-partners — repeater terbatas 4 slot)
+  └── references         → MEDIA (logo)
+
+PARTNERSHIP_PACKAGES (evaluasi KHUSUS — lihat catatan di bawah)
+  └── TIDAK DIREKOMENDASIKAN sebagai tabel terpisah — cukup JSON di
+      page_sections karena jumlah TERKUNCI (selalu 3, urutan 1/5/10
+      tetap), tidak butuh query/pencarian, tidak butuh relasi ke tabel
+      lain. Menjadikannya tabel khusus hanya menambah kompleksitas tanpa
+      manfaat (over-engineering).
+
+SIMULATION_SETTINGS (data numerik simulasi — TERPISAH dari CMS konten)
+  └── updated by         → USERS (updated_by)
+      (tidak perlu revision/publish terpisah pada fase awal — cukup
+      status draft/final + updated_by + timestamps)
+
+LEGAL_INFORMATION — evaluasi: TIDAK DIREKOMENDASIKAN sebagai tabel
+      terpisah. 4 field (Nama Badan Usaha/Nomor Legalitas/Alamat
+      Terdaftar/Dokumen Pendukung) sudah cukup sebagai bagian JSON
+      page_sections milik section "legal-partners" — jumlahnya tetap
+      (4), tidak butuh pencarian/relasi.
+
+CONTACT_MESSAGES
+  └── managed by         → USERS (siapa yang mengubah status)
+
+CONTENT_REVISIONS
+  └── belongs to          → PAGE_SECTIONS, USERS (created_by)
+
+ACTIVITY_LOGS
+  └── belongs to (polymorphic opsional) → USERS + subject (page_section,
+      media, setting, dll. via subject_type/subject_id)
+
+Pertimbangan hybrid (sesuai arahan prompt):
+- page_sections.content (JSON)  → SELURUH 25 section, termasuk repeater
+  yang jumlahnya terkunci (steps, tiles, milestones, values, checkpoints,
+  packages, legal_items, dsb.) — karena: frekuensi ubah rendah-sedang,
+  tidak butuh pencarian lintas section, tidak butuh relasi, publish
+  cukup di level section, dan Blade sudah terbiasa membaca via
+  data_get($section, 'content.field').
+- Tabel khusus HANYA untuk: `faqs` (tambah/hapus/urutkan bebas, volume
+  bisa besar, greatly benefits dari kolom `sort_order` & query per-page),
+  `partners` (butuh referensi ke `media` table untuk logo — JSON+media
+  reference lintas tabel lebih rapi sebagai FK eksplisit),
+  `simulation_settings` (butuh pemisahan tegas input-vs-output, validasi
+  tipe angka ketat, status draft/final tersendiri, dan TIDAK boleh
+  tercampur dengan konten editorial biasa demi mencegah kesalahan fatal
+  seperti null jadi 0).
+- `partnership_packages` dan `legal_information` SEBAGAI TABEL TERPISAH
+  DITOLAK (lihat alasan di atas) — cukup JSON.
+
+======================================================================
+17. DAFTAR TABEL YANG DIREKOMENDASIKAN (DETAIL)
+======================================================================
+
+--- users (SUDAH ADA — tambah kolom) -----------------------------------
+Tujuan: autentikasi admin.
+Field tambahan: role (string, default 'admin'), is_active (boolean,
+default true).
+Primary key: id (bawaan). Tidak ada FK baru. Index: email (sudah unique).
+Nullable: role tidak nullable (default 'admin'); is_active tidak nullable.
+Cast: is_active => boolean.
+
+--- pages ---------------------------------------------------------------
+Tujuan: representasi 5 halaman publik + meta SEO + status.
+Field: id, key (string, unique — 'home'|'business'|'partnership'|
+'simulation'|'about-contact'), route_name (string, unique, READONLY),
+meta_title (string,nullable), meta_description (string,nullable),
+status (string, default 'published', enum draft/published),
+updated_at/created_at.
+Primary key: id. Unique: key, route_name. Nullable: meta_title/description.
+Default: status='published'. Cast: - . Relationship: hasMany(PageSection).
+Soft delete: TIDAK perlu (hanya 5 baris tetap, tidak pernah dihapus).
+
+--- page_sections --------------------------------------------------------
+Tujuan: konten tiap 25 section, JSON per section.
+Field: id, page_id (FK), section_key (string, mis. 'hero',
+'income_opportunity'), sort_order (integer), status (enum draft/
+published, default published), content (json), draft_content (json,
+nullable — lihat Bagian 20 opsi A), published_at (timestamp,nullable),
+published_by (FK users,nullable), updated_by (FK users,nullable),
+timestamps.
+Primary key: id. FK: page_id→pages.id, published_by/updated_by→users.id.
+Unique: (page_id, section_key). Index: (page_id, sort_order).
+Nullable: draft_content, published_at, published_by, updated_by.
+Default: status='published'. Cast: content=>array, draft_content=>array,
+published_at=>datetime. Relationship: belongsTo(Page), hasMany
+(ContentRevision). Soft delete: TIDAK perlu (section tidak dihapus,
+hanya diaktif/nonaktifkan via kolom `is_active` tambahan bila
+diperlukan — evaluasi tambahan boolean `is_active` default true untuk
+kebutuhan "status section aktif/nonaktif" dari requirement CMS).
+
+--- media -----------------------------------------------------------------
+Tujuan: Media Library terpusat.
+Field: id, disk (string, default 'public'), path (string), original_name
+(string), mime_type (string), size (integer, bytes), width (integer,
+nullable), height (integer,nullable), alt_text (string,nullable),
+caption (string,nullable), uploaded_by (FK users,nullable), timestamps,
+deleted_at (soft delete).
+Primary key: id. FK: uploaded_by→users.id. Index: mime_type, uploaded_by.
+Nullable: width/height (utk file non-gambar bila pernah diizinkan; untuk
+fase awal hanya gambar jadi selalu terisi), alt_text, caption,
+uploaded_by, deleted_at. Default: disk='public'. Cast: size=>integer.
+Relationship: belongsTo(User). Soft delete: YA (agar bisa cek "masih
+dipakai di mana" sebelum hard delete permanen — lihat Tugas 19).
+
+--- site_settings -----------------------------------------------------------
+Tujuan: pengaturan global (lihat Bagian 14).
+Field: id, key (string, unique), value (json,nullable), timestamps.
+Primary key: id. Unique: key. Nullable: value. Cast: value=>array (atau
+cast kustom per tipe bila mau lebih ketat). Tidak ada FK wajib (referensi
+ke media disimpan sebagai id di dalam value JSON, mis.
+{"media_id": 12}).
+
+--- contact_messages -----------------------------------------------------
+Tujuan: menyimpan submission form konsultasi (BELUM AKTIF — hanya
+struktur, form publik belum terhubung).
+Field: id, name (string), whatsapp (string), email (string,nullable),
+program (string), message (text), consent (boolean), status (enum:
+new/read/completed/archived, default 'new'), ip_address (string,
+nullable), user_agent (string,nullable), timestamps.
+Primary key: id. Index: status, created_at. Nullable: email, ip_address,
+user_agent. Default: status='new'. Cast: consent=>boolean. Relationship:
+tidak wajib FK ke users (dikelola admin generik), boleh tambah
+handled_by (FK users,nullable) bila ingin tracking siapa menindaklanjuti.
+Soft delete: opsional (boleh YA agar pesan "archived" bisa disembunyikan
+tanpa hilang permanen).
+
+--- content_revisions -----------------------------------------------------
+Tujuan: riwayat perubahan tiap page_section (audit trail + rollback).
+Field: id, page_section_id (FK), content (json — snapshot lengkap saat
+disimpan), created_by (FK users,nullable), created_at (tanpa updated_at,
+revisi bersifat immutable).
+Primary key: id. FK: page_section_id→page_sections.id, created_by→
+users.id. Index: page_section_id. Nullable: created_by. Cast:
+content=>array. Relationship: belongsTo(PageSection), belongsTo(User).
+Soft delete: TIDAK perlu (revisi memang dibiarkan menumpuk sebagai
+histori; boleh dibatasi jumlah lewat job pembersihan berkala di fase
+lanjut, bukan sekarang).
+
+--- activity_logs -----------------------------------------------------------
+Tujuan: audit aktivitas admin penting (login, publish, hapus media, dsb).
+Field: id, user_id (FK,nullable), action (string, mis. 'section.publish',
+'media.delete'), subject_type (string,nullable), subject_id (integer,
+nullable), description (string,nullable), ip_address (string,nullable),
+created_at (tanpa updated_at).
+Primary key: id. FK: user_id→users.id. Index: user_id, action,
+(subject_type, subject_id). Nullable: user_id, subject_type, subject_id,
+description, ip_address. Relationship: belongsTo(User), morphTo(subject)
+opsional. Soft delete: TIDAK perlu.
+
+--- faqs (tabel khusus, bukan JSON) -----------------------------------------
+Tujuan: FAQ about-contact, bebas tambah/hapus/urutkan.
+Field: id, question (string), answer (text), sort_order (integer,
+default 0), is_active (boolean, default true), timestamps.
+Primary key: id. Index: sort_order, is_active. Nullable: -. Default:
+is_active=true, sort_order=0. Cast: is_active=>boolean. Relationship:
+tidak perlu FK ke pages (hanya dipakai 1 halaman). Soft delete: opsional
+(boleh YA agar FAQ nonaktif tetap tersimpan histori).
+
+--- partners (tabel khusus, referensi media) --------------------------------
+Tujuan: 4 slot logo partner, about-contact.legal-partners.
+Field: id, name (string,nullable — boleh kosong selama belum ada
+konfirmasi), media_id (FK media,nullable), sort_order (integer,
+default 0), is_active (boolean, default true), timestamps.
+Primary key: id. FK: media_id→media.id. Index: sort_order.
+Nullable: name, media_id. Default: is_active=true. Relationship:
+belongsTo(Media). Soft delete: opsional.
+
+--- simulation_settings (tabel khusus, data numerik simulasi) ---------------
+Tujuan: SATU-SATUNYA sumber angka simulasi (menggantikan
+simulation-config.js secara bertahap — lihat Bagian 27).
+Field: id, group (string: 'assumptions'|'one_unit'|'five_units'|
+'ten_units'|'protection'), key (string, mis. 'operatingDays',
+'grossOperationalResult'), value (string,nullable — disimpan sebagai
+string agar bisa null MURNI tanpa terpaksa 0, dittype-cast di
+ContentService saat dibaca), value_type (enum: integer/decimal/percent_
+text/status_text), is_estimate (boolean, default false), note (string,
+nullable — catatan asal-usul angka, mis. "estimasi linear 5x1unit"),
+updated_by (FK users,nullable), timestamps.
+Primary key: id. Unique: (group, key). Nullable: value, note,
+updated_by. Default: is_estimate=false. Cast: is_estimate=>boolean.
+Relationship: belongsTo(User) via updated_by. Soft delete: TIDAK perlu.
+
+======================================================================
+18. DAFTAR MODEL YANG DIREKOMENDASIKAN (TUGAS 11)
+======================================================================
+
+1. User (SUDAH ADA, perlu update kecil)
+   Tabel: users. Fillable: name, email, password, role, is_active.
+   Guarded tambahan: pastikan `role` TIDAK bisa diisi dari form publik
+   mana pun (hanya dari Admin\ProfileController atau seeder).
+   Cast: is_active=>boolean, password=>hashed (sudah ada).
+   Relationship: hasMany(Media,'uploaded_by'), hasMany(PageSection,
+   'updated_by'), hasMany(ContentRevision,'created_by'), hasMany
+   (ActivityLog).
+   Scope: scopeActive() → where('is_active', true).
+   Soft delete: TIDAK (akun admin cukup dinonaktifkan via is_active).
+   Status field: is_active.
+   Risiko mass assignment: TINGGI bila `role`/`is_active` masuk
+   $fillable tanpa proteksi form — WAJIB divalidasi lewat Form Request
+   khusus admin (bukan form registrasi publik, karena registrasi publik
+   memang tidak akan dibuat).
+   Authorization: hanya admin lain (atau seeder/tinker) yang boleh
+   mengubah role/is_active user lain — perlu Policy khusus di fase
+   role>1 (belum relevan di fase 1 role tunggal).
+
+2. Page
+   Tabel: pages. Fillable: meta_title, meta_description, status (key
+   & route_name TIDAK fillable — readonly, diisi via seeder saat
+   instalasi awal CMS).
+   Cast: -. Relationship: hasMany(PageSection). Scope: scopePublished().
+   Soft delete: TIDAK. Status field: status. Risiko mass assignment:
+   RENDAH bila key/route_name digaruskan (guarded). Authorization:
+   hanya admin (middleware `admin` sudah cukup, tidak perlu policy
+   granular di fase 1 karena hanya 1 role).
+
+3. PageSection
+   Tabel: page_sections. Fillable: content, draft_content, status,
+   is_active, sort_order (page_id & section_key GUARDED — dikunci
+   sejak seeding awal, tidak boleh diubah admin).
+   Cast: content=>array, draft_content=>array, published_at=>datetime,
+   is_active=>boolean.
+   Relationship: belongsTo(Page), hasMany(ContentRevision).
+   Scope: scopePublished(), scopeForPage($key).
+   Soft delete: TIDAK. Status field: status (draft/published), is_active.
+   Risiko mass assignment: SEDANG — `content` adalah JSON bebas terisi
+   admin, WAJIB divalidasi PER FIELD lewat Form Request spesifik per
+   section (lihat Tugas 13), BUKAN diterima mentah dari request.
+   Authorization: admin only, plus validasi section_key hanya boleh
+   diedit lewat Form Request yang sesuai section-nya (mencegah admin
+   mengirim struktur JSON section lain).
+
+4. Media
+   Tabel: media. Fillable: original_name, mime_type, size, width,
+   height, alt_text, caption (path/disk/uploaded_by GUARDED, diisi
+   sistem saat upload, bukan dari input user).
+   Cast: size=>integer.
+   Relationship: belongsTo(User,'uploaded_by').
+   Scope: scopeImages() (where mime_type like 'image/%').
+   Soft delete: YA.
+   Status field: - (pakai deleted_at sebagai indikator).
+   Risiko mass assignment: TINGGI pada `path`/`disk` bila tidak
+   di-guard — WAJIB guarded, hanya diisi lewat MediaService::store(),
+   tidak pernah dari request langsung.
+   Authorization: admin only; tambahan pengecekan "used_by" sebelum
+   delete (lihat Tugas 19).
+
+5. SiteSetting
+   Tabel: site_settings. Fillable: value (key GUARDED setelah seeding
+   awal — daftar key yang valid didefinisikan di kode, bukan bebas
+   ditambah admin tanpa batas, untuk mencegah "setting sampah").
+   Cast: value=>array.
+   Relationship: -. Scope: scopeKey($key).
+   Soft delete: TIDAK. Status field: -.
+   Risiko mass assignment: RENDAH bila `key` di-guard.
+   Authorization: admin only.
+
+6. ContactMessage
+   Tabel: contact_messages. Fillable: name, whatsapp, email, program,
+   message, consent, status, ip_address, user_agent (SEMUA field ini
+   HANYA diisi lewat proses submit form publik yang tervalidasi ketat —
+   fase sekarang form belum aktif, jadi belum ada input nyata).
+   Cast: consent=>boolean.
+   Relationship: - (opsional belongsTo(User,'handled_by') bila
+   ditambahkan).
+   Scope: scopeStatus($status), scopeUnread().
+   Soft delete: opsional (rekomendasi: YA).
+   Status field: status.
+   Risiko mass assignment: TINGGI jika `status` bisa diisi dari
+   request publik — WAJIB `status` GUARDED dari StoreContactMessageRequest
+   (hanya default 'new'), hanya admin (via
+   UpdateContactMessageStatusRequest) yang boleh mengubah status.
+   Authorization: publik boleh CREATE (nanti), admin boleh READ/UPDATE
+   status, TIDAK ADA yang boleh UPDATE isi pesan setelah submit.
+
+7. ContentRevision
+   Tabel: content_revisions. Fillable: content (page_section_id,
+   created_by GUARDED, diisi otomatis oleh PublishingService).
+   Cast: content=>array.
+   Relationship: belongsTo(PageSection), belongsTo(User,'created_by').
+   Soft delete: TIDAK. Status field: -.
+   Risiko mass assignment: RENDAH (guarded penuh kecuali `content`,
+   dan `content` diisi sistem, bukan input mentah user).
+   Authorization: admin only (read untuk rollback/riwayat).
+
+8. ActivityLog
+   Tabel: activity_logs. Fillable: action, subject_type, subject_id,
+   description, ip_address (user_id GUARDED, diisi dari auth()->id()).
+   Cast: -. Relationship: belongsTo(User), morphTo('subject') opsional.
+   Scope: scopeForUser($id), scopeAction($action).
+   Soft delete: TIDAK. Status field: -.
+   Risiko mass assignment: RENDAH (user_id guarded).
+   Authorization: admin only (read-only dari UI, write hanya dari
+   ActivityLogService).
+
+9. Faq
+   Tabel: faqs. Fillable: question, answer, sort_order, is_active.
+   Cast: is_active=>boolean. Relationship: -. Scope: scopeActive(),
+   scopeOrdered(). Soft delete: opsional. Status field: is_active.
+   Risiko mass assignment: RENDAH. Authorization: admin only.
+
+10. Partner
+    Tabel: partners. Fillable: name, media_id, sort_order, is_active.
+    Cast: is_active=>boolean. Relationship: belongsTo(Media).
+    Scope: scopeActive(). Soft delete: opsional. Status field:
+    is_active. Risiko mass assignment: RENDAH.
+    Authorization: admin only; validasi tambahan "logo boleh
+    dipublikasikan" bersifat editorial/manual (bukan validasi teknis).
+
+11. SimulationSetting (PartnershipPackage & LegalInformation TIDAK
+    dibuat sebagai model terpisah — lihat Bagian 16)
+    Tabel: simulation_settings. Fillable: value, value_type,
+    is_estimate, note (group & key GUARDED — daftar valid didefinisikan
+    di kode/seeder, tidak bebas ditambah admin untuk mencegah key acak
+    yang tidak terhubung ke Blade manapun).
+    Cast: is_estimate=>boolean. Relationship: belongsTo(User,
+    'updated_by'). Scope: scopeGroup($group).
+    Soft delete: TIDAK. Status field: - (status draft/final
+    direkomendasikan sebagai site_settings terpisah:
+    `simulation_status`, bukan per-baris, karena berlaku untuk seluruh
+    halaman Simulasi sekaligus).
+    Risiko mass assignment: TINGGI pada `value` bila tidak divalidasi
+    tipe angka — WAJIB Form Request khusus (lihat Tugas 13) yang
+    memvalidasi numeric/nullable per key, TIDAK PERNAH mengonversi
+    kosong menjadi 0.
+    Authorization: admin only, DISARANKAN dicatat di ActivityLog secara
+    eksplisit setiap kali berubah (data sensitif secara bisnis).
+
+======================================================================
+19. DAFTAR CONTROLLER ADMIN YANG DIRENCANAKAN (TUGAS 12)
+======================================================================
+
+Admin/Auth/LoginController
+  Tanggung jawab: form login, proses autentikasi, logout.
+  Method: create() [tampilkan form], store() [proses login], destroy()
+  [logout].
+  Route: GET/POST /admin/login, POST /admin/logout.
+  Form Request: AdminLoginRequest.
+  Service: - (langsung pakai Auth facade + rate limiter).
+  Authorization: guest middleware untuk create/store, auth untuk destroy.
+  Response: redirect ke /admin (dashboard) atau kembali dengan error.
+  Risiko konflik: RENDAH — tidak ada LoginController lain.
+
+Admin/DashboardController
+  Tanggung jawab: ringkasan (jumlah halaman, pesan baru, media terbaru,
+  aktivitas terakhir).
+  Method: index().
+  Route: GET /admin.
+  Service: ContentService, ActivityLogService.
+  Authorization: middleware auth+admin.
+  Risiko konflik: RENDAH.
+
+Admin/PageController
+  Tanggung jawab: daftar 5 halaman + form edit SEO/status per halaman
+  (BUKAN edit konten section — itu tugas PageSectionController).
+  Method: index(), edit($page), update($page).
+  Route: GET /admin/pages, GET/PUT /admin/pages/{page}.
+  Form Request: UpdatePageSeoRequest.
+  Service: ContentService.
+  Authorization: auth+admin.
+  Risiko konflik: RENDAH.
+
+Admin/PageSectionController
+  Tanggung jawab: edit konten tiap section per halaman (5 sub-halaman:
+  home/business/partnership/simulation/about-contact, masing2 me-render
+  5 section sekaligus dalam 1 form/tab).
+  Method: edit($page), update($page, $section) — kemungkinan dipecah
+  per section via Form Request khusus (UpdateHomeSectionRequest, dst.)
+  agar validasi ketat per section, bukan generik.
+  Route: GET /admin/pages/{page} (menampilkan 5 section sekaligus),
+  PUT /admin/pages/{page}/sections/{section}.
+  Form Request: Update{Halaman}SectionRequest (5 buah, satu per halaman,
+  ATAU granular per section — direkomendasikan per HALAMAN dulu demi
+  kesederhanaan awal, granular per section bisa menyusul).
+  Service: ContentService, PublishingService.
+  Authorization: auth+admin.
+  Risiko konflik: SEDANG — perlu hati-hati agar validasi tiap section
+  benar2 sesuai field masing2 (lihat Bagian 13), bukan divalidasi
+  generik "array bebas".
+
+Admin/MediaController
+  Tanggung jawab: upload, listing, update alt/caption, hapus aman.
+  Method: index(), store(), update($media), destroy($media).
+  Route: GET/POST /admin/media, PUT/DELETE /admin/media/{media}.
+  Form Request: StoreMediaRequest, UpdateMediaRequest.
+  Service: MediaService.
+  Authorization: auth+admin; policy tambahan cek "media dipakai di
+  mana" sebelum destroy.
+  Risiko konflik: RENDAH, tapi RISIKO KEAMANAN upload perlu perhatian
+  tinggi (lihat Tugas 19 & Bagian 23).
+
+Admin/SiteSettingController
+  Tanggung jawab: kelola site_settings (kontak, logo, dsb.).
+  Method: edit(), update().
+  Route: GET/PUT /admin/settings.
+  Form Request: UpdateSiteSettingRequest.
+  Service: SettingsService.
+  Authorization: auth+admin.
+  Risiko konflik: RENDAH.
+
+Admin/SeoController
+  Tanggung jawab: kelola meta_title/meta_description per halaman (bisa
+  digabung ke PageController::update, ATAU dipisah bila ingin 1 layar
+  khusus SEO lintas 5 halaman). Direkomendasikan DIGABUNG ke
+  Admin/PageController untuk fase 1 (mengurangi jumlah controller),
+  SeoController opsional untuk fase lanjut jika field SEO bertambah
+  (OG image, dsb.).
+  Route: (jika dipisah) GET/PUT /admin/seo.
+  Form Request: UpdatePageSeoRequest (sama dgn PageController).
+  Authorization: auth+admin.
+  Risiko konflik: RENDAH (berpotensi duplikasi tanggung jawab dgn
+  PageController — perlu keputusan desain di tahap implementasi, bukan
+  sekarang).
+
+Admin/ContactMessageController
+  Tanggung jawab: listing pesan masuk, lihat detail, ubah status.
+  Method: index(), show($message), updateStatus($message).
+  Route: GET /admin/messages, GET /admin/messages/{message}, PUT
+  /admin/messages/{message}/status.
+  Form Request: UpdateContactMessageStatusRequest.
+  Authorization: auth+admin.
+  Risiko konflik: RENDAH (tabel belum ada data karena form publik
+  belum aktif).
+
+Admin/ProfileController
+  Tanggung jawab: profil admin sendiri (nama, email, ganti password).
+  Method: edit(), update(), updatePassword().
+  Route: GET /admin/profile, PUT /admin/profile, PUT
+  /admin/profile/password.
+  Form Request: UpdateProfileRequest, UpdatePasswordRequest.
+  Authorization: auth (hanya milik sendiri, tidak perlu policy lintas
+  user di fase 1 role tunggal).
+  Risiko konflik: RENDAH.
+
+Admin/PreviewController
+  Tanggung jawab: render preview draft (hanya admin login, token
+  khusus, noindex).
+  Method: show($page).
+  Route: GET /admin/pages/{page}/preview.
+  Authorization: auth+admin (WAJIB, preview TIDAK BOLEH diakses tanpa
+  login — lihat Tugas 20).
+  Risiko konflik: RENDAH, tapi risiko keamanan bila lupa proteksi auth
+  — WAJIB diuji eksplisit (lihat Tugas 25).
+
+Admin/PublishController
+  Tanggung jawab: aksi publish/batalkan draft per section.
+  Method: publish($section), unpublish($section) atau discardDraft
+  ($section).
+  Route: POST /admin/pages/{page}/sections/{section}/publish, POST
+  .../discard-draft.
+  Service: PublishingService.
+  Authorization: auth+admin.
+  Risiko konflik: RENDAH.
+
+Controller publik (SUDAH ADA, TIDAK dibuat baru):
+  Website\PageController — akan diperbarui BERTAHAP (lihat Bagian 5 &
+  Bagian 25) untuk memanggil ContentService, TANPA mengubah nama method,
+  nama view, atau nama route.
+
+======================================================================
+20. DAFTAR FORM REQUEST YANG DIRENCANAKAN (TUGAS 13)
+======================================================================
+
+Ringkasan pola validasi umum yang berlaku di SEMUA Form Request admin:
+- Sanitasi: `strip_tags()`/tidak menerima tag HTML pada field string/
+  textarea (WAJIB — tidak ada editor rich-text bebas sesuai batasan
+  proyek).
+- Risiko XSS: dicegah dengan (a) tidak menyimpan HTML mentah, (b) Blade
+  tetap memakai `{{ }}` (escaped output) saat render, bukan `{!! !!}`.
+- Risiko URL berbahaya: seluruh field url divalidasi `url` + custom rule
+  menolak skema `javascript:` dan `data:` secara eksplisit (regex/rule
+  khusus, jangan hanya mengandalkan validator `url` bawaan karena ia
+  bisa meloloskan skema tak terduga tergantung konfigurasi).
+
+AdminLoginRequest
+  Field: email, password. Rule: email:required|email, password:
+  required|string. Authorization: true (guest only, dicek middleware).
+  Rate limit: diterapkan di controller/route (throttle), bukan di
+  Form Request.
+
+UpdateProfileRequest
+  Field: name, email. Rule: name required|string|max:100, email
+  required|email|unique:users,email,{id}. Authorization: user login.
+
+UpdatePasswordRequest
+  Field: current_password, password, password_confirmation. Rule:
+  current_password required (custom rule cocok hash lama), password
+  required|min:10|confirmed. Authorization: user login.
+
+StoreMediaRequest
+  Field: file, alt_text, caption. Rule: file required|file|mimes:jpg,
+  jpeg,png,webp|max:5120 (KB, ~5MB) — TOLAK mime berdasarkan isi file
+  (bukan hanya ekstensi, Laravel `mimes` sudah cek MIME asli via
+  fileinfo). alt_text nullable|string|max:150. caption nullable|
+  string|max:200. Batas ukuran: 5MB disarankan (bukan 2GB bawaan
+  php.ini). Tipe file: JPG/JPEG/PNG/WebP saja (SVG TIDAK diizinkan
+  tanpa sanitasi khusus — lihat Tugas 19). Risiko XSS: nama file asli
+  TIDAK dipakai sebagai path (path dibuat sistem, mis. hash/uuid).
+
+UpdateMediaRequest
+  Field: alt_text, caption. Rule sama seperti di atas (tanpa file).
+
+UpdateSiteSettingRequest
+  Field: bergantung key (whatsapp_number, email, address, service_hours,
+  map_embed_src, dst.) — divalidasi PER KEY (bukan generik):
+  whatsapp_number: nullable|string|max:20|regex format telepon.
+  email: nullable|email. address: nullable|string|max:400.
+  service_hours: nullable|string|max:60. map_embed_src: nullable|url|
+  starts_with:https://www.google.com/maps/embed — WAJIB whitelist
+  domain ini untuk mencegah admin memasukkan iframe/URL embed pihak
+  lain yang berbahaya.
+
+UpdatePageSeoRequest
+  Field: meta_title, meta_description. Rule: meta_title nullable|
+  string|max:60. meta_description nullable|string|max:160.
+
+UpdatePageSectionRequest (generik dasar, DIPERLUAS per halaman)
+  Field: content.* (bergantung section). Rule dasar: content
+  required|array. Detail per field WAJIB divalidasi eksplisit per key
+  (bukan "array bebas") — lihat 5 Form Request khusus di bawah.
+  Authorization: cek `section_key` yang dikirim SESUAI dengan section
+  yang memang boleh diubah lewat endpoint tsb (mencegah IDOR — admin
+  tidak bisa mengirim payload section lain via endpoint section
+  tertentu).
+
+StoreContactMessageRequest (untuk FASE FORM PUBLIK NANTI, bukan admin)
+  Field: name, whatsapp, email, program, message, consent. Rule: name
+  required|string|max:100, whatsapp required|string|max:20|regex,
+  email nullable|email, program required|in:{whitelist 7 opsi},
+  message required|string|max:1000, consent required|accepted.
+  Sanitasi: strip_tags pada name/message. Batas panjang: message max
+  1000 karakter (cegah spam teks raksasa). Honeypot: field tersembunyi
+  tambahan (bukan bagian model) untuk deteksi bot.
+
+UpdateContactMessageStatusRequest
+  Field: status. Rule: status required|in:new,read,completed,archived.
+  Authorization: admin only.
+
+UpdateHomeSectionRequest / UpdateBusinessSectionRequest /
+UpdatePartnershipSectionRequest / UpdateSimulationSectionRequest /
+UpdateAboutContactSectionRequest
+  Masing2 memvalidasi PERSIS field per section sesuai tabel Bagian 13
+  (mis. UpdateHomeSectionRequest memvalidasi 5 section Home dengan rule
+  berbeda per section — bisa berupa 1 Form Request besar dengan
+  `sections.hero.title` dsb, ATAU dipecah lebih granular per section
+  saat implementasi). Prinsip WAJIB: setiap field numerik (mis. data
+  simulasi bila suatu saat digabung) divalidasi `nullable|numeric`,
+  TIDAK PERNAH `required` dengan default 0 — mencegah null berubah
+  jadi Rp0 (lihat Bagian 27). Field cta divalidasi lewat rule khusus
+  "internal route/anchor whitelist" (lihat Bagian 24 strategi link).
+
+======================================================================
+21. DAFTAR SERVICE YANG DIRENCANAKAN (TUGAS 14)
+======================================================================
+
+1. ContentService
+   Method utama: sectionsFor(string $pageKey): Collection — ambil semua
+   section published suatu halaman terurut sort_order; section(string
+   $pageKey, string $sectionKey): ?array — ambil satu section (dengan
+   fallback ke draft utk preview admin via parameter $preview=false).
+   Input: page key, section key, flag preview. Output: array/Collection
+   siap pakai di Blade (sudah di-fallback jika null). Dependency: Page,
+   PageSection models. Transaksi DB: tidak perlu (read-only). Caching:
+   YA direkomendasikan (cache per halaman, di-invalidate saat publish).
+   Risiko: cache basi jika invalidasi tidak konsisten — perlu event
+   listener saat PageSection disimpan/publish.
+
+2. MediaService
+   Method utama: store(UploadedFile $file, array $meta): Media;
+   delete(Media $media): bool (menolak jika masih dipakai); isInUse
+   (Media $media): bool.
+   Input: file upload, metadata (alt/caption). Output: Media model.
+   Dependency: Storage facade, model Media. Transaksi DB: YA (insert
+   record + simpan file harus konsisten — gunakan DB transaction,
+   rollback bila simpan file gagal). Caching: tidak perlu. Risiko:
+   race condition nama file (mitigasi: nama file dari uuid/hash, bukan
+   nama asli), path traversal (mitigasi: nama file & path selalu
+   dibuat sistem).
+
+3. SettingsService
+   Method utama: get(string $key, $default = null); set(string $key,
+   $value); all(): array.
+   Input: key setting. Output: value (sudah di-cast sesuai tipe).
+   Dependency: SiteSetting model. Transaksi DB: tidak perlu. Caching:
+   YA (setting dibaca di HAMPIR SETIAP request — footer, header,
+   contact page — cache wajib demi performa, invalidate saat
+   SiteSettingController::update). Risiko: lupa invalidate cache
+   setelah update → data lama tampil.
+
+4. PublishingService
+   Method utama: saveDraft(PageSection $section, array $content);
+   publish(PageSection $section); discardDraft(PageSection $section);
+   preview(PageSection $section): array.
+   Input: PageSection, data konten. Output: PageSection ter-update +
+   ContentRevision baru. Dependency: PageSection, ContentRevision
+   models, ActivityLogService. Transaksi DB: YA (update section +
+   insert revision harus atomik). Caching: invalidate ContentService
+   cache saat publish(). Risiko: race condition bila 2 admin publish
+   section sama bersamaan (mitigasi: DB transaction + optimistic lock
+   sederhana via kolom `updated_at` check, ATAU cukup diterima sebagai
+   risiko rendah di fase 1 karena admin diperkirakan sedikit).
+
+5. SimulationService (HANYA JIKA FORMULA RESMI TERSEDIA — BELUM
+   dibuat, karena formula belum disetujui klien)
+   Method utama (rencana, BELUM diimplementasikan): getAssumptions();
+   getScenario(string $key); formatValue($value, $type) — HANYA
+   memformat (mis. Rupiah id-ID) angka yang SUDAH final dari database,
+   TIDAK PERNAH menghitung angka baru dari rumus tanpa persetujuan
+   resmi.
+   Risiko utama: jika dibangun sebelum formula/angka disetujui, berisiko
+   mengulang kesalahan "menghitung linear tanpa dasar resmi" yang sudah
+   pernah terjadi di front-end (dan sudah diperbaiki jadi estimasi
+   berlabel jelas). WAJIB tetap null-safe.
+
+6. ActivityLogService
+   Method utama: log(string $action, ?Model $subject = null, ?string
+   $description = null).
+   Input: aksi, subjek opsional. Output: ActivityLog record. Dependency:
+   ActivityLog model, auth()->user(). Transaksi DB: tidak wajib (single
+   insert). Caching: tidak perlu. Risiko: log membengkak tanpa
+   pembersihan berkala (mitigasi: job pembersihan di fase lanjut,
+   bukan sekarang).
+
+======================================================================
+22. RENCANA MIDDLEWARE DAN AUTHORIZATION (TUGAS 15)
+======================================================================
+
+Middleware yang direkomendasikan:
+1. `auth` (bawaan Laravel) — pastikan user login untuk seluruh route
+   /admin/* KECUALI /admin/login.
+2. `admin` (CUSTOM, belum dibuat) — pastikan `auth()->user()->role ===
+   'admin'` (atau via Gate/Policy), diterapkan setelah `auth`.
+3. `active` (CUSTOM, belum dibuat, atau digabung ke dalam middleware
+   `admin`) — pastikan `is_active = true`; user nonaktif otomatis
+   di-logout/ditolak meski sesi masih valid.
+4. `throttle` (bawaan Laravel) — rate limit login, mis.
+   `throttle:5,1` (5 percobaan per menit) khusus route POST
+   /admin/login.
+5. `verified` — TIDAK diperlukan fase pertama (tidak ada alur verifikasi
+   email admin yang direncanakan; akun admin dibuat manual/seeder).
+6. Preview access — bisa berupa middleware tambahan `admin` yang sama
+   (preview tetap wajib login, TIDAK memakai token publik terpisah —
+   lihat Tugas 20) atau ditegakkan langsung di
+   `Admin\PreviewController` via `$this->authorize()`.
+
+Authorization (Policy/Gate) yang dievaluasi:
+7. Policy Media — cek kepemilikan/izin sebelum update/hapus (fase 1
+   dengan 1 role admin: SEMUA admin punya akses penuh, policy cukup
+   sederhana `true` untuk role admin — kompleksitas granular ditunda
+   ke fase role>1).
+8. Policy PageSection — cek `section_key` yang diedit sesuai endpoint
+   (mencegah IDOR lintas section/halaman), bukan soal kepemilikan user.
+9. Policy SiteSetting — admin only, tidak granular di fase 1.
+10. Policy ContactMessage — admin only untuk read/update status.
+11. Policy Publish — admin only di fase 1; disiapkan agar mudah
+    diperluas ke role "editor vs publisher" di fase lanjut tanpa
+    migrasi ulang struktur.
+
+Kesimpulan: SATU ROLE ADMIN CUKUP untuk tahap pertama. Middleware
+`auth` + `admin` (+ pengecekan `is_active`) sudah memadai; Policy
+granular per-resource disiapkan strukturnya tapi isinya sederhana
+("izinkan semua admin") sampai ada kebutuhan multi-role nyata.
+
+======================================================================
+23. STRUKTUR ROUTE ADMIN YANG DIREKOMENDASIKAN (BELUM DIBUAT)
+======================================================================
+
+GET|POST  /admin/login                          → Admin\Auth\LoginController (guest)
+POST      /admin/logout                         → Admin\Auth\LoginController@destroy (auth)
+GET       /admin                                → Admin\DashboardController@index (auth+admin)
+GET       /admin/pages                          → Admin\PageController@index (auth+admin)
+GET|PUT   /admin/pages/{page}                   → Admin\PageSectionController (auth+admin)
+GET       /admin/pages/{page}/preview           → Admin\PreviewController@show (auth+admin)
+POST      /admin/pages/{page}/sections/{section}/publish → Admin\PublishController@publish (auth+admin)
+POST      /admin/pages/{page}/sections/{section}/discard-draft → Admin\PublishController@discardDraft (auth+admin)
+GET|POST  /admin/media                          → Admin\MediaController (auth+admin)
+PUT|DELETE /admin/media/{media}                 → Admin\MediaController (auth+admin)
+GET|PUT   /admin/seo                            → Admin\SeoController atau digabung Admin\PageController (auth+admin)
+GET       /admin/messages                       → Admin\ContactMessageController@index (auth+admin)
+GET       /admin/messages/{message}              → Admin\ContactMessageController@show (auth+admin)
+PUT       /admin/messages/{message}/status        → Admin\ContactMessageController@updateStatus (auth+admin)
+GET|PUT   /admin/settings                        → Admin\SiteSettingController (auth+admin)
+GET|PUT   /admin/profile                         → Admin\ProfileController (auth)
+PUT       /admin/profile/password                 → Admin\ProfileController@updatePassword (auth)
+
+Seluruh route di atas AMAN didaftarkan — tidak ada bentrok dengan 5
+route publik yang sudah ada (dikonfirmasi Bagian 3 & 4). Link menuju
+/admin/login TIDAK BOLEH ditampilkan di layout publik manapun (header/
+footer/partial publik TIDAK disentuh pada tahap ini maupun nanti demi
+menjaga prinsip ini).
+
+======================================================================
+24. STRATEGI INTEGRASI FRONT-END DAN BACKEND (TUGAS 16 & 17)
+======================================================================
+
+Prinsip inti: file section Blade, CSS, JS TETAP DIPAKAI APA ADANYA.
+Hanya SUMBER data yang berubah — dari teks statis di Blade menjadi
+`data_get($section, 'content.field', $fallbackStatisSaatIni)`.
+
+Contoh pola konversi (ilustrasi, BELUM diterapkan):
+
+Sebelum:
+  <h1 class="ca-hero__title ca-display">
+      Mobil Bekerja.<br>
+      Aset <span class="ca-hero__title-accent">Bertumbuh.</span>
+  </h1>
+
+Sesudah (konsep):
+  <h1 class="ca-hero__title ca-display">
+      {{ data_get($hero, 'content.title_line_1', 'Mobil Bekerja.') }}<br>
+      Aset <span class="ca-hero__title-accent">
+          {{ data_get($hero, 'content.title_line_2', 'Bertumbuh.') }}
+      </span>
+  </h1>
+
+Standar fallback per tipe field:
+- string/textarea → fallback = teks statis yang SEKARANG ada di Blade
+  (bukan string kosong, bukan "Lorem ipsum").
+- image → jika `content.image` kosong/media terhapus, PAKAI gambar
+  statis yang sekarang ada di public/assets/images/* sebagai fallback
+  (BUKAN broken image, konsisten dengan aturan front-end sebelumnya).
+- alt text → fallback = alt text statis yang sekarang ada (termasuk alt
+  kosong "" untuk gambar dekoratif — kekosongan ini SAH, bukan bug).
+- link/CTA → jika `route_name`/`anchor` kosong atau tidak valid,
+  fallback = tujuan default section itu SEKARANG (bukan `href="#"`).
+- list/repeater → jika kosong, fallback = daftar default sekarang;
+  TIDAK BOLEH menampilkan daftar kosong tanpa isi (merusak layout
+  grid/flex yang mengasumsikan N item tetap pada repeater terkunci).
+- boolean (is_active section) → section HANYA disembunyikan
+  (`@if($section['is_active'] ?? true)`) bila field ini eksplisit
+  false; default TETAP TAMPIL bila kolom belum ada/null (fail-safe:
+  konten publik tidak boleh hilang karena data belum lengkap).
+- numeric/currency (khusus Simulasi) → lihat Bagian 27, TIDAK PERNAH
+  null menjadi 0/Rp0.
+- FAQ/partner/simulation → diambil dari tabel khusus (bukan
+  page_sections), tetap disediakan Collection kosong yang aman
+  di-@foreach tanpa error bila datanya nol baris.
+
+Strategi status:
+- section inactive → section disembunyikan TOTAL dari halaman publik
+  (bukan ditampilkan kosong) — TAPI perlu dipastikan section yang
+  desainnya "berpasangan" (mis. checkpoint 4 tahap ↔ accordion 5 item)
+  tidak dinonaktifkan sebagian yang merusak makna alur; disarankan
+  toggle is_active hanya di level SECTION PENUH, bukan sub-item
+  repeater terkunci.
+- draft vs published → controller publik SELALU membaca versi
+  `published` (never draft) — draft HANYA terlihat lewat
+  Admin\PreviewController yang wajib login.
+- preview admin → memakai layout PUBLIK yang sama persis (reuse Blade)
+  namun data diambil dari `draft_content`, dan HARUS diberi
+  `<meta name="robots" content="noindex">` otomatis (lihat Bagian 28).
+
+Urutan integrasi (WAJIB berpasangan sesuai prinsip yang sudah dikunci):
+Editor Admin → Database → Content Service → Controller Publik → Blade
+Publik → Pengujian, dikerjakan SATU HALAMAN PENUH sebelum lanjut ke
+halaman berikutnya (Home dulu, baru Bisnis, dst. — sesuai urutan
+PROMPT 12 tahap 6–10). Selama halaman lain belum terintegrasi, halaman
+tsb TETAP memakai konten statis apa adanya (tidak ada halaman yang
+"setengah dinamis setengah statis" dalam satu waktu, kecuali di dalam
+proses migrasi 1 halaman itu sendiri).
+
+Strategi Link & CTA (Tugas 17):
+Field CTA disimpan TERSTRUKTUR, bukan string href bebas:
+  { "label": string, "type": "internal"|"external"|"anchor",
+    "route_name": string|null, "anchor": string|null,
+    "external_url": string|null, "target": "_self"|"_blank",
+    "rel": string|null, "is_active": boolean }
+Validasi:
+- type=internal → route_name WAJIB ada di whitelist 5 nama route resmi
+  (home/business/partnership/simulation/about-contact); resolusi akhir
+  URL selalu lewat `route($route_name)` di Blade (bukan menyimpan URL
+  mentah), sehingga jika route berubah, seluruh CTA otomatis ikut benar.
+- anchor → WAJIB dari whitelist anchor yang benar2 ada di desain saat
+  ini (mis. #contact, #cara-kerja, #operate, #mitra-owner, #mitra-driver,
+  #dasar-perhitungan, #simulasi-satu-unit, dsb.) — bukan bebas ketik.
+- type=external → external_url WAJIB lolos validasi `url`, DITOLAK bila
+  berawalan `javascript:` atau `data:` (custom rule eksplisit,
+  bukan hanya mengandalkan validator `url` bawaan).
+- target=_blank → rel WAJIB otomatis diisi sistem `noopener noreferrer`
+  (tidak diserahkan ke input admin agar tidak lupa/salah ketik).
+
+======================================================================
+25. STRATEGI MEDIA LIBRARY (TUGAS 19)
+======================================================================
+
+Format diizinkan: JPG, JPEG, PNG, WebP. SVG TIDAK diizinkan di fase
+pertama (SVG bisa membawa script/XSS bila tidak disanitasi ketat —
+ditunda sampai ada kebutuhan nyata + sanitizer khusus, mis.
+`enshrined/svg-sanitize`, BELUM diinstal sekarang).
+Ukuran maksimal: disarankan 5MB per file (jauh lebih ketat dari
+php.ini 2GB bawaan dev — WAJIB diatur eksplisit di StoreMediaRequest,
+jangan mengandalkan php.ini).
+Nama file: DIHASILKAN SISTEM (uuid/hash + ekstensi asli tervalidasi),
+`original_name` tetap disimpan sebagai metadata terpisah untuk
+ditampilkan ke admin.
+Metadata yang disimpan: original_name, mime_type (dari isi file, bukan
+ekstensi saja — Laravel `mimes` rule sudah menangani ini via fileinfo),
+size, width, height (dibaca via `getimagesize()`/GD saat upload),
+alt_text, caption, uploaded_by.
+Cek penggunaan sebelum delete: query sederhana ke `page_sections.content`
+(LIKE pada JSON, atau field terstruktur bila media_id disimpan sebagai
+angka jelas di JSON) + tabel `partners`/`site_settings` — jika masih
+dipakai, tombol hapus DINONAKTIFKAN/beri peringatan, bukan langsung
+hard delete.
+Disk: `public` (storage/app/public → public/storage via symlink, BELUM
+dibuat pada tahap audit ini).
+Tidak menyimpan file executable: validasi MIME + ekstensi ganda (mis.
+tolak `.php.jpg` dengan mengecek ekstensi asli TERAKHIR saja dan
+mime_type asli).
+Tidak menimpa file lama dengan nama sama: nama file sistem selalu unik
+(uuid), jadi secara desain TIDAK MUNGKIN menimpa.
+Crop manual: BELUM diperlukan di fase pertama (seluruh gambar saat ini
+sudah di-crop manual lewat proses PHP GD selama pembangunan front-end;
+admin fase 1 cukup upload+pilih+ganti+alt+hapus, tanpa editor crop
+interaktif — sesuai prioritas "Tugas 19" yang membatasi ke 6 fungsi
+dasar itu).
+
+======================================================================
+26. STRATEGI DATA SIMULASI (TUGAS 18)
+======================================================================
+
+Kondisi front-end saat ini (hasil audit ulang):
+- Sumber data: public/assets/js/pages/simulation/simulation-config.js
+  (window.CarAssetSimulationConfig), dibaca oleh simulation-render.js
+  via elemen `[data-simulation-field]` + atribut `data-simulation-format`.
+- Field yang SUDAH terisi angka resmi klien (dari dokumen "Product
+  Knowledge & Business Scheme"): assumptions.operatingDays (27),
+  assumptions.dailyDeposit (Rp230.000), assumptions.operationalCost
+  (Rp500.000), assumptions.monthlyInstallment (Rp5.100.000),
+  assumptions.managementShare/ownerShare (rasio 40%/60%, BUKAN nominal
+  rupiah), scenarios.oneUnit.* (gross Rp6.210.000, cost Rp500.000,
+  installment Rp5.100.000, management/owner berupa rasio teks).
+- Field yang berupa ESTIMASI LINEAR BERLABEL (bukan angka resmi
+  terpisah): scenarios.fiveUnits.* dan scenarios.tenUnits.* (nilai 1
+  unit dikalikan 5/10, ditandai `isEstimate: true` + badge UI "Estimasi
+  Linear — Bukan Angka Resmi" + disclaimer teks eksplisit).
+- Field yang MASIH `Menunggu konfirmasi final` (string status, bukan
+  angka): seluruh `protection.*` (insurance, warranty, gps, monitoring,
+  maintenance, reporting).
+- Istilah yang dipakai KONSISTEN: "hasil operasional bruto", "biaya
+  operasional", "kewajiban kendaraan", "komponen pengelolaan",
+  "proyeksi hasil operasional mitra", "hasil aktual dapat berbeda" —
+  TIDAK ADA kata "keuntungan/profit pasti/passive income" dipakai
+  sebagai klaim (hanya muncul dalam kalimat PENYANGKALAN resmi di
+  disclaimer, sudah diverifikasi via grep sebelumnya).
+- Formula resale-value/leveraging (1→3→9→27→81→243 unit dari dokumen
+  klien) SENGAJA TIDAK dipakai di halaman publik manapun — dianggap
+  berisiko (pola pertumbuhan eksponensial ala skema piramida) dan
+  BELUM disetujui sebagai formula resmi untuk ditampilkan ke publik.
+
+Rencana backend (SEMUA sesuai arahan Tugas 18, BELUM diimplementasikan):
+1. Simpan data final di tabel `simulation_settings` (BUKAN
+   page_sections) — pemisahan tegas karena field ini adalah ANGKA
+   SENSITIF BISNIS, bukan teks editorial biasa.
+2. Kolom `value` bertipe string,nullable — representasi "belum final"
+   TETAP `null` murni di database (bukan string kosong "", bukan "0").
+3. Layer pembacaan (ContentService/SimulationService) WAJIB meniru
+   logika `simulation-render.js` yang sudah ada: jika value null/kosong
+   → tampilkan fallback "Menunggu angka final klien"; TIDAK PERNAH
+   mengonversi ke 0/Rp0.
+4. Skala 5 & 10 unit TIDAK dihitung otomatis oleh backend tanpa
+   `is_estimate` eksplisit — jika admin hanya mengisi 1 unit, field
+   5/10 unit tetap null (backend TIDAK mereplikasi logika "estimasi
+   linear" secara implisit; label "estimasi linear" HANYA sah dipakai
+   bila memang sudah ada keputusan eksplisit seperti sekarang di
+   front-end — sebaiknya field `is_estimate` bisa diisi manual oleh
+   admin per baris, bukan otomatis oleh sistem).
+5. Pemisahan input dasar (`assumptions.*`) vs output/hasil
+   (`scenarios.*.*Result`) sudah tercermin di `group` kolom
+   simulation_settings (assumptions/one_unit/five_units/ten_units/
+   protection).
+6. Status draft/final: direkomendasikan SATU site_setting global
+   `simulation_status` (draft/final) yang memengaruhi badge "Contoh
+   tampilan..." di 3 section (assumptions/one-unit/multiple-units) —
+   BUKAN per-baris, karena badge ini konsepnya berlaku untuk seluruh
+   halaman simulasi sekaligus.
+7. `updated_by` (FK users) tercatat di setiap baris simulation_settings
+   + dicatat juga di `activity_logs` (perubahan angka simulasi
+   dianggap aksi sensitif, WAJIB masuk audit trail eksplisit).
+8. Validasi tipe angka: Form Request khusus memvalidasi
+   `nullable|numeric` untuk value_type=integer/decimal, dan
+   `nullable|string|max:120` untuk value_type=percent_text/status_text
+   — TIDAK PERNAH `required`.
+9. Format Rupiah id-ID: logika `Intl.NumberFormat('id-ID', ...)` yang
+   SUDAH ADA di simulation-render.js dipertahankan KONSEPNYA di sisi
+   PHP (mis. `number_format($value, 0, ',', '.')` dengan prefix "Rp")
+   saat render server-side, ATAU tetap dirender client-side seperti
+   sekarang (KEPUTUSAN IMPLEMENTASI ditunda ke tahap pembangunan,
+   bukan sekarang) — yang penting outputnya identik format "RpX.XXX.XXX".
+10. Preview WAJIB sebelum publish — perubahan angka simulasi TIDAK
+    langsung tayang ke publik tanpa melalui alur draft→preview→publish
+    yang sama seperti section CMS lain.
+11. Disclaimer (section "disclaimer") TETAP TERKUNCI (readonly
+    disarankan) — tidak boleh dihapus/diperlemah maknanya oleh admin.
+12. TIDAK ADA kalimat "keuntungan dijamin" dsb. — validasi tambahan
+    berupa BLACKLIST KATA di Form Request khusus data simulasi (mis.
+    menolak submit yang mengandung frasa "dijamin", "pasti untung",
+    "tanpa risiko") sebagai lapisan keamanan konten tambahan, DI LUAR
+    validasi teknis biasa.
+
+======================================================================
+27. STRATEGI DRAFT, PREVIEW, DAN PUBLISH (TUGAS 20)
+======================================================================
+
+Rekomendasi: PENDEKATAN A (draft_content + published_content pada
+page_sections) DIGABUNG dengan content_revisions sebagai HISTORI
+(bukan mekanisme utama baca/tulis). Alasan: pendekatan A jauh lebih
+sederhana untuk 25 section yang jumlahnya tetap (tidak butuh versioning
+kompleks ala Git), sementara `content_revisions` tetap disediakan
+sebagai log/riwayat agar admin bisa melihat "apa yang berubah kapan"
+dan (di fase lanjut) rollback manual dengan menyalin isi revisi lama
+kembali ke `content`.
+
+Struktur data: page_sections.content (published, dibaca publik) +
+page_sections.draft_content (nullable, dibaca HANYA saat preview admin)
++ page_sections.status (draft/published) + published_at + published_by.
+Setiap kali `publish()` dipanggil: content_revisions dibuat dari isi
+`content` LAMA (sebelum ditimpa) sebagai snapshot histori, lalu
+`draft_content` disalin ke `content`, `draft_content` dikosongkan,
+`published_at`/`published_by` diperbarui.
+
+Route preview: /admin/pages/{page}/preview — TIDAK memakai token publik
+yang bisa ditebak; akses SEPENUHNYA lewat sesi login admin (middleware
+auth+admin), BUKAN token URL semi-publik. Ini menjawab syarat "preview
+tidak boleh dapat ditebak publik" dengan cara PALING AMAN: preview
+tidak pernah bisa diakses tanpa login sama sekali, sehingga tidak ada
+token untuk ditebak.
+Preview tidak boleh terindeks: response preview WAJIB menyertakan
+header/meta `noindex` (baik lewat `X-Robots-Tag: noindex` header HTTP
+maupun meta tag di layout khusus preview) — detail implementasi
+ditentukan saat pembangunan, bukan sekarang.
+
+Rollback: cukup MANUAL di fase 1 (admin melihat isi
+`content_revisions.content` lama, lalu admin menyalinnya kembali via
+form edit biasa) — TIDAK perlu fitur rollback otomatis 1-klik di fase
+pertama (kompleksitas tidak sepadan dengan manfaat di skala 25 section
++ admin sedikit).
+
+Caching: ContentService WAJIB invalidate cache page/section terkait
+SETIAP kali publish() dipanggil (bukan hanya saat save draft) — agar
+publik langsung melihat versi baru.
+
+Risiko: draft tampil ke publik BILA controller publik salah membaca
+`draft_content` alih-alih `content` — WAJIB test eksplisit
+"draft tidak tampil publik" (lihat Bagian 30 rencana pengujian).
+
+======================================================================
+28. STRATEGI SEO (TUGAS 21)
+======================================================================
+
+Kondisi SEO front-end SAAT INI (audit, tidak diubah):
+- title & meta description: SUDAH ADA per halaman via `@section('title',
+  ...)` / `@section('meta_description', ...)` di masing2 index.blade.php,
+  dirender lewat partials/seo-meta.blade.php.
+- robots: SUDAH ADA (`<meta name="robots" content="index, follow">`,
+  hardcoded di seo-meta.blade.php, belum dinamis).
+- canonical: SUDAH ADA, dinamis via `url()->current()` (bukan hardcode).
+- heading: 1 H1 per halaman (dikonfirmasi sepanjang pembangunan 5
+  halaman), hierarki H2/H3 konsisten.
+- alt text: sudah diisi manual di setiap gambar konten (gambar
+  dekoratif memakai alt="" secara sengaja, bukan kealpaan).
+- sitemap.xml & robots.txt: robots.txt SUDAH ADA (bawaan Laravel,
+  belum dikustomisasi isinya untuk SEO). sitemap.xml BELUM ADA sama
+  sekali — perlu dibuat di fase SEO CMS (generate dari 5 route + status
+  published, BELUM sekarang).
+
+Field SEO yang direncanakan (per halaman, disimpan di tabel `pages`):
+meta_title (string,max:60 disarankan), meta_description (string,
+max:160 disarankan), robots (select: "index,follow" default |
+"noindex,nofollow" khusus preview), canonical (TETAP dihitung otomatis
+dari route, TIDAK dijadikan field bebas isi admin — mencegah admin
+salah ketik canonical yang merusak SEO). Social fields (Open Graph,
+Twitter Card) SENGAJA TIDAK direncanakan dulu — proyek ini sebelumnya
+eksplisit "Jangan membuat Open Graph" sampai disetujui terpisah.
+
+Bagian yang DIKUNCI (tidak boleh admin ubah): slug/route utama, nama
+route, jumlah halaman, struktur heading utama (H1 tunggal per halaman
+tetap dijaga lewat desain section, bukan field bebas ketik admin yang
+bisa membuat 2 H1).
+
+Validasi yang disarankan: meta_title max 60 karakter, meta_description
+max 160 karakter, canonical URL TIDAK bisa diedit bebas (readonly,
+auto), noindex WAJIB otomatis aktif untuk halaman preview (bukan
+opsional/bisa lupa dicentang admin).
+
+======================================================================
+29. STRATEGI FORM KONSULTASI (TUGAS 22)
+======================================================================
+
+Audit front-end form konsultasi (about-contact/contact-form.blade.php):
+- Field: name, whatsapp, email(opsional), program(select 7 opsi),
+  message(textarea), consent(checkbox) — SESUAI TEPAT dengan field yang
+  direncanakan Tugas 22.
+- Validasi JavaScript: SUDAH ADA (contact-form.js) — validasi required,
+  format email dasar, format WhatsApp longgar (regex
+  `^(\+62|62|0)8[0-9]{7,12}$`), pesan error dekat field (elemen
+  `#{id}-error` SELALU ada di DOM, ditampilkan/disembunyikan via
+  `hidden`), fokus pindah ke field invalid pertama, `aria-invalid`
+  diperbarui, status `aria-live="polite"`.
+- Action/method: form TIDAK memiliki `action`/`method` submit nyata —
+  `event.preventDefault()` SELALU dipanggil di JS, sengaja belum
+  terhubung backend.
+- CSRF: BELUM relevan (belum ada endpoint submit); WAJIB ditambahkan
+  `@csrf` begitu form diaktifkan.
+- Status prototipe: label "Form Konsultasi — Tampilan Front-end" +
+  microcopy "Form belum terhubung ke sistem pengiriman atau database."
+  SUDAH ada dan eksplisit.
+- Pesan UI: status sukses SAAT INI berbunyi "Form telah diperiksa,
+  tetapi pengiriman belum aktif karena backend belum dihubungkan." —
+  TIDAK ADA klaim "berhasil dikirim" (sudah sesuai aturan kejujuran).
+- Program selector: 7 opsi (Pilih program/Mitra Owner/Mitra Driver/
+  Simulasi 1/5/10 Unit/Konsultasi Umum) — SESUAI dengan
+  `program_options` yang direncanakan di field CMS (Bagian 13).
+
+Rencana tabel contact_messages: SUDAH dirinci di Bagian 17 (model) &
+Bagian 16 (ERD) — kolom: id, name, whatsapp, email, program, message,
+consent, status(new/read/completed/archived), ip_address, user_agent,
+timestamps.
+
+Rencana keamanan saat form diaktifkan (BELUM diimplementasikan):
+- Validasi server penuh via StoreContactMessageRequest (Bagian 20).
+- CSRF token Laravel bawaan (`@csrf`).
+- Rate limit submit (mis. `throttle:5,1` per IP) untuk cegah spam
+  beruntun.
+- Honeypot field tersembunyi (field ekstra yang harus tetap kosong;
+  bila terisi → request ditolak diam-diam, indikasi bot).
+- Sanitasi: `strip_tags` pada name/message sebelum simpan (defense in
+  depth, meski Blade sudah escape saat render).
+- Pembatasan panjang: message max 1000 karakter.
+- Tidak menyimpan data sensitif berlebihan: TIDAK mengumpulkan data di
+  luar 6 field yang memang diminta (tidak ada field tambahan
+  "diam-diam" seperti lokasi GPS, dsb.).
+- TIDAK membuka WhatsApp otomatis dari server (form hanya menyimpan ke
+  database; notifikasi WhatsApp ke admin, jika suatu saat diinginkan,
+  adalah keputusan terpisah yang harus disetujui eksplisit karena
+  menyangkut integrasi pihak ketiga).
+- TIDAK mengirim email sebelum SMTP dikonfigurasi eksplisit (MAIL_MAILER
+  saat ini `log` — email hanya ditulis ke log file, tidak benar2
+  terkirim; ini adalah kondisi AMAN untuk pengembangan, tapi harus
+  diubah SADAR sebelum production jika notifikasi email diinginkan).
+
+======================================================================
+30. DAFTAR RISIKO DAN MITIGASI (TUGAS 23)
+======================================================================
+
+RISIKO: Konflik route /admin dengan route publik
+DAMPAK: Sedang — bisa menyebabkan halaman publik tidak bisa diakses
+KEMUNGKINAN: Rendah (belum ada route admin sama sekali saat ini)
+MITIGASI: Daftarkan route admin dalam file terpisah (routes/admin.php)
+  dengan prefix eksplisit `admin`, uji `route:list` setelah penambahan
+TAHAP PENANGANAN: Tahap 3 (Layout sidebar) saat route admin mulai dibuat
+
+RISIKO: Konflik autentikasi dgn guard/middleware yang belum ada
+DAMPAK: Sedang
+KEMUNGKINAN: Rendah (tidak ada auth apa pun sekarang, clean slate)
+MITIGASI: Gunakan guard `web` bawaan + middleware `admin` custom,
+  hindari menambah guard baru tanpa kebutuhan jelas
+TAHAP PENANGANAN: Tahap 2 (Login dan keamanan admin)
+
+RISIKO: Migration lama bentrok dgn migration CMS baru
+DAMPAK: Rendah
+KEMUNGKINAN: Sangat rendah (hanya 3 migration bawaan, nama tabel CMS
+  sudah dipastikan tidak bentrok — Bagian 6)
+MITIGASI: Jalankan migration baru dgn nama file/timestamp baru, jangan
+  edit migration lama
+TAHAP PENANGANAN: Tahap 4 (Database CMS)
+
+RISIKO: Data produksi terganggu
+DAMPAK: Tinggi (bila terjadi)
+KEMUNGKINAN: Sangat rendah (database saat ini 0 baris data pengguna)
+MITIGASI: Backup database.sqlite sebelum migration pertama kali
+  dijalankan meski saat ini kosong (kebiasaan aman)
+TAHAP PENANGANAN: Tahap 4, sebelum migrate pertama kali
+
+RISIKO: Content JSON terlalu kompleks/sulit divalidasi
+DAMPAK: Sedang
+KEMUNGKINAN: Sedang (25 section dgn struktur beragam)
+MITIGASI: Form Request KHUSUS per halaman (bukan generik), validasi
+  eksplisit per field sesuai Bagian 13, bukan "array bebas"
+TAHAP PENANGANAN: Tahap 6–10 (integrasi tiap halaman)
+
+RISIKO: XSS dari konten admin
+DAMPAK: Tinggi
+KEMUNGKINAN: Sedang bila tidak dicegah sejak desain
+MITIGASI: TIDAK ADA editor HTML bebas di CMS, Blade selalu escape
+  ({{ }}), strip_tags di Form Request, blacklist skema javascript:/data:
+  pada field URL
+TAHAP PENANGANAN: Tahap 5 (Content Service) & seterusnya (berlaku terus)
+
+RISIKO: Upload file berbahaya (mis. PHP menyamar sbg gambar)
+DAMPAK: Tinggi
+KEMUNGKINAN: Sedang tanpa validasi ketat
+MITIGASI: Validasi MIME asli (bukan ekstensi), whitelist ekstensi ganda,
+  simpan di disk `public` non-executable context, nama file sistem
+TAHAP PENANGANAN: Tahap 5 (Media Library)
+
+RISIKO: Broken image di publik
+DAMPAK: Sedang (kualitas visual)
+KEMUNGKINAN: Rendah bila fallback diterapkan konsisten
+MITIGASI: Fallback gambar statis bila media null/terhapus (Bagian 24)
+TAHAP PENANGANAN: Tahap 6–10
+
+RISIKO: Teks admin terlalu panjang merusak layout
+DAMPAK: Sedang
+KEMUNGKINAN: Sedang (admin bisa mengetik bebas dalam batas field)
+MITIGASI: `max:` length di setiap Form Request sesuai Bagian 13,
+  ditambah validasi visual manual saat QA per halaman
+TAHAP PENANGANAN: Tahap 6–10
+
+RISIKO: Daftar item (repeater) terlalu banyak
+DAMPAK: Sedang–Tinggi tergantung desain (mis. checkpoint 4 tahap yang
+  memang pas 4 kolom)
+KEMUNGKINAN: Sedang pada repeater TERKUNCI bila validasi jumlah lolos
+MITIGASI: Validasi `size:N` (bukan `max:N`) pada repeater jumlah tetap;
+  repeater bebas (FAQ/partner) diberi batas wajar (FAQ maks ~20,
+  partner tetap 4 slot)
+TAHAP PENANGANAN: Tahap 6–10
+
+RISIKO: CTA rusak (link internal salah/anchor tidak ada)
+DAMPAK: Sedang
+KEMUNGKINAN: Sedang bila admin bebas ketik href
+MITIGASI: CTA TERSTRUKTUR + whitelist route_name/anchor (Bagian 24),
+  bukan free-text href
+TAHAP PENANGANAN: Tahap 6–10
+
+RISIKO: Section nonaktif merusak alur (mis. checkpoint tanpa accordion)
+DAMPAK: Sedang
+KEMUNGKINAN: Rendah bila toggle hanya di level section penuh
+MITIGASI: is_active hanya di level SECTION, bukan sub-item repeater
+  terkunci (Bagian 24)
+TAHAP PENANGANAN: Tahap 6–10
+
+RISIKO: Draft tampil ke publik
+DAMPAK: Tinggi (konten belum disetujui tayang ke publik)
+KEMUNGKINAN: Rendah bila controller publik SELALU pakai query
+  scopePublished()
+MITIGASI: Test eksplisit "draft tidak tampil publik" (Bagian 30 rencana
+  test), code review controller publik
+TAHAP PENANGANAN: Tahap 12 (Draft/preview/publish) & QA akhir
+
+RISIKO: Cache konten lama tampil setelah publish
+DAMPAK: Sedang
+KEMUNGKINAN: Sedang bila invalidasi cache lupa dipasang
+MITIGASI: Event/listener otomatis invalidate cache saat publish()
+  dipanggil (Bagian 21 & 27)
+TAHAP PENANGANAN: Tahap 12
+
+RISIKO: Race condition saat publish bersamaan
+DAMPAK: Rendah–Sedang (admin diperkirakan sedikit)
+KEMUNGKINAN: Rendah
+MITIGASI: DB transaction per aksi publish; diterima sebagai risiko
+  rendah di fase 1
+TAHAP PENANGANAN: Tahap 12
+
+RISIKO: Data simulasi tidak konsisten (angka beda antar section)
+DAMPAK: Tinggi (kredibilitas & kejujuran data)
+KEMUNGKINAN: Rendah bila SATU sumber (simulation_settings) benar2
+  dipatuhi seluruh section
+MITIGASI: Seluruh 3 section simulasi WAJIB membaca key yang SAMA dari
+  simulation_settings (arsitektur sudah terbukti di front-end via
+  simulation-config.js — direplikasi konsepnya di backend)
+TAHAP PENANGANAN: Tahap 9 (Simulasi Admin)
+
+RISIKO: Null menjadi Rp0
+DAMPAK: Tinggi (bisa disalahartikan sbg klaim finansial)
+KEMUNGKINAN: Sedang bila developer lalai saat casting
+MITIGASI: Test eksplisit "null tidak menjadi 0" (Bagian 30), review
+  kode formatValue()
+TAHAP PENANGANAN: Tahap 9
+
+RISIKO: Formula tidak resmi dipakai untuk menghitung skala 5/10 unit
+DAMPAK: Tinggi
+KEMUNGKINAN: Rendah bila dilarang eksplisit di Form Request & proses
+  kerja
+MITIGASI: `is_estimate` manual per baris, TIDAK ADA logika
+  auto-multiply di backend
+TAHAP PENANGANAN: Tahap 9
+
+RISIKO: Partner/legalitas palsu masuk ke CMS
+DAMPAK: Tinggi (hukum & reputasi)
+KEMUNGKINAN: Rendah bila proses editorial manual tetap ada
+MITIGASI: Validasi teknis TIDAK cukup — perlu proses approval manual
+  (bukan otomatis) sebelum publish partner/legal_items baru
+TAHAP PENANGANAN: Tahap 10 (Tentang & Kontak Admin)
+
+RISIKO: Data kontak belum final ditampilkan sbg final
+DAMPAK: Sedang
+KEMUNGKINAN: Sedang (nomor WhatsApp saat ini memang placeholder
+  +123-456-7890)
+MITIGASI: `whatsapp_link_mode` setting eksplisit (anchor vs wa_link,
+  Bagian 14) agar tombol tidak jadi link aktif ke nomor palsu
+TAHAP PENANGANAN: Tahap 5–6
+
+RISIKO: Form spam
+DAMPAK: Sedang
+KEMUNGKINAN: Sedang setelah form diaktifkan
+MITIGASI: Rate limit + honeypot + validasi server (Bagian 29)
+TAHAP PENANGANAN: Tahap 11 (Form konsultasi)
+
+RISIKO: Unauthorized access ke /admin/*
+DAMPAK: Tinggi
+KEMUNGKINAN: Rendah bila middleware auth+admin diterapkan KONSISTEN
+  di seluruh route admin tanpa kecuali
+MITIGASI: Middleware grup di routes/admin.php (bukan per-route manual
+  yang rawan lupa), test eksplisit "guest tidak bisa akses admin"
+TAHAP PENANGANAN: Tahap 2
+
+RISIKO: Session fixation
+DAMPAK: Tinggi
+KEMUNGKINAN: Rendah bila regenerasi session diterapkan
+MITIGASI: `$request->session()->regenerate()` WAJIB dipanggil tepat
+  setelah login berhasil (bagian standar Laravel, tinggal dipastikan
+  ada di LoginController)
+TAHAP PENANGANAN: Tahap 2
+
+RISIKO: Brute force login
+DAMPAK: Tinggi
+KEMUNGKINAN: Sedang tanpa rate limit
+MITIGASI: `throttle` middleware pada POST /admin/login + rate limiter
+  Laravel bawaan (per email+IP)
+TAHAP PENANGANAN: Tahap 2
+
+RISIKO: Media terhapus saat masih digunakan
+DAMPAK: Sedang (broken image publik)
+KEMUNGKINAN: Sedang tanpa pengecekan
+MITIGASI: MediaService::isInUse() wajib dicek sebelum destroy() —
+  tombol hapus dinonaktifkan/diberi peringatan jika masih dipakai
+TAHAP PENANGANAN: Tahap 5
+
+RISIKO: Storage link belum dibuat saat fitur upload mulai dipakai
+DAMPAK: Sedang (upload tersimpan tapi tidak bisa diakses publik)
+KEMUNGKINAN: Tinggi bila lupa — SAAT INI memang belum dibuat
+MITIGASI: Jalankan `php artisan storage:link` sebagai bagian resmi
+  langkah instalasi Tahap 5, dicatat di checklist deployment
+TAHAP PENANGANAN: Tahap 5
+
+RISIKO: Permission hosting (folder tidak writable di production)
+DAMPAK: Tinggi (upload/log gagal total)
+KEMUNGKINAN: Tidak diketahui (tergantung hosting final, belum
+  ditentukan)
+MITIGASI: Checklist deployment eksplisit cek permission storage/ &
+  bootstrap/cache/ sebelum go-live
+TAHAP PENANGANAN: Sebelum production (di luar 15 tahap, tapi wajib
+  dicatat sbg syarat go-live)
+
+RISIKO: Backup database belum ada strategi
+DAMPAK: Tinggi jangka panjang
+KEMUNGKINAN: Pasti terjadi bila tidak direncanakan (belum ada strategi
+  sama sekali saat ini)
+MITIGASI: Tentukan strategi backup (mis. cron dump harian) sebelum
+  data admin/konten sungguhan mulai diisi
+TAHAP PENANGANAN: Tahap 15 (Security review & final QA), idealnya
+  sebelum
+
+RISIKO: APP_DEBUG aktif di production
+DAMPAK: Tinggi (bocor informasi sensitif lewat error page)
+KEMUNGKINAN: Sedang (saat ini APP_DEBUG=true, wajar untuk dev, TAPI
+  wajib diingat sebelum deploy)
+MITIGASI: Checklist deployment eksplisit set APP_DEBUG=false,
+  APP_ENV=production
+TAHAP PENANGANAN: Sebelum production (dicatat sbg syarat go-live)
+
+RISIKO: Perubahan CMS merusak desain front-end
+DAMPAK: Tinggi (bertentangan dgn prinsip inti proyek)
+KEMUNGKINAN: Rendah bila prinsip "field terstruktur, bukan HTML bebas"
+  benar2 dipatuhi konsisten di SEMUA Form Request
+MITIGASI: TIDAK ADA rich-text editor bebas di seluruh CMS (dikonfirmasi
+  berulang di Tugas 8 & 13), class HTML/CSS/JS tetap dikunci penuh
+  (Bagian 12), review kode wajib sebelum setiap Form Request baru
+  disetujui
+TAHAP PENANGANAN: Berlaku di SELURUH tahap 6–10, ditegaskan lagi di
+  Tahap 15 (final QA)
+
+======================================================================
+31. RENCANA FILE BACKEND (TUGAS 24) — BELUM DIBUAT, HANYA RENCANA
+======================================================================
+
+1. Route
+   routes/admin.php (BARU — direkomendasikan dipisah dari web.php demi
+   kerapian, di-include dari bootstrap/app.php)
+
+2. Middleware
+   app/Http/Middleware/EnsureUserIsAdmin.php
+   app/Http/Middleware/EnsureUserIsActive.php (atau digabung ke atas)
+
+3. Controller
+   app/Http/Controllers/Admin/Auth/LoginController.php
+   app/Http/Controllers/Admin/DashboardController.php
+   app/Http/Controllers/Admin/PageController.php
+   app/Http/Controllers/Admin/PageSectionController.php
+   app/Http/Controllers/Admin/MediaController.php
+   app/Http/Controllers/Admin/SiteSettingController.php
+   app/Http/Controllers/Admin/SeoController.php (opsional, lihat Bagian 19)
+   app/Http/Controllers/Admin/ContactMessageController.php
+   app/Http/Controllers/Admin/ProfileController.php
+   app/Http/Controllers/Admin/PreviewController.php
+   app/Http/Controllers/Admin/PublishController.php
+
+4. Model
+   app/Models/Page.php
+   app/Models/PageSection.php
+   app/Models/Media.php
+   app/Models/SiteSetting.php
+   app/Models/ContactMessage.php
+   app/Models/ContentRevision.php
+   app/Models/ActivityLog.php
+   app/Models/Faq.php
+   app/Models/Partner.php
+   app/Models/SimulationSetting.php
+   (app/Models/User.php — DIPERBARUI, bukan dibuat baru)
+
+5. Migration
+   database/migrations/xxxx_add_role_and_is_active_to_users_table.php
+   database/migrations/xxxx_create_pages_table.php
+   database/migrations/xxxx_create_page_sections_table.php
+   database/migrations/xxxx_create_media_table.php
+   database/migrations/xxxx_create_site_settings_table.php
+   database/migrations/xxxx_create_contact_messages_table.php
+   database/migrations/xxxx_create_content_revisions_table.php
+   database/migrations/xxxx_create_activity_logs_table.php
+   database/migrations/xxxx_create_faqs_table.php
+   database/migrations/xxxx_create_partners_table.php
+   database/migrations/xxxx_create_simulation_settings_table.php
+
+6. Seeder
+   database/seeders/AdminUserSeeder.php
+   database/seeders/PageSeeder.php (5 halaman + section_key awal)
+   database/seeders/PageSectionSeeder.php (isi awal 25 section dari
+   konten statis SEKARANG, sebagai starting point admin, bukan kosong)
+   database/seeders/SiteSettingSeeder.php
+   database/seeders/SimulationSettingSeeder.php (isi angka yang sudah
+   resmi + null utk yang belum, meniru simulation-config.js SEKARANG)
+
+7. Factory
+   database/factories/ContactMessageFactory.php (untuk testing)
+   database/factories/FaqFactory.php (untuk testing)
+
+8. Form Request
+   app/Http/Requests/Admin/AdminLoginRequest.php
+   app/Http/Requests/Admin/UpdateProfileRequest.php
+   app/Http/Requests/Admin/UpdatePasswordRequest.php
+   app/Http/Requests/Admin/StoreMediaRequest.php
+   app/Http/Requests/Admin/UpdateMediaRequest.php
+   app/Http/Requests/Admin/UpdateSiteSettingRequest.php
+   app/Http/Requests/Admin/UpdatePageSeoRequest.php
+   app/Http/Requests/Admin/UpdateHomeSectionRequest.php
+   app/Http/Requests/Admin/UpdateBusinessSectionRequest.php
+   app/Http/Requests/Admin/UpdatePartnershipSectionRequest.php
+   app/Http/Requests/Admin/UpdateSimulationSectionRequest.php
+   app/Http/Requests/Admin/UpdateAboutContactSectionRequest.php
+   app/Http/Requests/Admin/UpdateContactMessageStatusRequest.php
+   app/Http/Requests/StoreContactMessageRequest.php (dipakai form
+   publik, bukan admin — namespace terpisah)
+
+9. Service
+   app/Services/ContentService.php
+   app/Services/MediaService.php
+   app/Services/SettingsService.php
+   app/Services/PublishingService.php
+   app/Services/ActivityLogService.php
+   (app/Services/SimulationService.php — DITUNDA sampai formula resmi)
+
+10. Policy
+    app/Policies/MediaPolicy.php
+    app/Policies/PageSectionPolicy.php
+    app/Policies/SiteSettingPolicy.php
+    app/Policies/ContactMessagePolicy.php
+
+11. Admin layout
+    resources/views/admin/layouts/app.blade.php
+
+12. Admin partial
+    resources/views/admin/partials/sidebar.blade.php
+    resources/views/admin/partials/topbar.blade.php
+    resources/views/admin/partials/flash-messages.blade.php
+
+13. Admin component
+    resources/views/admin/components/field-text.blade.php
+    resources/views/admin/components/field-textarea.blade.php
+    resources/views/admin/components/field-media-picker.blade.php
+    resources/views/admin/components/field-cta-selector.blade.php
+    resources/views/admin/components/repeater.blade.php
+    resources/views/admin/components/status-badge.blade.php
+
+14. Admin page
+    resources/views/admin/auth/login.blade.php
+    resources/views/admin/dashboard/index.blade.php
+    resources/views/admin/pages/index.blade.php
+    resources/views/admin/pages/home.blade.php
+    resources/views/admin/pages/business.blade.php
+    resources/views/admin/pages/partnership.blade.php
+    resources/views/admin/pages/simulation.blade.php
+    resources/views/admin/pages/about-contact.blade.php
+    resources/views/admin/media/index.blade.php
+    resources/views/admin/settings/edit.blade.php
+    resources/views/admin/seo/edit.blade.php
+    resources/views/admin/messages/index.blade.php
+    resources/views/admin/messages/show.blade.php
+    resources/views/admin/profile/edit.blade.php
+
+15. Public controller update
+    app/Http/Controllers/Website/PageController.php (DIPERBARUI
+    bertahap, bukan file baru)
+
+16. Public Blade update
+    resources/views/pages/*/sections/*.blade.php (25 file, DIPERBARUI
+    bertahap — hanya sumber data yang berubah, lihat Bagian 24)
+
+17. CSS admin
+    public/assets/admin/css/base.css
+    public/assets/admin/css/layout.css
+    public/assets/admin/css/components.css
+
+18. JavaScript admin
+    public/assets/admin/js/sidebar-toggle.js
+    public/assets/admin/js/repeater.js
+    public/assets/admin/js/media-picker.js
+
+19. Test
+    tests/Feature/Admin/LoginTest.php
+    tests/Feature/Admin/PageSectionTest.php
+    tests/Feature/Admin/MediaTest.php
+    tests/Feature/Admin/ContactMessageTest.php
+    tests/Feature/Website/PublicPagesTest.php
+    tests/Feature/Website/SimulationDataTest.php
+    tests/Unit/Services/ContentServiceTest.php
+    tests/Unit/Services/MediaServiceTest.php
+
+CATATAN: Seluruh path di atas BARU RENCANA. TIDAK SATU PUN dibuat pada
+tahap audit ini.
+
+======================================================================
+32. RENCANA PENGUJIAN (TUGAS 25) — BELUM DIBUAT
+======================================================================
+
+AUTHENTICATION: login valid, login invalid, akun nonaktif ditolak,
+rate limit login teruji, logout menghapus sesi, guest ditolak akses
+/admin/*, admin berhasil akses /admin/* setelah login.
+
+CMS: page bisa dibaca via ContentService, section bisa dibaca, JSON
+cast berfungsi (content jadi array di PHP), fallback tampil saat field
+kosong, section is_active=false tersembunyi dari publik, media
+reference valid tetap tampil, validation Form Request menolak input
+di luar aturan, authorization menolak role non-admin.
+
+MEDIA: upload file valid diterima, upload file invalid (mime salah)
+ditolak, file terlalu besar ditolak, MIME palsu (ekstensi disamarkan)
+ditolak, delete media TIDAK terpakai berhasil, delete media YANG
+MASIH terpakai dicegah/diberi peringatan.
+
+PUBLIC: kelima route tetap HTTP 200 setelah integrasi CMS, fallback
+statis tampil bila section belum diisi admin, published content tampil
+sesuai data admin, draft TIDAK tampil ke publik, image fallback bekerja
+saat media kosong/terhapus, CTA mengarah ke tujuan yang benar sesuai
+whitelist.
+
+SIMULASI: null tidak pernah tampil sebagai 0/Rp0, format Rupiah id-ID
+konsisten, tidak ada perhitungan linear otomatis tanpa `is_estimate`
+eksplisit, disclaimer selalu tampil, data berstatus draft tidak tampil
+publik.
+
+FORM KONSULTASI (saat diaktifkan): submit valid tersimpan ke
+contact_messages, submit invalid ditolak dgn pesan jelas, CSRF token
+wajib valid, rate limit mencegah submit beruntun, honeypot menolak bot,
+status message berubah sesuai aksi admin.
+
+SECURITY: percobaan XSS pada field teks tidak ter-render sbg HTML,
+IDOR (admin mencoba edit section lewat ID/endpoint section lain)
+ditolak, mass assignment field terlarang (role, status, path media)
+tidak bisa diisi dari request biasa, unauthorized update ditolak
+middleware, upload file berbahaya (mis. .php menyamar .jpg) ditolak,
+open redirect pada CTA eksternal dicegah validasi URL, session
+regenerate setelah login terverifikasi, seluruh form admin memerlukan
+CSRF token valid.
+
+======================================================================
+33. STATUS KESIAPAN PROYEK & REKOMENDASI SEBELUM PROMPT 13
+======================================================================
+
+Proyek berada dalam kondisi SANGAT BERSIH untuk memulai backend CMS:
+- 0 data pengguna, 0 tabel kustom, 0 controller/model/service tambahan
+  yang berpotensi bentrok.
+- Struktur front-end 25 section sudah stabil, konsisten pola (eyebrow/
+  title/description/CTA/repeater), sangat cocok untuk pola CMS
+  terstruktur (bukan page builder bebas) yang direncanakan.
+- Satu-satunya "utang teknis" yang perlu perhatian KHUSUS di tahap
+  desain database (bukan blocker, tapi wajib diperhitungkan sejak
+  Tahap 4): (a) arsitektur data Simulasi yang terpisah dari CMS umum,
+  (b) pemisahan site_settings vs page_sections untuk data kontak yang
+  dipakai di ≥2 tempat (footer & halaman kontak), (c) whitelist ketat
+  untuk field CTA dan map_embed_src demi mencegah XSS/open-redirect.
+
+Rekomendasi sebelum PROMPT 13 (Login dan keamanan admin):
+1. Sepakati dulu: SATU role admin di fase pertama (sudah didukung
+   penuh oleh audit ini).
+2. Sepakati kolom tambahan users: `role` (default 'admin'), `is_active`
+   (default true) — akan ditambahkan via migration add-column, BUKAN
+   membuat ulang tabel users.
+3. Sepakati routes/admin.php sebagai file terpisah dari web.php.
+4. Sepakati storage:link akan dijalankan di Tahap 5 (Media Library),
+   bukan sebelumnya.
+5. Konfirmasi ke klien: status data kontak (WhatsApp +123-456-7890)
+   MASIH placeholder — `whatsapp_link_mode` sebaiknya default "anchor"
+   sampai nomor resmi dikonfirmasi valid.
+
+======================================================================
+34. CHECKLIST AUDIT
+======================================================================
+
+[x] Versi Laravel diketahui (13.23.0)
+[x] Versi PHP diketahui (8.3.16)
+[x] Database driver diketahui (sqlite)
+[x] Route publik diaudit (5 route, sesuai rencana)
+[x] Route admin lama diaudit (tidak ada sama sekali)
+[x] Controller diaudit (hanya Website\PageController, minimal & bersih)
+[x] Model diaudit (hanya User, bawaan)
+[x] Migration diaudit (hanya 3 bawaan Laravel)
+[x] Database diaudit (0 baris data, 9 tabel bawaan)
+[x] Authentication diaudit (belum ada sama sekali)
+[x] Storage diaudit (disk public terkonfigurasi, symlink belum dibuat)
+[x] Symbolic link diaudit (NOT LINKED, dikonfirmasi via php artisan about)
+[x] Front-end lima halaman diaudit
+[x] Seluruh 25 section ditemukan (utuh, sesuai struktur)
+[x] Konten dinamis telah dipetakan (Bagian 11 & 13)
+[x] Konten terkunci telah dipetakan (Bagian 12)
+[x] Field CMS telah diinventarisasi (Bagian 13, seluruh 25 section)
+[x] ERD telah dirancang (Bagian 16)
+[x] Model telah direncanakan (Bagian 18, 11 model)
+[x] Migration telah direncanakan (Bagian 31, 11 migration)
+[x] Controller telah direncanakan (Bagian 19, 11 controller admin)
+[x] Form Request telah direncanakan (Bagian 20)
+[x] Service telah direncanakan (Bagian 21, 6 service)
+[x] Middleware telah direncanakan (Bagian 22)
+[x] Route admin telah direncanakan (Bagian 23)
+[x] Media Library telah direncanakan (Bagian 25)
+[x] Integrasi front-end telah direncanakan (Bagian 24)
+[x] Data simulasi telah diaudit (Bagian 26)
+[x] Draft/publish telah direncanakan (Bagian 27)
+[x] SEO telah direncanakan (Bagian 28)
+[x] Form konsultasi telah direncanakan (Bagian 29)
+[x] Risiko telah dipetakan (Bagian 30, 30 risiko)
+[x] Rencana pengujian tersedia (Bagian 32)
+[x] Tidak ada fitur backend yang dibuat
+[x] Tidak ada file front-end yang diubah
+[x] Tidak ada database yang diubah
+
+======================================================================
+35. STATUS AKHIR
+======================================================================
+
+AMAN DILANJUTKAN KE PROMPT 13.
+
+Tidak ditemukan konflik teknis yang menghalangi. Proyek dalam kondisi
+paling ideal (clean slate + front-end stabil) untuk memulai pembangunan
+Custom Structured CMS CarAsset secara bertahap sesuai 15 tahap yang
+sudah dikunci.

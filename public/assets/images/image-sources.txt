@@ -122,16 +122,20 @@ ENTRI GAMBAR — BISNIS CARASSET (PROMPT 05)
 
 ------------------------------------------------------------------
 HALAMAN: Bisnis CarAsset
-SECTION: Peluang Bisnis Kendaraan Produktif (opportunity)
-KEBUTUHAN GAMBAR: Visual urban mobility/city road terbatas (bukan fokus utama)
+SECTION: Peluang Bisnis Kendaraan Produktif (opportunity) — REVISI KLIEN: full-width hero
+KEBUTUHAN GAMBAR: Visual urban mobility/city road sebagai background hero full-width
 KATA KUNCI: urban mobility, city road, aerial road
 SUMBER: Unsplash
 FOTOGRAFER: Denys Nevozhai (@dnevozhai)
 URL: https://unsplash.com/photos/7nrsVjvALnA
-FILE TARGET: public/assets/images/business/business-opportunity.webp
-LISENSI/CATATAN: Unsplash License (free, bukan Unsplash+). Diunduh &
-  disimpan lokal, dikonversi ke WebP via PHP GD. Dipakai sebagai panel
-  visual terbatas, bukan fokus utama section.
+FILE TARGET: public/assets/images/business/business-opportunity-hero.webp
+LISENSI/CATATAN: Unsplash License (free, bukan Unsplash+). Foto sama
+  dengan versi sebelumnya, diunduh ulang dengan crop lebih lebar
+  (1920x900) agar sesuai kebutuhan hero full-width, dikonversi ke WebP
+  via PHP GD. Atas revisi klien, section ini diubah dari split-layout
+  (panel terbatas) menjadi full-width image hero dengan teks di-overlay.
+  File lama (business-opportunity.webp, crop 4:3 untuk panel) sudah
+  dihapus karena tidak dipakai lagi.
 STATUS: Sudah diunduh
 ------------------------------------------------------------------
 

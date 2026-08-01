@@ -1,34 +1,67 @@
 /* ==========================================================================
    CarAsset — Business / Opportunity (opportunity.css)
-   Page hero halaman Bisnis — sengaja berbeda dari Hero Home (terang,
-   bukan navy penuh; visual berupa panel diagram, bukan gambar mobil besar).
+   REVISI KLIEN: section pembuka kini full-width image hero (bukan lagi
+   split kiri-teks/kanan-panel). Diagram alur bisnis dipindah menjadi
+   band terpisah di bawah hero, di atas background terang.
    ========================================================================== */
 
 .ca-opportunity {
     background-color: var(--ca-color-white);
+    /* Hero butuh full-bleed — spacing section standar (dari business.css)
+       dinonaktifkan di sini dan dipindahkan ke .ca-opportunity__diagram-section. */
+    padding-block: 0;
 }
 
-.ca-opportunity__inner {
-    display: grid;
-    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+/* -------------------------------------------------------------------------
+   HERO — full-width image, teks & CTA di-overlay di atasnya
+   ------------------------------------------------------------------------- */
+.ca-opportunity__hero {
+    position: relative;
+    display: flex;
     align-items: center;
-    gap: var(--ca-space-16);
+    min-height: 560px;
+    overflow: hidden;
 }
 
-.ca-opportunity__content {
+.ca-opportunity__hero-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ca-opportunity__hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        90deg,
+        rgba(15, 23, 42, 0.92) 0%,
+        rgba(15, 23, 42, 0.8) 42%,
+        rgba(15, 23, 42, 0.4) 75%,
+        rgba(15, 23, 42, 0.15) 100%
+    );
+}
+
+.ca-opportunity__hero-content {
+    position: relative;
+    z-index: 1;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: var(--ca-space-5);
+    max-width: 640px;
+    padding-block: var(--ca-space-24);
 }
 
 .ca-opportunity__title {
+    color: var(--ca-color-white);
     margin: 0;
-    max-width: 18ch;
+    max-width: 16ch;
 }
 
 .ca-opportunity__description {
-    color: var(--ca-color-dark-gray);
+    color: var(--ca-color-light-gray);
     max-width: 52ch;
 }
 
@@ -43,6 +76,7 @@
 
 .ca-opportunity__cta:hover {
     gap: var(--ca-space-3);
+    color: var(--ca-color-white);
 }
 
 .ca-opportunity__cta:focus-visible {
@@ -58,60 +92,43 @@
 }
 
 /* -------------------------------------------------------------------------
-   PANEL VISUAL (navy) — diagram alur bisnis
+   DIAGRAM — band terpisah di bawah hero, background terang
    ------------------------------------------------------------------------- */
-.ca-opportunity__panel {
-    position: relative;
-    min-height: 480px;
-    border-radius: var(--ca-radius-xl);
-    overflow: hidden;
-    box-shadow: var(--ca-shadow-md);
-}
-
-.ca-opportunity__panel-image {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.ca-opportunity__panel-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(160deg, rgba(15, 23, 42, 0.94) 20%, rgba(15, 23, 42, 0.86) 100%);
+.ca-opportunity__diagram-section {
+    padding-block: var(--ca-space-16);
 }
 
 .ca-opportunity__diagram {
     position: relative;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    gap: var(--ca-space-8);
-    padding: var(--ca-space-10);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--ca-space-6);
 }
 
 .ca-opportunity__diagram-track {
     position: absolute;
-    top: 8px;
-    bottom: 8px;
-    left: calc(var(--ca-space-10) + 21px);
-    width: 2px;
+    top: 22px;
+    left: 4%;
+    right: 4%;
+    height: 2px;
     background: repeating-linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 0.25) 0,
-        rgba(255, 255, 255, 0.25) 8px,
+        90deg,
+        var(--ca-color-light-gray) 0,
+        var(--ca-color-light-gray) 8px,
         transparent 8px,
-        transparent 16px
+        transparent 14px
     );
+    z-index: 0;
 }
 
 .ca-opportunity__diagram-step {
     position: relative;
     z-index: 1;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: var(--ca-space-4);
+    gap: var(--ca-space-2);
+    text-align: center;
 }
 
 .ca-opportunity__diagram-icon {
@@ -120,34 +137,45 @@
     justify-content: center;
     width: 44px;
     height: 44px;
-    flex-shrink: 0;
     border-radius: var(--ca-radius-md);
-    background-color: rgba(255, 255, 255, 0.1);
-    color: var(--ca-color-white);
+    background-color: var(--ca-bg-navy-soft);
+    color: var(--ca-color-navy);
 }
 
 .ca-opportunity__diagram-label {
-    color: var(--ca-color-white);
+    color: var(--ca-color-navy);
 }
 
 .ca-opportunity__diagram-step--accent .ca-opportunity__diagram-icon {
-    background-color: var(--ca-color-green);
-    color: var(--ca-color-white);
+    background-color: var(--ca-bg-green-soft);
+    color: var(--ca-color-green);
 }
 
 .ca-opportunity__diagram-step--gold .ca-opportunity__diagram-icon {
-    background-color: var(--ca-color-gold);
-    color: var(--ca-color-navy);
+    background-color: var(--ca-bg-gold-soft);
+    color: var(--ca-color-gold);
 }
 
 /* Desktop-small safety */
 @media (max-width: 1180px) {
-    .ca-opportunity__inner {
-        grid-template-columns: 1fr;
-        gap: var(--ca-space-10);
+    .ca-opportunity__hero {
+        min-height: 480px;
     }
 
-    .ca-opportunity__panel {
-        min-height: 400px;
+    .ca-opportunity__hero-overlay {
+        background: linear-gradient(
+            180deg,
+            rgba(15, 23, 42, 0.55) 0%,
+            rgba(15, 23, 42, 0.92) 70%
+        );
+    }
+
+    .ca-opportunity__diagram {
+        grid-template-columns: repeat(2, 1fr);
+        row-gap: var(--ca-space-8);
+    }
+
+    .ca-opportunity__diagram-track {
+        display: none;
     }
 }

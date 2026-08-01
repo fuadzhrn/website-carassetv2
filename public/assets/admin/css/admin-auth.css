@@ -1,0 +1,463 @@
+/* ==========================================================================
+   CarAsset Admin — Secure Mobility Gateway (admin-auth.css)
+   Halaman login admin. Konsep: gerbang aman menuju sistem pengelolaan
+   konten CarAsset — bukan form generik di tengah layar.
+   Prefix wajib: ca-admin-
+   ========================================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+.ca-admin-body {
+    font-family: var(--ca-font-body);
+    background-color: var(--ca-color-navy);
+    overflow-x: hidden;
+}
+
+.ca-admin-auth {
+    min-height: 100vh;
+}
+
+.ca-admin-auth__shell {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    min-height: 100vh;
+}
+
+/* -------------------------------------------------------------------------
+   EDITORIAL — kiri, Midnight Navy, grid halus + route line abstrak
+   ------------------------------------------------------------------------- */
+.ca-admin-auth__editorial {
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    background-color: var(--ca-color-navy);
+    padding: var(--ca-space-16) var(--ca-space-16);
+}
+
+.ca-admin-auth__grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 56px 56px;
+    -webkit-mask-image: radial-gradient(circle at 30% 40%, rgba(0, 0, 0, 0.9), transparent 75%);
+    mask-image: radial-gradient(circle at 30% 40%, rgba(0, 0, 0, 0.9), transparent 75%);
+    pointer-events: none;
+}
+
+.ca-admin-auth__route {
+    position: absolute;
+    inset: 0;
+    color: var(--ca-color-green);
+    opacity: 0.35;
+    pointer-events: none;
+}
+
+.ca-admin-auth__route svg {
+    position: absolute;
+    top: 0;
+    right: 8%;
+    width: 55%;
+    height: 100%;
+}
+
+.ca-admin-auth__route-node {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--ca-color-gold);
+    box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.18);
+}
+
+.ca-admin-auth__route-node--1 { top: 22%; right: 18%; }
+.ca-admin-auth__route-node--2 { top: 52%; right: 34%; }
+.ca-admin-auth__route-node--3 { top: 78%; right: 12%; }
+
+.ca-admin-auth__editorial-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-6);
+    max-width: 460px;
+}
+
+.ca-admin-auth__brand {
+    display: flex;
+    align-items: center;
+}
+
+.ca-admin-auth__brand-logo {
+    height: 40px;
+    width: auto;
+}
+
+.ca-admin-auth__brand-fallback {
+    font-family: var(--ca-font-heading);
+    font-weight: 700;
+    font-size: var(--ca-text-xl);
+    color: var(--ca-color-white);
+}
+
+.ca-admin-auth__label {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-xs);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ca-color-gold);
+    padding: 6px 14px;
+    border: 1px solid rgba(212, 175, 55, 0.35);
+    border-radius: var(--ca-radius-pill);
+}
+
+.ca-admin-auth__headline {
+    font-family: var(--ca-font-heading);
+    font-weight: 600;
+    font-size: clamp(32px, 2.4vw + 16px, 48px);
+    line-height: var(--ca-leading-tight);
+    color: var(--ca-color-white);
+    margin: 0;
+}
+
+.ca-admin-auth__description {
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-base);
+    line-height: var(--ca-leading-relaxed);
+    color: rgba(255, 255, 255, 0.72);
+    max-width: 42ch;
+    margin: 0;
+}
+
+/* Checkpoint dekoratif: AKSES -> VERIFIKASI -> KELOLA */
+.ca-admin-auth__checkpoints {
+    display: flex;
+    align-items: center;
+    gap: var(--ca-space-3);
+    margin-top: var(--ca-space-4);
+}
+
+.ca-admin-auth__checkpoint {
+    display: flex;
+    align-items: center;
+    gap: var(--ca-space-2);
+}
+
+.ca-admin-auth__checkpoint-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: var(--ca-radius-md);
+    background-color: rgba(255, 255, 255, 0.08);
+    color: var(--ca-color-green);
+}
+
+.ca-admin-auth__checkpoint-icon svg {
+    width: 16px;
+    height: 16px;
+}
+
+.ca-admin-auth__checkpoint-label {
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-xs);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: rgba(255, 255, 255, 0.65);
+    white-space: nowrap;
+}
+
+.ca-admin-auth__checkpoint-divider {
+    width: 28px;
+    height: 1px;
+    background: repeating-linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.3) 0,
+        rgba(255, 255, 255, 0.3) 4px,
+        transparent 4px,
+        transparent 8px
+    );
+    flex-shrink: 0;
+}
+
+/* -------------------------------------------------------------------------
+   PORTAL — kanan, panel login sedikit bergeser dari pusat
+   ------------------------------------------------------------------------- */
+.ca-admin-auth__portal {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--ca-color-extra-light-gray);
+    padding: var(--ca-space-10);
+}
+
+.ca-admin-auth__panel {
+    position: relative;
+    width: 100%;
+    max-width: 460px;
+    background-color: var(--ca-color-white);
+    border: 1px solid var(--ca-border-color);
+    border-radius: var(--ca-radius-xl);
+    box-shadow: var(--ca-shadow-lg);
+    padding: var(--ca-space-10) var(--ca-space-8);
+    overflow: hidden;
+}
+
+.ca-admin-auth__panel::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--ca-color-green) 0%, var(--ca-color-gold) 100%);
+}
+
+.ca-admin-auth__panel-label {
+    display: inline-block;
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-xs);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ca-color-green);
+    margin-bottom: var(--ca-space-3);
+}
+
+.ca-admin-auth__title {
+    font-family: var(--ca-font-heading);
+    font-weight: 600;
+    font-size: var(--ca-text-3xl);
+    color: var(--ca-color-navy);
+    margin: 0 0 var(--ca-space-2);
+}
+
+.ca-admin-auth__panel-description {
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-sm);
+    color: var(--ca-text-secondary);
+    margin: 0 0 var(--ca-space-6);
+}
+
+.ca-admin-auth__notice,
+.ca-admin-auth__error {
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-sm);
+    padding: 12px 14px;
+    border-radius: var(--ca-radius-sm);
+    margin-bottom: var(--ca-space-5);
+}
+
+.ca-admin-auth__notice {
+    background-color: var(--ca-bg-green-soft);
+    color: #0f5b30;
+}
+
+.ca-admin-auth__error {
+    background-color: rgba(220, 38, 38, 0.08);
+    color: var(--ca-color-error);
+}
+
+.ca-admin-auth__form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* -------------------------------------------------------------------------
+   FIELD
+   ------------------------------------------------------------------------- */
+.ca-admin-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: var(--ca-space-5);
+}
+
+.ca-admin-field__label {
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-sm);
+    font-weight: 600;
+    color: var(--ca-color-charcoal);
+}
+
+.ca-admin-field__control-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.ca-admin-field__control {
+    width: 100%;
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-base);
+    color: var(--ca-color-charcoal);
+    background-color: var(--ca-color-white);
+    border: 1px solid var(--ca-border-color);
+    border-radius: var(--ca-radius-md);
+    padding: 12px 14px;
+    transition: border-color var(--ca-transition-fast), box-shadow var(--ca-transition-fast);
+}
+
+.ca-admin-field__control-wrap .ca-admin-field__control {
+    padding-right: 44px;
+}
+
+.ca-admin-field__control:focus-visible {
+    outline: none;
+    border-color: var(--ca-color-green);
+    box-shadow: var(--ca-shadow-focus);
+}
+
+.ca-admin-field__toggle {
+    position: absolute;
+    right: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: none;
+    border: none;
+    border-radius: var(--ca-radius-sm);
+    color: var(--ca-color-slate);
+    cursor: pointer;
+    transition: color var(--ca-transition-fast), background-color var(--ca-transition-fast);
+}
+
+.ca-admin-field__toggle svg {
+    width: 18px;
+    height: 18px;
+}
+
+.ca-admin-field__toggle:hover {
+    color: var(--ca-color-navy);
+    background-color: var(--ca-bg-navy-soft);
+}
+
+.ca-admin-field__toggle:focus-visible {
+    outline: none;
+    box-shadow: var(--ca-shadow-focus);
+}
+
+.ca-admin-field__capslock {
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-xs);
+    color: var(--ca-color-warning);
+    margin: 2px 0 0;
+}
+
+/* -------------------------------------------------------------------------
+   SUBMIT & LINKS
+   ------------------------------------------------------------------------- */
+.ca-admin-auth__submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-base);
+    font-weight: 600;
+    color: var(--ca-color-white);
+    background-color: var(--ca-color-green);
+    border: none;
+    border-radius: var(--ca-radius-md);
+    padding: 14px;
+    cursor: pointer;
+    margin-top: var(--ca-space-2);
+    transition: filter var(--ca-transition-fast), opacity var(--ca-transition-fast);
+}
+
+.ca-admin-auth__submit:hover {
+    filter: brightness(0.94);
+}
+
+.ca-admin-auth__submit:focus-visible {
+    outline: none;
+    box-shadow: var(--ca-shadow-focus);
+}
+
+.ca-admin-auth__submit.is-loading {
+    opacity: 0.75;
+    cursor: progress;
+}
+
+.ca-admin-auth__back {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ca-space-2);
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-sm);
+    font-weight: 500;
+    color: var(--ca-color-slate);
+    text-decoration: none;
+    margin-top: var(--ca-space-6);
+    transition: color var(--ca-transition-fast);
+}
+
+.ca-admin-auth__back svg {
+    width: 16px;
+    height: 16px;
+}
+
+.ca-admin-auth__back:hover {
+    color: var(--ca-color-navy);
+}
+
+.ca-admin-auth__back:focus-visible {
+    outline: none;
+    box-shadow: var(--ca-shadow-focus);
+    border-radius: var(--ca-radius-sm);
+}
+
+.ca-admin-auth__footnote {
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-xs);
+    color: var(--ca-color-slate);
+    text-align: center;
+    margin: var(--ca-space-6) 0 0;
+}
+
+/* -------------------------------------------------------------------------
+   DESKTOP-SMALL SAFETY (bukan optimasi mobile penuh)
+   ------------------------------------------------------------------------- */
+@media (max-width: 1180px) {
+    .ca-admin-auth__shell {
+        grid-template-columns: 1fr;
+    }
+
+    .ca-admin-auth__editorial {
+        padding: var(--ca-space-12) var(--ca-space-8);
+    }
+
+    .ca-admin-auth__route svg {
+        width: 70%;
+    }
+
+    .ca-admin-auth__portal {
+        padding: var(--ca-space-8);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ca-admin-field__control,
+    .ca-admin-field__toggle,
+    .ca-admin-auth__submit,
+    .ca-admin-auth__back {
+        transition: none;
+    }
+}
