@@ -1,0 +1,189 @@
+/* ==========================================================================
+   CarAsset Admin — Dashboard (admin-dashboard.css)
+   Prefix wajib: ca-admin-
+   ========================================================================== */
+
+/* -------------------------------------------------------------------------
+   WELCOME PANEL
+   ------------------------------------------------------------------------- */
+.ca-admin-welcome {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ca-space-8);
+    background-color: var(--ca-color-navy);
+    border-radius: var(--ca-radius-lg);
+    padding: var(--ca-space-8);
+}
+
+.ca-admin-welcome::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 100% 100%, rgba(22, 163, 74, 0.25), transparent 60%);
+    pointer-events: none;
+}
+
+.ca-admin-welcome__main {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-3);
+    max-width: 640px;
+}
+
+.ca-admin-welcome__title {
+    font-family: var(--ca-font-heading);
+    font-weight: 600;
+    font-size: var(--ca-text-2xl);
+    color: var(--ca-color-white);
+    margin: 0;
+}
+
+.ca-admin-welcome__description {
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-sm);
+    color: rgba(255, 255, 255, 0.75);
+    max-width: 56ch;
+    margin: 0;
+}
+
+.ca-admin-welcome__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ca-space-4);
+    margin-top: var(--ca-space-2);
+}
+
+.ca-admin-welcome__meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-xs);
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.ca-admin-welcome__meta-item svg {
+    width: 14px;
+    height: 14px;
+    color: var(--ca-color-green);
+}
+
+.ca-admin-welcome__actions {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-3);
+    flex-shrink: 0;
+}
+
+/* -------------------------------------------------------------------------
+   QUICK ACCESS — list panel, bukan kartu besar
+   ------------------------------------------------------------------------- */
+.ca-admin-quick-access {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--ca-color-white);
+    border: 1px solid var(--ca-border-color);
+    border-radius: var(--ca-radius-lg);
+    overflow: hidden;
+}
+
+.ca-admin-quick-access__item {
+    display: flex;
+    align-items: center;
+    gap: var(--ca-space-4);
+    padding: var(--ca-space-4) var(--ca-space-6);
+    border-bottom: 1px solid var(--ca-border-color);
+}
+
+.ca-admin-quick-access__item:last-child {
+    border-bottom: none;
+}
+
+.ca-admin-quick-access__info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.ca-admin-quick-access__title {
+    font-family: var(--ca-font-ui);
+    font-weight: 600;
+    font-size: var(--ca-text-sm);
+    color: var(--ca-color-navy);
+}
+
+.ca-admin-quick-access__description {
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-xs);
+    color: var(--ca-text-secondary);
+}
+
+/* -------------------------------------------------------------------------
+   STATUS LIST
+   ------------------------------------------------------------------------- */
+.ca-admin-status-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--ca-color-white);
+    border: 1px solid var(--ca-border-color);
+    border-radius: var(--ca-radius-lg);
+    overflow: hidden;
+}
+
+.ca-admin-status-list__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--ca-space-4) var(--ca-space-6);
+    border-bottom: 1px solid var(--ca-border-color);
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-sm);
+    color: var(--ca-color-charcoal);
+}
+
+.ca-admin-status-list__item:last-child {
+    border-bottom: none;
+}
+
+/* -------------------------------------------------------------------------
+   GUIDE PANEL
+   ------------------------------------------------------------------------- */
+.ca-admin-guide {
+    margin: 0;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-2);
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-sm);
+    color: var(--ca-color-charcoal);
+}
+
+.ca-admin-guide__note {
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-xs);
+    color: var(--ca-text-secondary);
+    margin: var(--ca-space-3) 0 0;
+    padding: var(--ca-space-3) var(--ca-space-4);
+    background-color: var(--ca-color-extra-light-gray);
+    border-radius: var(--ca-radius-md);
+}
+
+@media (max-width: 1180px) {
+    .ca-admin-welcome {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

@@ -1,0 +1,168 @@
+/* ==========================================================================
+   CarAsset Admin — Topbar & Breadcrumb (admin-topbar.css)
+   Prefix wajib: ca-admin-
+   ========================================================================== */
+
+.ca-admin-topbar__left {
+    display: flex;
+    align-items: center;
+    gap: var(--ca-space-4);
+    min-width: 0;
+}
+
+.ca-admin-topbar__toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--ca-border-color);
+    border-radius: var(--ca-radius-md);
+    background-color: var(--ca-color-white);
+    color: var(--ca-color-navy);
+    cursor: pointer;
+    transition: background-color var(--ca-transition-fast);
+}
+
+.ca-admin-topbar__toggle:hover {
+    background-color: var(--ca-bg-navy-soft);
+}
+
+.ca-admin-topbar__toggle svg {
+    width: 18px;
+    height: 18px;
+}
+
+.ca-admin-topbar__titles {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.ca-admin-topbar__page-title {
+    font-family: var(--ca-font-heading);
+    font-weight: 600;
+    font-size: var(--ca-text-xl);
+    color: var(--ca-color-navy);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* -------------------------------------------------------------------------
+   BREADCRUMB
+   ------------------------------------------------------------------------- */
+.ca-admin-breadcrumb__list {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin: 0;
+    padding: 0;
+}
+
+.ca-admin-breadcrumb__item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.ca-admin-breadcrumb__link {
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-xs);
+    color: var(--ca-text-secondary);
+    text-decoration: none;
+}
+
+.ca-admin-breadcrumb__link:hover {
+    color: var(--ca-color-green);
+    text-decoration: underline;
+}
+
+.ca-admin-breadcrumb__current {
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-xs);
+    font-weight: 500;
+    color: var(--ca-text-secondary);
+}
+
+.ca-admin-breadcrumb__separator {
+    display: inline-flex;
+    width: 12px;
+    height: 12px;
+    color: var(--ca-color-slate);
+}
+
+.ca-admin-breadcrumb__separator svg {
+    width: 12px;
+    height: 12px;
+}
+
+/* -------------------------------------------------------------------------
+   RIGHT SIDE — website button, user summary
+   ------------------------------------------------------------------------- */
+.ca-admin-topbar__right {
+    display: flex;
+    align-items: center;
+    gap: var(--ca-space-5);
+    flex-shrink: 0;
+}
+
+.ca-admin-topbar__user {
+    display: flex;
+    align-items: center;
+    gap: var(--ca-space-2);
+    padding: 4px 8px;
+    border-radius: var(--ca-radius-md);
+    text-decoration: none;
+    transition: background-color var(--ca-transition-fast);
+}
+
+.ca-admin-topbar__user:hover {
+    background-color: var(--ca-bg-navy-soft);
+}
+
+.ca-admin-topbar__avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background-color: var(--ca-color-navy);
+    color: var(--ca-color-white);
+    font-family: var(--ca-font-ui);
+    font-weight: 600;
+    font-size: var(--ca-text-xs);
+}
+
+.ca-admin-topbar__user-info {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.ca-admin-topbar__user-name {
+    font-family: var(--ca-font-ui);
+    font-weight: 600;
+    font-size: var(--ca-text-sm);
+    color: var(--ca-color-charcoal);
+}
+
+.ca-admin-topbar__user-role {
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-xs);
+    color: var(--ca-text-secondary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ca-admin-topbar__toggle,
+    .ca-admin-topbar__user {
+        transition: none;
+    }
+}

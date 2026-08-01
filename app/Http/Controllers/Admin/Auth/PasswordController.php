@@ -20,6 +20,6 @@ class PasswordController extends Controller
 
         $request->session()->regenerate();
 
-        return back()->with('status', 'Password berhasil diperbarui.');
+        return back()->with('success', 'Password berhasil diperbarui.');
     }
 }

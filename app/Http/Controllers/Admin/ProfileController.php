@@ -24,6 +24,6 @@ class ProfileController extends Controller
     {
         $request->user()->forceFill($request->validated())->save();
 
-        return back()->with('status', 'Profil berhasil diperbarui.');
+        return back()->with('success', 'Profil berhasil diperbarui.');
     }
 }

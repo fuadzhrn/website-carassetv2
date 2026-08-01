@@ -1,41 +1,9 @@
 /* ==========================================================================
    CarAsset Admin — Profile & Password (admin-profile.css)
+   Field/button dasar sudah disediakan admin-components.css (PROMPT 14) —
+   file ini hanya berisi tata letak khusus halaman profil.
    Prefix wajib: ca-admin-
    ========================================================================== */
-
-.ca-admin-profile {
-    max-width: 960px;
-    margin: 0 auto;
-}
-
-.ca-admin-profile__back {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--ca-space-2);
-    font-family: var(--ca-font-ui);
-    font-size: var(--ca-text-sm);
-    font-weight: 500;
-    color: var(--ca-color-slate);
-    text-decoration: none;
-    margin-bottom: var(--ca-space-6);
-}
-
-.ca-admin-profile__back svg {
-    width: 16px;
-    height: 16px;
-}
-
-.ca-admin-profile__back:hover {
-    color: var(--ca-color-navy);
-}
-
-.ca-admin-profile__title {
-    font-family: var(--ca-font-heading);
-    font-weight: 600;
-    font-size: var(--ca-text-3xl);
-    color: var(--ca-color-navy);
-    margin: 0 0 var(--ca-space-2);
-}
 
 .ca-admin-profile__subtitle {
     font-family: var(--ca-font-body);
@@ -71,48 +39,6 @@
     flex-direction: column;
 }
 
-/* -------------------------------------------------------------------------
-   FIELD (varian halaman terang, dipakai di dalam card)
-   ------------------------------------------------------------------------- */
-.ca-admin-field {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    margin-bottom: var(--ca-space-5);
-}
-
-.ca-admin-field__label {
-    font-family: var(--ca-font-ui);
-    font-size: var(--ca-text-sm);
-    font-weight: 600;
-    color: var(--ca-color-charcoal);
-}
-
-.ca-admin-field__control {
-    width: 100%;
-    font-family: var(--ca-font-body);
-    font-size: var(--ca-text-base);
-    color: var(--ca-color-charcoal);
-    background-color: var(--ca-color-white);
-    border: 1px solid var(--ca-border-color);
-    border-radius: var(--ca-radius-md);
-    padding: 12px 14px;
-    transition: border-color var(--ca-transition-fast), box-shadow var(--ca-transition-fast);
-}
-
-.ca-admin-field__control:focus-visible {
-    outline: none;
-    border-color: var(--ca-color-green);
-    box-shadow: var(--ca-shadow-focus);
-}
-
-.ca-admin-field__error {
-    font-family: var(--ca-font-body);
-    font-size: var(--ca-text-xs);
-    color: var(--ca-color-error);
-    margin: 2px 0 0;
-}
-
 .ca-admin-field--readonly {
     flex-direction: row;
     align-items: center;
@@ -132,11 +58,5 @@
 @media (max-width: 1180px) {
     .ca-admin-profile__grid {
         grid-template-columns: 1fr;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .ca-admin-field__control {
-        transition: none;
     }
 }

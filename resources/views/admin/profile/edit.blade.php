@@ -1,6 +1,14 @@
-@extends('admin.layouts.minimal')
+@extends('admin.layouts.app')
 
 @section('title', 'Profil Admin — Panel Admin CarAsset')
+@section('page-title', 'Profil Admin')
+
+@section('breadcrumbs')
+    <x-admin::breadcrumb :items="[
+        ['label' => 'Dashboard', 'route' => route('admin.dashboard')],
+        ['label' => 'Profil Admin'],
+    ]" />
+@endsection
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/admin/css/admin-profile.css') }}">
@@ -8,12 +16,6 @@
 
 @section('content')
 <div class="ca-admin-profile">
-    <a href="{{ route('admin.dashboard') }}" class="ca-admin-profile__back">
-        <span data-lucide="arrow-left" aria-hidden="true"></span>
-        Kembali ke Dashboard
-    </a>
-
-    <h1 class="ca-admin-profile__title">Profil Admin</h1>
     <p class="ca-admin-profile__subtitle">Perbarui informasi akun dan kelola password login Anda.</p>
 
     <div class="ca-admin-profile__grid">
@@ -25,32 +27,17 @@
                 @csrf
                 @method('PATCH')
 
-                <div class="ca-admin-field">
-                    <label for="name" class="ca-admin-field__label">Nama</label>
-                    <input type="text" id="name" name="name" class="ca-admin-field__control"
-                           value="{{ old('name', auth()->user()->name) }}" required maxlength="100">
-                    @error('name')
-                        <p class="ca-admin-field__error">{{ $message }}</p>
-                    @enderror
-                </div>
+                <x-admin::form.field name="name" label="Nama" required>
+                    <x-admin::form.input name="name" value="{{ auth()->user()->name }}" required />
+                </x-admin::form.field>
 
-                <div class="ca-admin-field">
-                    <label for="email" class="ca-admin-field__label">Email</label>
-                    <input type="email" id="email" name="email" class="ca-admin-field__control"
-                           value="{{ old('email', auth()->user()->email) }}" required maxlength="150">
-                    @error('email')
-                        <p class="ca-admin-field__error">{{ $message }}</p>
-                    @enderror
-                </div>
+                <x-admin::form.field name="email" label="Email" required>
+                    <x-admin::form.input name="email" type="email" value="{{ auth()->user()->email }}" required />
+                </x-admin::form.field>
 
-                <div class="ca-admin-field">
-                    <label for="username" class="ca-admin-field__label">Username</label>
-                    <input type="text" id="username" name="username" class="ca-admin-field__control"
-                           value="{{ old('username', auth()->user()->username) }}" maxlength="30">
-                    @error('username')
-                        <p class="ca-admin-field__error">{{ $message }}</p>
-                    @enderror
-                </div>
+                <x-admin::form.field name="username" label="Username">
+                    <x-admin::form.input name="username" value="{{ auth()->user()->username }}" />
+                </x-admin::form.field>
 
                 <div class="ca-admin-field ca-admin-field--readonly">
                     <span class="ca-admin-field__label">Role</span>
@@ -64,7 +51,7 @@
                     </span>
                 </div>
 
-                <button type="submit" class="ca-admin-btn ca-admin-btn--primary">Simpan Perubahan</button>
+                <x-admin::button type="submit" variant="primary">Simpan Perubahan</x-admin::button>
             </form>
         </section>
 
@@ -76,31 +63,19 @@
                 @csrf
                 @method('PUT')
 
-                <div class="ca-admin-field">
-                    <label for="current_password" class="ca-admin-field__label">Password Saat Ini</label>
-                    <input type="password" id="current_password" name="current_password" class="ca-admin-field__control"
-                           required autocomplete="current-password">
-                    @error('current_password')
-                        <p class="ca-admin-field__error">{{ $message }}</p>
-                    @enderror
-                </div>
+                <x-admin::form.field name="current_password" label="Password Saat Ini" required>
+                    <x-admin::form.input name="current_password" type="password" autocomplete="current-password" required />
+                </x-admin::form.field>
 
-                <div class="ca-admin-field">
-                    <label for="password" class="ca-admin-field__label">Password Baru</label>
-                    <input type="password" id="password" name="password" class="ca-admin-field__control"
-                           required autocomplete="new-password">
-                    @error('password')
-                        <p class="ca-admin-field__error">{{ $message }}</p>
-                    @enderror
-                </div>
+                <x-admin::form.field name="password" label="Password Baru" required helper="Minimal 10 karakter.">
+                    <x-admin::form.input name="password" type="password" autocomplete="new-password" required />
+                </x-admin::form.field>
 
-                <div class="ca-admin-field">
-                    <label for="password_confirmation" class="ca-admin-field__label">Konfirmasi Password Baru</label>
-                    <input type="password" id="password_confirmation" name="password_confirmation" class="ca-admin-field__control"
-                           required autocomplete="new-password">
-                </div>
+                <x-admin::form.field name="password_confirmation" label="Konfirmasi Password Baru" required>
+                    <x-admin::form.input name="password_confirmation" type="password" autocomplete="new-password" required />
+                </x-admin::form.field>
 
-                <button type="submit" class="ca-admin-btn ca-admin-btn--primary">Perbarui Password</button>
+                <x-admin::button type="submit" variant="primary">Perbarui Password</x-admin::button>
             </form>
         </section>
     </div>

@@ -1,0 +1,103 @@
+/* ==========================================================================
+   CarAsset Admin — Layout Shell (admin-layout.css)
+   Prefix wajib: ca-admin-
+   ========================================================================== */
+
+.ca-admin-shell {
+    display: flex;
+    min-height: 100vh;
+}
+
+.ca-admin-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 264px;
+    height: 100vh;
+    z-index: var(--ca-z-sticky);
+    display: flex;
+    flex-direction: column;
+    background-color: var(--ca-color-navy);
+    transition: width var(--ca-transition-base);
+}
+
+.ca-admin-workspace {
+    flex: 1;
+    min-width: 0;
+    margin-left: 264px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    transition: margin-left var(--ca-transition-base);
+}
+
+/* Collapsed state — dipicu admin-shell.js lewat class pada .ca-admin-shell */
+.ca-admin-shell.is-collapsed .ca-admin-sidebar {
+    width: 84px;
+}
+
+.ca-admin-shell.is-collapsed .ca-admin-workspace {
+    margin-left: 84px;
+}
+
+.ca-admin-topbar {
+    position: sticky;
+    top: 0;
+    z-index: var(--ca-z-sticky);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ca-space-6);
+    height: 74px;
+    padding: 0 var(--ca-space-8);
+    background-color: var(--ca-color-white);
+    border-bottom: 1px solid var(--ca-border-color);
+}
+
+.ca-admin-main {
+    flex: 1;
+    width: 100%;
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: var(--ca-space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-8);
+}
+
+.ca-admin-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-4);
+}
+
+.ca-admin-section__title {
+    font-family: var(--ca-font-heading);
+    font-weight: 600;
+    font-size: var(--ca-text-xl);
+    color: var(--ca-color-navy);
+    margin: 0;
+}
+
+.ca-admin-section__description {
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-sm);
+    color: var(--ca-text-secondary);
+    margin: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ca-admin-sidebar,
+    .ca-admin-workspace {
+        transition: none;
+    }
+}
+
+/* -------------------------------------------------------------------------
+   DESKTOP-SMALL SAFETY (bukan optimasi mobile penuh)
+   ------------------------------------------------------------------------- */
+@media (max-width: 1180px) {
+    .ca-admin-main {
+        padding: var(--ca-space-6);
+    }
+}

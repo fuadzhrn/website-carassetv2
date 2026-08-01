@@ -1,0 +1,216 @@
+/* ==========================================================================
+   CarAsset Admin — Sidebar (admin-sidebar.css)
+   Prefix wajib: ca-admin-
+   ========================================================================== */
+
+.ca-admin-sidebar {
+    color: var(--ca-color-white);
+}
+
+/* -------------------------------------------------------------------------
+   BRAND
+   ------------------------------------------------------------------------- */
+.ca-admin-sidebar__brand {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: var(--ca-space-6) var(--ca-space-5) var(--ca-space-5);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ca-admin-sidebar__brand-link {
+    display: inline-flex;
+    align-items: center;
+}
+
+.ca-admin-sidebar__brand-logo {
+    height: 28px;
+    width: auto;
+}
+
+.ca-admin-sidebar__brand-fallback {
+    font-family: var(--ca-font-heading);
+    font-weight: 700;
+    font-size: var(--ca-text-lg);
+    color: var(--ca-color-white);
+}
+
+.ca-admin-sidebar__brand-mark {
+    display: none;
+    font-family: var(--ca-font-heading);
+    font-weight: 700;
+    font-size: var(--ca-text-lg);
+    color: var(--ca-color-white);
+}
+
+.ca-admin-sidebar__brand-label {
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-xs);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.55);
+}
+
+/* -------------------------------------------------------------------------
+   NAV / GROUPS / MENU
+   ------------------------------------------------------------------------- */
+.ca-admin-sidebar__nav {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: var(--ca-space-5) var(--ca-space-4);
+}
+
+.ca-admin-sidebar__group-label {
+    font-family: var(--ca-font-ui);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+    margin: var(--ca-space-5) var(--ca-space-3) var(--ca-space-2);
+}
+
+.ca-admin-sidebar__group-label:first-child {
+    margin-top: 0;
+}
+
+.ca-admin-sidebar__group-label.is-active {
+    color: var(--ca-color-green);
+}
+
+.ca-admin-sidebar__menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.ca-admin-sidebar__link {
+    display: flex;
+    align-items: center;
+    gap: var(--ca-space-3);
+    width: 100%;
+    padding: 10px var(--ca-space-3);
+    border-left: 3px solid transparent;
+    border-radius: var(--ca-radius-md);
+    color: rgba(255, 255, 255, 0.75);
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-sm);
+    font-weight: 500;
+    text-decoration: none;
+    background: none;
+    border-top: none;
+    border-right: none;
+    border-bottom: none;
+    cursor: pointer;
+    text-align: left;
+    transition: background-color var(--ca-transition-fast), color var(--ca-transition-fast), border-color var(--ca-transition-fast);
+}
+
+.ca-admin-sidebar__link:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+    color: var(--ca-color-white);
+}
+
+.ca-admin-sidebar__link.is-active {
+    background-color: rgba(22, 163, 74, 0.18);
+    border-left-color: var(--ca-color-green);
+    color: var(--ca-color-white);
+}
+
+.ca-admin-sidebar__link-icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.ca-admin-sidebar__link:hover .ca-admin-sidebar__link-icon,
+.ca-admin-sidebar__link.is-active .ca-admin-sidebar__link-icon {
+    color: var(--ca-color-green);
+}
+
+.ca-admin-sidebar__link-label {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ca-admin-sidebar__link--button {
+    font: inherit;
+}
+
+/* -------------------------------------------------------------------------
+   ACCOUNT AREA (bawah, tidak ikut scroll)
+   ------------------------------------------------------------------------- */
+.ca-admin-sidebar__account {
+    flex-shrink: 0;
+    padding: var(--ca-space-4);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ca-admin-sidebar__user {
+    display: flex;
+    flex-direction: column;
+    padding: 0 var(--ca-space-3) var(--ca-space-3);
+    min-width: 0;
+}
+
+.ca-admin-sidebar__user-name {
+    font-family: var(--ca-font-ui);
+    font-weight: 600;
+    font-size: var(--ca-text-sm);
+    color: var(--ca-color-white);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ca-admin-sidebar__user-email {
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-xs);
+    color: rgba(255, 255, 255, 0.55);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ca-admin-sidebar__logout-form {
+    margin: 0;
+}
+
+/* -------------------------------------------------------------------------
+   COLLAPSED STATE
+   ------------------------------------------------------------------------- */
+.ca-admin-shell.is-collapsed .ca-admin-sidebar__brand {
+    align-items: center;
+}
+
+.ca-admin-shell.is-collapsed .ca-admin-sidebar__brand-logo,
+.ca-admin-shell.is-collapsed .ca-admin-sidebar__brand-fallback,
+.ca-admin-shell.is-collapsed .ca-admin-sidebar__brand-label,
+.ca-admin-shell.is-collapsed .ca-admin-sidebar__group-label,
+.ca-admin-shell.is-collapsed .ca-admin-sidebar__link-label,
+.ca-admin-shell.is-collapsed .ca-admin-sidebar__user {
+    display: none;
+}
+
+.ca-admin-shell.is-collapsed .ca-admin-sidebar__brand-mark {
+    display: inline-flex;
+}
+
+.ca-admin-shell.is-collapsed .ca-admin-sidebar__link {
+    justify-content: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ca-admin-sidebar__link {
+        transition: none;
+    }
+}

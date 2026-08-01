@@ -1,0 +1,430 @@
+/* ==========================================================================
+   CarAsset Admin — Shared Components (admin-components.css)
+   Button, field/input/textarea/select/checkbox, flash, badge, table,
+   empty state. Dipakai lintas halaman lewat layout admin.layouts.app.
+   Prefix wajib: ca-admin-
+   ========================================================================== */
+
+/* -------------------------------------------------------------------------
+   BUTTON
+   ------------------------------------------------------------------------- */
+.ca-admin-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--ca-space-2);
+    font-family: var(--ca-font-ui);
+    font-weight: 600;
+    border-radius: var(--ca-radius-md);
+    border: 1px solid transparent;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: filter var(--ca-transition-fast), background-color var(--ca-transition-fast), border-color var(--ca-transition-fast), color var(--ca-transition-fast);
+}
+
+.ca-admin-btn--md {
+    font-size: var(--ca-text-sm);
+    padding: 11px 20px;
+}
+
+.ca-admin-btn--sm {
+    font-size: var(--ca-text-xs);
+    padding: 8px 14px;
+}
+
+.ca-admin-btn__icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+}
+
+.ca-admin-btn--primary {
+    background-color: var(--ca-color-green);
+    color: var(--ca-color-white);
+}
+
+.ca-admin-btn--primary:hover {
+    filter: brightness(0.94);
+}
+
+.ca-admin-btn--secondary {
+    background-color: var(--ca-color-navy);
+    color: var(--ca-color-white);
+}
+
+.ca-admin-btn--secondary:hover {
+    filter: brightness(1.15);
+}
+
+.ca-admin-btn--outline {
+    background-color: var(--ca-color-white);
+    color: var(--ca-color-navy);
+    border-color: var(--ca-border-color);
+}
+
+.ca-admin-btn--outline:hover {
+    background-color: var(--ca-bg-navy-soft);
+}
+
+.ca-admin-btn--ghost {
+    background-color: transparent;
+    color: var(--ca-color-navy);
+}
+
+.ca-admin-btn--ghost:hover {
+    background-color: var(--ca-bg-navy-soft);
+}
+
+.ca-admin-btn--danger {
+    background-color: var(--ca-color-white);
+    color: var(--ca-color-error);
+    border-color: rgba(220, 38, 38, 0.3);
+}
+
+.ca-admin-btn--danger:hover {
+    background-color: rgba(220, 38, 38, 0.06);
+}
+
+.ca-admin-btn:disabled,
+.ca-admin-btn[aria-disabled="true"] {
+    opacity: 0.55;
+    cursor: not-allowed;
+    filter: none;
+}
+
+/* -------------------------------------------------------------------------
+   FIELD / INPUT / TEXTAREA / SELECT
+   ------------------------------------------------------------------------- */
+.ca-admin-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: var(--ca-space-5);
+}
+
+.ca-admin-field__label {
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-sm);
+    font-weight: 600;
+    color: var(--ca-color-charcoal);
+}
+
+.ca-admin-field__control {
+    width: 100%;
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-base);
+    color: var(--ca-color-charcoal);
+    background-color: var(--ca-color-white);
+    border: 1px solid var(--ca-border-color);
+    border-radius: var(--ca-radius-md);
+    padding: 11px 14px;
+    transition: border-color var(--ca-transition-fast), box-shadow var(--ca-transition-fast);
+}
+
+.ca-admin-field__control--textarea {
+    resize: vertical;
+    min-height: 96px;
+}
+
+.ca-admin-field__control:focus-visible {
+    outline: none;
+    border-color: var(--ca-color-green);
+    box-shadow: var(--ca-shadow-focus);
+}
+
+.ca-admin-field__control[aria-invalid="true"] {
+    border-color: var(--ca-color-error);
+}
+
+.ca-admin-field__helper {
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-xs);
+    color: var(--ca-text-secondary);
+    margin: 2px 0 0;
+}
+
+.ca-admin-field__error {
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-xs);
+    color: var(--ca-color-error);
+    margin: 2px 0 0;
+}
+
+.ca-admin-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--ca-space-2);
+}
+
+.ca-admin-checkbox__input {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    accent-color: var(--ca-color-green);
+    margin-top: 2px;
+}
+
+.ca-admin-checkbox__label {
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-sm);
+    color: var(--ca-color-charcoal);
+}
+
+/* -------------------------------------------------------------------------
+   FLASH MESSAGE
+   ------------------------------------------------------------------------- */
+.ca-admin-flash {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--ca-space-3);
+    padding: 14px 16px;
+    border-radius: var(--ca-radius-md);
+    border: 1px solid transparent;
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-sm);
+}
+
+.ca-admin-flash__icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    margin-top: 1px;
+}
+
+.ca-admin-flash__text {
+    flex: 1;
+    margin: 0;
+}
+
+.ca-admin-flash__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    background: none;
+    border: none;
+    border-radius: var(--ca-radius-sm);
+    color: inherit;
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.ca-admin-flash__close:hover {
+    opacity: 1;
+}
+
+.ca-admin-flash__close svg {
+    width: 14px;
+    height: 14px;
+}
+
+.ca-admin-flash--success {
+    background-color: var(--ca-bg-green-soft);
+    border-color: rgba(22, 163, 74, 0.25);
+    color: #0f5b30;
+}
+
+.ca-admin-flash--info {
+    background-color: var(--ca-bg-navy-soft);
+    border-color: rgba(15, 23, 42, 0.15);
+    color: var(--ca-color-navy);
+}
+
+.ca-admin-flash--warning {
+    background-color: rgba(180, 83, 9, 0.1);
+    border-color: rgba(180, 83, 9, 0.3);
+    color: var(--ca-color-warning);
+}
+
+.ca-admin-flash--error {
+    background-color: rgba(220, 38, 38, 0.08);
+    border-color: rgba(220, 38, 38, 0.3);
+    color: var(--ca-color-error);
+}
+
+/* -------------------------------------------------------------------------
+   STATUS BADGE
+   ------------------------------------------------------------------------- */
+.ca-admin-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-xs);
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: var(--ca-radius-pill);
+    white-space: nowrap;
+}
+
+.ca-admin-badge--active,
+.ca-admin-badge--published {
+    background-color: var(--ca-bg-green-soft);
+    color: #0f5b30;
+}
+
+.ca-admin-badge--inactive {
+    background-color: rgba(220, 38, 38, 0.08);
+    color: var(--ca-color-error);
+}
+
+.ca-admin-badge--draft,
+.ca-admin-badge--pending {
+    background-color: var(--ca-bg-gold-soft);
+    color: #7a5a13;
+}
+
+.ca-admin-badge--neutral {
+    background-color: var(--ca-color-extra-light-gray);
+    color: var(--ca-text-secondary);
+}
+
+/* -------------------------------------------------------------------------
+   DATA TABLE
+   ------------------------------------------------------------------------- */
+.ca-admin-table-card {
+    background-color: var(--ca-color-white);
+    border: 1px solid var(--ca-border-color);
+    border-radius: var(--ca-radius-lg);
+    overflow: hidden;
+}
+
+.ca-admin-table-card__header {
+    padding: var(--ca-space-5) var(--ca-space-6);
+    border-bottom: 1px solid var(--ca-border-color);
+}
+
+.ca-admin-table-card__title {
+    font-family: var(--ca-font-heading);
+    font-weight: 600;
+    font-size: var(--ca-text-lg);
+    color: var(--ca-color-navy);
+    margin: 0;
+}
+
+.ca-admin-table-wrapper {
+    overflow-x: auto;
+}
+
+.ca-admin-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.ca-admin-table__caption {
+    caption-side: top;
+    text-align: left;
+    padding: var(--ca-space-4) var(--ca-space-6) 0;
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-xs);
+    color: var(--ca-text-secondary);
+}
+
+.ca-admin-table thead th {
+    background-color: var(--ca-color-extra-light-gray);
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ca-text-secondary);
+    text-align: left;
+    padding: 12px var(--ca-space-6);
+    border-bottom: 1px solid var(--ca-border-color);
+}
+
+.ca-admin-table tbody td {
+    padding: 14px var(--ca-space-6);
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-sm);
+    color: var(--ca-color-charcoal);
+    border-bottom: 1px solid var(--ca-border-color);
+    vertical-align: middle;
+}
+
+.ca-admin-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.ca-admin-table tbody tr:hover {
+    background-color: var(--ca-color-extra-light-gray);
+}
+
+.ca-admin-table__action-col {
+    text-align: right;
+}
+
+.ca-admin-table__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--ca-space-2);
+}
+
+.ca-admin-table-card__pagination {
+    padding: var(--ca-space-4) var(--ca-space-6);
+    border-top: 1px solid var(--ca-border-color);
+}
+
+/* -------------------------------------------------------------------------
+   EMPTY STATE
+   ------------------------------------------------------------------------- */
+.ca-admin-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--ca-space-2);
+    padding: var(--ca-space-16) var(--ca-space-8);
+    background-color: var(--ca-color-white);
+    border: 1px dashed var(--ca-border-color);
+    border-radius: var(--ca-radius-lg);
+}
+
+.ca-admin-empty-state__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: var(--ca-color-extra-light-gray);
+    color: var(--ca-color-slate);
+    margin-bottom: var(--ca-space-2);
+}
+
+.ca-admin-empty-state__icon svg {
+    width: 22px;
+    height: 22px;
+}
+
+.ca-admin-empty-state__title {
+    font-family: var(--ca-font-heading);
+    font-weight: 600;
+    font-size: var(--ca-text-lg);
+    color: var(--ca-color-navy);
+    margin: 0;
+}
+
+.ca-admin-empty-state__description {
+    font-family: var(--ca-font-body);
+    font-size: var(--ca-text-sm);
+    color: var(--ca-text-secondary);
+    max-width: 48ch;
+    margin: 0;
+}
+
+.ca-admin-empty-state__action {
+    margin-top: var(--ca-space-3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ca-admin-btn,
+    .ca-admin-field__control {
+        transition: none;
+    }
+}
