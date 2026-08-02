@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Public\ContactFormController;
 use App\Http\Controllers\Website\PageController;
 use Illuminate\Support\Facades\Route;
 
@@ -8,3 +9,7 @@ Route::get('/bisnis-carasset', [PageController::class, 'business'])->name('busin
 Route::get('/program-kemitraan', [PageController::class, 'partnership'])->name('partnership');
 Route::get('/simulasi-perlindungan', [PageController::class, 'simulation'])->name('simulation');
 Route::get('/tentang-kontak', [PageController::class, 'aboutContact'])->name('about-contact');
+
+Route::post('/konsultasi', [ContactFormController::class, 'store'])
+    ->middleware('throttle:contact-form')
+    ->name('consultation.store');

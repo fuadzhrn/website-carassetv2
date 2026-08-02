@@ -3,24 +3,30 @@
     <div class="ca-container ca-contact__layout">
         <div class="ca-contact__form-area">
             <x-section-heading
-                title="Mulai Percakapan tentang Aset Produktif Anda."
-                description="Sampaikan program yang ingin dipelajari. Tim CarAsset akan membantu menjelaskan alur, dokumen, asumsi operasional, dan ketentuan program."
+                :title="$data['title']"
+                :description="$data['description']"
             />
 
             <div class="ca-contact__form-status">
                 <span class="ca-contact__form-status-icon" data-lucide="info" aria-hidden="true"></span>
                 Form Konsultasi — Tampilan Front-end
             </div>
-            <p class="ca-contact__form-microcopy ca-body-sm">
-                Form belum terhubung ke sistem pengiriman atau database.
-            </p>
 
-            {{--
-                Form ini murni tampilan front-end. Integrasi backend/WhatsApp
-                akan dikerjakan pada fase terpisah setelah sistem pengiriman
-                resmi tersedia — lihat public/assets/js/pages/about-contact/contact-form.js
-            --}}
-            <form class="ca-contact__form" data-contact-form novalidate>
+            @if (session('success'))
+                <div class="ca-contact__form-message is-success" role="status" aria-live="polite" data-contact-status>
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if (session('contact_error') || $errors->has('form'))
+                <div class="ca-contact__form-message is-error" role="alert" data-contact-status>
+                    {{ session('contact_error') ?? $errors->first('form') }}
+                </div>
+            @endif
+
+            <form class="ca-contact__form" method="POST" action="{{ route('consultation.store') }}" data-contact-form novalidate>
+                @csrf
+
                 <x-form-field
                     label="Nama Lengkap"
                     name="name"
@@ -28,6 +34,8 @@
                     required
                     autocomplete="name"
                     placeholder="Masukkan nama lengkap"
+                    :value="old('name')"
+                    :error="$errors->first('name')"
                 />
 
                 <x-form-field
@@ -37,63 +45,75 @@
                     type="tel"
                     required
                     autocomplete="tel"
+                    inputmode="tel"
                     placeholder="Contoh: 0812xxxxxxx"
+                    :value="old('whatsapp')"
+                    :error="$errors->first('whatsapp')"
                 />
 
                 <x-form-field
-                    label="Email — Opsional"
+                    label="Email"
                     name="email"
                     id="contact-email"
                     type="email"
                     autocomplete="email"
                     placeholder="nama@email.com"
+                    :value="old('email')"
+                    :error="$errors->first('email')"
                 />
 
                 <x-form-field
-                    label="Jenis Program"
+                    label="Program yang Diminati"
                     name="program"
                     id="contact-program"
                     type="select"
                     required
-                    :value="''"
-                    :options="[
-                        '' => 'Pilih program',
-                        'mitra-owner' => 'Mitra Owner',
-                        'mitra-driver' => 'Mitra Driver',
-                        'simulasi-1-unit' => 'Simulasi 1 Unit',
-                        'simulasi-5-unit' => 'Simulasi 5 Unit',
-                        'simulasi-10-unit' => 'Simulasi 10 Unit',
-                        'konsultasi-umum' => 'Konsultasi Umum',
-                    ]"
+                    :value="old('program', '')"
+                    :error="$errors->first('program')"
+                    :options="['' => 'Pilih program'] + collect($data['form']['program_options'])->pluck('label', 'value')->all()"
                 />
 
                 <x-form-field
-                    label="Pesan"
+                    label="Pesan atau Kebutuhan Konsultasi"
                     name="message"
                     id="contact-message"
                     type="textarea"
                     required
                     rows="6"
                     placeholder="Tuliskan pertanyaan atau rencana yang ingin dikonsultasikan"
+                    :value="old('message')"
+                    :error="$errors->first('message')"
+                    data-message-counter
                 />
 
-                <x-form-field
-                    type="checkbox"
-                    name="consent"
-                    id="contact-consent"
-                    required
-                    label="Saya memahami bahwa informasi awal pada website merupakan ilustrasi dan detail final mengikuti konsultasi serta ketentuan program."
-                />
+                @if ($data['form']['consent_label'])
+                    <x-form-field
+                        type="checkbox"
+                        name="consent"
+                        id="contact-consent"
+                        required
+                        label="{{ $data['form']['consent_label'] }}"
+                        :error="$errors->first('consent')"
+                    />
+                @endif
 
-                <div class="ca-contact__form-message" role="status" aria-live="polite" data-contact-status></div>
+                {{-- Honeypot — kosong bagi pengunjung sungguhan, tidak boleh fokus/terbaca screen reader. --}}
+                <div class="ca-visually-hidden" aria-hidden="true">
+                    <label for="contact-website">Jangan diisi</label>
+                    <input type="text" id="contact-website" name="website" tabindex="-1" autocomplete="off">
+                </div>
 
-                <x-button type="submit" variant="primary" size="lg" icon="send">
-                    Siapkan Pesan Konsultasi
+                <input type="hidden" name="form_token" value="{{ $data['form']['token'] }}">
+
+                <x-button type="submit" variant="primary" size="lg" icon="send" data-contact-submit @if (! $data['form']['consent_label']) disabled aria-disabled="true" @endif>
+                    {{ $data['form']['submit_label'] ?? 'Siapkan Pesan Konsultasi' }}
                 </x-button>
 
-                <p class="ca-contact__form-note ca-body-sm">
-                    Form versi prototipe. Pengiriman belum aktif.
-                </p>
+                @if ($data['form']['microcopy'])
+                    <p class="ca-contact__form-note ca-body-sm">
+                        {{ $data['form']['microcopy'] }}
+                    </p>
+                @endif
             </form>
         </div>
 
@@ -108,7 +128,7 @@
 
         <div class="ca-contact__rail">
             <div class="ca-contact__info-panel">
-                <h3 class="ca-contact__info-title ca-card-title">Informasi Kontak</h3>
+                <h3 class="ca-contact__info-title ca-card-title">{{ $data['contact_panel']['title'] ?? 'Informasi Kontak' }}</h3>
 
                 <ul class="ca-contact__info-list ca-list-reset">
                     @if ($whatsappUrl)
@@ -152,15 +172,17 @@
                 </ul>
             </div>
 
-            <div class="ca-contact-map">
-                <iframe
-                    class="ca-contact-map__iframe"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3093.878843926693!2d106.81870909999999!3d-6.1607189!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f5df4fccc6e7%3A0x66b6d7b7ea79dc8a!2sGajah%20Mada%20Plaza%20Mall!5e1!3m2!1sid!2sid!4v1785448057387!5m2!1sid!2sid"
-                    loading="lazy"
-                    referrerpolicy="strict-origin-when-cross-origin"
-                    title="Lokasi kantor CarAsset — Gajah Mada Tower"
-                ></iframe>
-            </div>
+            @if ($data['map']['is_available'])
+                <div class="ca-contact-map">
+                    <iframe
+                        class="ca-contact-map__iframe"
+                        src="{{ $data['map']['embed_url'] }}"
+                        loading="lazy"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        title="{{ $data['map']['title'] ?? 'Lokasi kantor CarAsset' }}"
+                    ></iframe>
+                </div>
+            @endif
         </div>
     </div>
 </section>

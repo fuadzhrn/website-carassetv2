@@ -2,14 +2,19 @@
 <section id="legalitas-partner" class="ca-legal">
     <div class="ca-container">
         <x-section-heading
-            eyebrow="Legalitas & Kolaborasi"
-            title="Informasi Perusahaan yang Transparan dan Terverifikasi."
-            description="Informasi legalitas, badan usaha, dan partner akan ditampilkan setelah dokumen serta materi resmi disampaikan dan disetujui oleh perusahaan."
+            :eyebrow="$data['eyebrow']"
+            :title="$data['title']"
+            :description="$data['description']"
         />
+
+        @php
+            $legal = $data['legal'];
+            $isLegalReady = $legal['entity_name'] || $legal['registration_number'];
+        @endphp
 
         <span class="ca-legal__status">
             <span class="ca-legal__status-icon" data-lucide="info" aria-hidden="true"></span>
-            Data Legalitas Menunggu Konfirmasi
+            {{ $isLegalReady ? 'Data Legalitas Telah Dikonfirmasi' : 'Data Legalitas Menunggu Konfirmasi' }}
         </span>
 
         <div class="ca-legal__registry">
@@ -21,23 +26,26 @@
                         <span class="ca-legal__item-icon" data-lucide="building-2" aria-hidden="true"></span>
                         <div>
                             <dt class="ca-legal__label">Nama Badan Usaha</dt>
-                            <dd class="ca-legal__value">Menunggu data resmi perusahaan</dd>
+                            <dd class="ca-legal__value{{ $legal['entity_name'] ? ' ca-legal__value--filled' : '' }}">
+                                {{ $legal['entity_name'] ?: 'Menunggu data resmi perusahaan' }}
+                            </dd>
                         </div>
                     </div>
                     <div class="ca-legal__item">
                         <span class="ca-legal__item-icon" data-lucide="file-check-2" aria-hidden="true"></span>
                         <div>
                             <dt class="ca-legal__label">Nomor Legalitas</dt>
-                            <dd class="ca-legal__value">Menunggu data resmi perusahaan</dd>
+                            <dd class="ca-legal__value{{ $legal['registration_number'] ? ' ca-legal__value--filled' : '' }}">
+                                {{ $legal['registration_number'] ?: 'Menunggu data resmi perusahaan' }}
+                            </dd>
                         </div>
                     </div>
                     <div class="ca-legal__item">
                         <span class="ca-legal__item-icon" data-lucide="map-pin" aria-hidden="true"></span>
                         <div>
                             <dt class="ca-legal__label">Alamat Terdaftar</dt>
-                            <dd class="ca-legal__value ca-legal__value--filled">
-                                Gajah Mada Tower, Lt. 19-01, Jl. Gajah Mada No.19-26,
-                                Kota Jakarta Pusat, DKI Jakarta 10130
+                            <dd class="ca-legal__value{{ $legal['registered_address'] ? ' ca-legal__value--filled' : '' }}">
+                                {{ $legal['registered_address'] ?: 'Menunggu data resmi perusahaan' }}
                             </dd>
                         </div>
                     </div>
@@ -45,7 +53,13 @@
                         <span class="ca-legal__item-icon" data-lucide="badge-check" aria-hidden="true"></span>
                         <div>
                             <dt class="ca-legal__label">Dokumen Pendukung</dt>
-                            <dd class="ca-legal__value">Menunggu dokumen resmi perusahaan</dd>
+                            @if ($legal['documents'])
+                                <dd class="ca-legal__value ca-legal__value--filled">
+                                    {{ collect($legal['documents'])->pluck('title')->implode(', ') }}
+                                </dd>
+                            @else
+                                <dd class="ca-legal__value">Menunggu dokumen resmi perusahaan</dd>
+                            @endif
                         </div>
                     </div>
                 </dl>
@@ -57,15 +71,31 @@
                 <h3 class="ca-legal__area-title ca-card-title">Partner Operasional</h3>
 
                 <p class="ca-legal__partner-note ca-body-sm">
-                    Logo dan informasi partner akan ditampilkan setelah memperoleh
-                    aset dan persetujuan resmi.
+                    {{ $data['partner_note'] }}
                 </p>
 
                 <div class="ca-legal__partner-grid">
-                    <div class="ca-legal__partner-placeholder">Logo Partner Resmi</div>
-                    <div class="ca-legal__partner-placeholder">Logo Partner Resmi</div>
-                    <div class="ca-legal__partner-placeholder">Logo Partner Resmi</div>
-                    <div class="ca-legal__partner-placeholder">Logo Partner Resmi</div>
+                    @forelse ($data['partners'] as $partner)
+                        @php $partnerTag = ($partner['url'] ?? null) ? 'a' : 'div'; @endphp
+                        <{{ $partnerTag }}
+                            class="ca-legal__partner-placeholder"
+                            @if ($partner['url'] ?? null)
+                                href="{{ $partner['url'] }}"
+                                @if ($partner['open_new_tab'] ?? true) target="_blank" rel="noopener noreferrer" @endif
+                            @endif
+                        >
+                            @if ($partner['logo_url'] ?? null)
+                                <img src="{{ $partner['logo_url'] }}" alt="{{ $partner['logo_alt'] }}" style="max-width:100%;max-height:100%;object-fit:contain;">
+                            @else
+                                {{ $partner['name'] }}
+                            @endif
+                        </{{ $partnerTag }}>
+                    @empty
+                        <div class="ca-legal__partner-placeholder">Logo Partner Resmi</div>
+                        <div class="ca-legal__partner-placeholder">Logo Partner Resmi</div>
+                        <div class="ca-legal__partner-placeholder">Logo Partner Resmi</div>
+                        <div class="ca-legal__partner-placeholder">Logo Partner Resmi</div>
+                    @endforelse
                 </div>
             </div>
         </div>

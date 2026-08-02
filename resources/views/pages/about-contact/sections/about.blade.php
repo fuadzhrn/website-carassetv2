@@ -2,53 +2,59 @@
 <section id="tentang-carasset" class="ca-about" aria-labelledby="ca-about-heading">
     <div class="ca-container">
         <div class="ca-about__intro">
-            <span class="ca-about__eyebrow ca-eyebrow">Tentang CarAsset</span>
+            @if ($data['eyebrow'])
+                <span class="ca-about__eyebrow ca-eyebrow">{{ $data['eyebrow'] }}</span>
+            @endif
             <h1 id="ca-about-heading" class="ca-about__title ca-page-title">
-                Menghubungkan Kepemilikan Kendaraan dengan Pengelolaan yang Produktif.
+                {{ $data['title'] }}
             </h1>
         </div>
 
         <div class="ca-about__body">
             <div class="ca-about__narrative">
-                <p class="ca-body-lg">
-                    CarAsset adalah platform kemitraan kepemilikan kendaraan produktif
-                    yang menghubungkan mitra, kendaraan, dan pengelolaan operasional
-                    dalam satu ekosistem.
-                </p>
-                <p class="ca-body">
-                    Melalui pendekatan Own–Operate–Grow, CarAsset membantu mitra
-                    memahami proses kepemilikan, pengelolaan kendaraan, monitoring
-                    operasional, serta peluang pengembangan aset secara bertahap
-                    sesuai ketentuan program.
-                </p>
+                @foreach ($data['narrative_paragraphs'] as $index => $paragraph)
+                    <p class="{{ $index === 0 ? 'ca-body-lg' : 'ca-body' }}">
+                        {{ $paragraph }}
+                    </p>
+                @endforeach
 
-                <blockquote class="ca-about__positioning">
-                    Bukan sekadar memiliki kendaraan.<br>
-                    CarAsset membantu membuat aset tetap bekerja.
-                </blockquote>
+                @if ($data['positioning_lines'])
+                    <blockquote class="ca-about__positioning">
+                        {!! implode('<br>', array_map('e', $data['positioning_lines'])) !!}
+                    </blockquote>
+                @endif
 
                 <div class="ca-about__actions ca-cluster">
-                    <x-button href="{{ route('partnership') }}" variant="primary" size="md">
-                        Kenali Program Kemitraan
-                    </x-button>
-                    <x-button href="#contact" variant="ghost" size="md">
-                        Konsultasi Sekarang
-                    </x-button>
+                    @if ($data['primary_cta'])
+                        <x-button href="{{ $data['primary_cta']['url'] }}" target="{{ $data['primary_cta']['target'] }}" variant="primary" size="md">
+                            {{ $data['primary_cta']['label'] }}
+                        </x-button>
+                    @endif
+                    @if ($data['secondary_cta'])
+                        <x-button href="{{ $data['secondary_cta']['url'] }}" target="{{ $data['secondary_cta']['target'] }}" variant="ghost" size="md">
+                            {{ $data['secondary_cta']['label'] }}
+                        </x-button>
+                    @endif
                 </div>
             </div>
 
-            <div class="ca-about__tagline" aria-hidden="true">
-                <span>Mobil</span>
-                <span>Bekerja.</span>
-                <span class="ca-about__tagline-accent">Aset</span>
-                <span class="ca-about__tagline-accent">Bertumbuh.</span>
-            </div>
+            @php
+                $taglineWords = array_values(array_filter(explode(' ', (string) $data['tagline'])));
+                $taglineAccentFrom = (int) ceil(count($taglineWords) / 2);
+            @endphp
+            @if ($taglineWords)
+                <div class="ca-about__tagline" aria-hidden="true">
+                    @foreach ($taglineWords as $wordIndex => $word)
+                        <span class="{{ $wordIndex >= $taglineAccentFrom ? 'ca-about__tagline-accent' : '' }}">{{ $word }}</span>
+                    @endforeach
+                </div>
+            @endif
         </div>
 
         <figure class="ca-about__strip">
             <img
-                src="{{ asset('assets/images/about-contact/about-carasset.webp') }}"
-                alt=""
+                src="{{ $data['image']['url'] }}"
+                alt="{{ $data['image']['alt'] }}"
                 width="1200"
                 height="800"
                 loading="lazy"

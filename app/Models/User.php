@@ -52,4 +52,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Media::class, 'uploaded_by');
     }
+
+    public function handledContactMessages(): HasMany
+    {
+        return $this->hasMany(ContactMessage::class, 'handled_by');
+    }
 }

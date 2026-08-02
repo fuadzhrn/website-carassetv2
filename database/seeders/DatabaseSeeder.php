@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             BusinessContentSeeder::class,
             PartnershipContentSeeder::class,
             SimulationContentSeeder::class,
+            AboutContactContentSeeder::class,
             SiteSettingSeeder::class,
         ]);
     }

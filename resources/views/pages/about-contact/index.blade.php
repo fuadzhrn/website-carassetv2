@@ -19,11 +19,25 @@
 @endpush
 
 @section('content')
-    @include('pages.about-contact.sections.about')
-    @include('pages.about-contact.sections.vision-mission-values')
-    @include('pages.about-contact.sections.legal-partners')
-    @include('pages.about-contact.sections.faq')
-    @include('pages.about-contact.sections.contact-form')
+    @if ($aboutContact['about']['is_active'])
+        @include('pages.about-contact.sections.about', ['data' => $aboutContact['about']])
+    @endif
+
+    @if ($aboutContact['vision-mission-values']['is_active'])
+        @include('pages.about-contact.sections.vision-mission-values', ['data' => $aboutContact['vision-mission-values']])
+    @endif
+
+    @if ($aboutContact['legal-partners']['is_active'])
+        @include('pages.about-contact.sections.legal-partners', ['data' => $aboutContact['legal-partners']])
+    @endif
+
+    @if ($aboutContact['faq']['is_active'])
+        @include('pages.about-contact.sections.faq', ['data' => $aboutContact['faq']])
+    @endif
+
+    @if ($aboutContact['contact-form']['is_active'])
+        @include('pages.about-contact.sections.contact-form', ['data' => $aboutContact['contact-form']])
+    @endif
 @endsection
 
 @push('scripts')

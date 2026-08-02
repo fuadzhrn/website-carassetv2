@@ -30,6 +30,7 @@
                 name="{{ $name }}"
                 value="1"
                 @if ($required) required aria-required="true" @endif
+                @if ($error) aria-invalid="true" @endif
                 aria-describedby="{{ $describedBy }}"
                 {{ $attributes->merge(['class' => 'ca-field__checkbox-input']) }}
             >
@@ -63,6 +64,7 @@
                 name="{{ $name }}"
                 placeholder="{{ $placeholder }}"
                 @if ($required) required aria-required="true" @endif
+                @if ($error) aria-invalid="true" @endif
                 aria-describedby="{{ $describedBy }}"
                 {{ $attributes->merge(['class' => 'ca-field__control']) }}
             >{{ $value }}</textarea>
@@ -71,6 +73,7 @@
                 id="{{ $fieldId }}"
                 name="{{ $name }}"
                 @if ($required) required aria-required="true" @endif
+                @if ($error) aria-invalid="true" @endif
                 aria-describedby="{{ $describedBy }}"
                 {{ $attributes->merge(['class' => 'ca-field__control']) }}
             >
@@ -86,6 +89,7 @@
                 value="{{ $value }}"
                 placeholder="{{ $placeholder }}"
                 @if ($required) required aria-required="true" @endif
+                @if ($error) aria-invalid="true" @endif
                 aria-describedby="{{ $describedBy }}"
                 {{ $attributes->merge(['class' => 'ca-field__control']) }}
             >

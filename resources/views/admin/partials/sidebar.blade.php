@@ -63,16 +63,17 @@
             $managementItems = [
                 ['route' => 'admin.media.index', 'label' => 'Media Library', 'icon' => 'images'],
                 ['route' => 'admin.seo.index', 'label' => 'SEO', 'icon' => 'search-check'],
-                ['route' => 'admin.messages.index', 'label' => 'Pesan Masuk', 'icon' => 'inbox'],
+                ['route' => 'admin.messages.index', 'match' => 'admin.messages.*', 'label' => 'Pesan Masuk', 'icon' => 'inbox'],
                 ['route' => 'admin.settings.index', 'label' => 'Pengaturan Website', 'icon' => 'settings'],
             ];
         @endphp
         @foreach ($managementItems as $item)
+            @php $isCurrent = request()->routeIs($item['match'] ?? $item['route']); @endphp
             <li>
                 <a
                     href="{{ route($item['route']) }}"
-                    class="ca-admin-sidebar__link {{ request()->routeIs($item['route']) ? 'is-active' : '' }}"
-                    @if (request()->routeIs($item['route'])) aria-current="page" @endif
+                    class="ca-admin-sidebar__link {{ $isCurrent ? 'is-active' : '' }}"
+                    @if ($isCurrent) aria-current="page" @endif
                     title="{{ $item['label'] }}"
                 >
                     <span class="ca-admin-sidebar__link-icon" data-lucide="{{ $item['icon'] }}" aria-hidden="true"></span>

@@ -37,20 +37,12 @@
                     <td><code>{{ route($page['route']) }}</code></td>
                     <td>5 section</td>
                     <td>
-                        @if (in_array($key, ['home', 'business', 'partnership', 'simulation'], true))
-                            <x-admin::status-badge variant="active">Terhubung ke CMS</x-admin::status-badge>
-                        @else
-                            <x-admin::status-badge variant="pending">Menunggu integrasi CMS</x-admin::status-badge>
-                        @endif
+                        <x-admin::status-badge variant="active">Terhubung ke CMS</x-admin::status-badge>
                     </td>
                     <td class="ca-admin-table__action-col">
                         <div class="ca-admin-table__actions">
                             <x-admin::button :href="route('admin.pages.'.$key)" variant="ghost" size="sm" icon="arrow-right">
-                                @if (in_array($key, ['home', 'business', 'partnership', 'simulation'], true))
-                                    Buka Editor
-                                @else
-                                    Buka Workspace
-                                @endif
+                                Buka Editor
                             </x-admin::button>
                             <x-admin::button :href="route($page['route'])" target="_blank" variant="outline" size="sm" icon="external-link">
                                 Lihat Halaman Publik

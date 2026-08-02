@@ -2,10 +2,13 @@
 
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\Auth\PasswordController;
+use App\Http\Controllers\Admin\ContactMessageController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\ModulePlaceholderController;
 use App\Http\Controllers\Admin\PageWorkspaceController;
+use App\Http\Controllers\Admin\Pages\AboutContactController;
+use App\Http\Controllers\Admin\Pages\AboutContactSectionController;
 use App\Http\Controllers\Admin\Pages\BusinessController;
 use App\Http\Controllers\Admin\Pages\BusinessSectionController;
 use App\Http\Controllers\Admin\Pages\HomeController;
@@ -54,7 +57,10 @@ Route::prefix('admin')->middleware('admin.security-headers')->group(function () 
             ->whereIn('sectionKey', ['assumptions', 'one-unit', 'multiple-units', 'protection-monitoring', 'disclaimer'])
             ->name('admin.pages.simulation.sections.update');
 
-        Route::get('pages/about-contact', [PageWorkspaceController::class, 'aboutContact'])->name('admin.pages.about-contact');
+        Route::get('pages/about-contact', [AboutContactController::class, 'index'])->name('admin.pages.about-contact');
+        Route::patch('pages/about-contact/sections/{sectionKey}', [AboutContactSectionController::class, 'update'])
+            ->whereIn('sectionKey', ['about', 'vision-mission-values', 'legal-partners', 'faq', 'contact-form'])
+            ->name('admin.pages.about-contact.sections.update');
 
         Route::get('media', [MediaController::class, 'index'])->name('admin.media.index');
         Route::get('media/create', [MediaController::class, 'create'])->name('admin.media.create');
@@ -65,7 +71,11 @@ Route::prefix('admin')->middleware('admin.security-headers')->group(function () 
         Route::delete('media/{media}', [MediaController::class, 'destroy'])->name('admin.media.destroy');
 
         Route::get('seo', [ModulePlaceholderController::class, 'seo'])->name('admin.seo.index');
-        Route::get('messages', [ModulePlaceholderController::class, 'messages'])->name('admin.messages.index');
+
+        Route::get('messages', [ContactMessageController::class, 'index'])->name('admin.messages.index');
+        Route::get('messages/{contactMessage}', [ContactMessageController::class, 'show'])->name('admin.messages.show');
+        Route::patch('messages/{contactMessage}/status', [ContactMessageController::class, 'updateStatus'])->name('admin.messages.status.update');
+        Route::delete('messages/{contactMessage}', [ContactMessageController::class, 'destroy'])->name('admin.messages.destroy');
 
         Route::get('settings', [SiteSettingController::class, 'index'])->name('admin.settings.index');
         Route::patch('settings', [SiteSettingController::class, 'update'])->name('admin.settings.update');

@@ -61,21 +61,28 @@
                         <p class="ca-admin-quick-access__description">{{ $item['description'] }}</p>
                     </div>
 
-                    @if (in_array($item['route'], ['admin.pages.home', 'admin.pages.business', 'admin.pages.partnership', 'admin.pages.simulation'], true))
-                        <x-admin::status-badge variant="active">Terhubung ke CMS</x-admin::status-badge>
-                    @else
-                        <x-admin::status-badge variant="pending">Belum terhubung ke CMS</x-admin::status-badge>
-                    @endif
+                    <x-admin::status-badge variant="active">Terhubung ke CMS</x-admin::status-badge>
 
                     <x-admin::button :href="route($item['route'])" variant="ghost" size="sm" icon="arrow-right">
-                        @if (in_array($item['route'], ['admin.pages.home', 'admin.pages.business', 'admin.pages.partnership', 'admin.pages.simulation'], true))
-                            Buka Editor
-                        @else
-                            Buka Workspace
-                        @endif
+                        Buka Editor
                     </x-admin::button>
                 </div>
             @endforeach
+
+            <div class="ca-admin-quick-access__item">
+                <div class="ca-admin-quick-access__info">
+                    <p class="ca-admin-quick-access__title">Pesan Masuk</p>
+                    <p class="ca-admin-quick-access__description">
+                        {{ $newMessageCount }} pesan baru menunggu ditinjau.
+                    </p>
+                </div>
+
+                <x-admin::status-badge variant="active">Aktif</x-admin::status-badge>
+
+                <x-admin::button :href="route('admin.messages.index')" variant="ghost" size="sm" icon="arrow-right">
+                    Buka Pesan Masuk
+                </x-admin::button>
+            </div>
         </div>
     </section>
 
@@ -118,6 +125,18 @@
             </li>
             <li class="ca-admin-status-list__item">
                 <span>Editor Simulasi & Perlindungan</span>
+                <x-admin::status-badge variant="active">Aktif</x-admin::status-badge>
+            </li>
+            <li class="ca-admin-status-list__item">
+                <span>Editor Tentang & Kontak</span>
+                <x-admin::status-badge variant="active">Aktif</x-admin::status-badge>
+            </li>
+            <li class="ca-admin-status-list__item">
+                <span>Form Konsultasi</span>
+                <x-admin::status-badge variant="active">Aktif</x-admin::status-badge>
+            </li>
+            <li class="ca-admin-status-list__item">
+                <span>Pesan Masuk</span>
                 <x-admin::status-badge variant="active">Aktif</x-admin::status-badge>
             </li>
             <li class="ca-admin-status-list__item">

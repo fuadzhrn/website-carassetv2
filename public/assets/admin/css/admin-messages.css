@@ -1,0 +1,257 @@
+/* ==========================================================================
+   CarAsset Admin — Pesan Masuk (Consultation Inbox Workspace)
+   (admin-messages.css)
+   Prefix wajib: ca-admin-
+   ========================================================================== */
+
+/* --- Toolbar (search + filter) ------------------------------------------- */
+
+.ca-admin-messages-toolbar {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--ca-space-4);
+    flex-wrap: wrap;
+    padding: var(--ca-space-4);
+    margin-bottom: var(--ca-space-4);
+    background: var(--ca-color-extra-light-gray, #f4f4f2);
+    border-radius: var(--ca-radius-sm, 4px);
+}
+
+.ca-admin-messages-toolbar .ca-admin-field {
+    flex: 1;
+    min-width: 220px;
+    margin-bottom: 0;
+}
+
+.ca-admin-messages-count {
+    margin: 0 0 var(--ca-space-3);
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-sm);
+    color: var(--ca-color-slate);
+}
+
+/* --- Table cells ----------------------------------------------------------- */
+
+.ca-admin-messages-contact {
+    display: block;
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-sm);
+    color: var(--ca-color-navy);
+}
+
+.ca-admin-messages-contact--secondary {
+    color: var(--ca-color-slate);
+    font-size: var(--ca-text-xs);
+}
+
+.ca-admin-messages-time {
+    display: block;
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-sm);
+    color: var(--ca-color-navy);
+}
+
+.ca-admin-messages-time--relative {
+    color: var(--ca-color-slate);
+    font-size: var(--ca-text-xs);
+}
+
+/* --- Status badge variants (new/read/completed/archived) ------------------- */
+
+.ca-admin-badge--new {
+    background-color: var(--ca-bg-gold-soft);
+    color: #7a5a13;
+}
+
+.ca-admin-badge--read {
+    background-color: var(--ca-color-extra-light-gray);
+    color: var(--ca-color-navy);
+}
+
+.ca-admin-badge--completed {
+    background-color: var(--ca-bg-green-soft);
+    color: #0f5b30;
+}
+
+.ca-admin-badge--archived {
+    background-color: var(--ca-color-light-gray);
+    color: var(--ca-text-secondary);
+}
+
+/* --- Message detail ---------------------------------------------------------- */
+
+.ca-admin-message-detail__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--ca-space-4);
+    margin-bottom: var(--ca-space-5);
+}
+
+.ca-admin-message-detail__name {
+    margin: 0 0 var(--ca-space-1);
+    font-family: var(--ca-font-heading);
+    font-size: var(--ca-text-xl);
+    color: var(--ca-color-navy);
+}
+
+.ca-admin-message-detail__meta {
+    margin: 0;
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-sm);
+    color: var(--ca-color-slate);
+}
+
+.ca-admin-message-detail__rows {
+    margin-bottom: var(--ca-space-5);
+}
+
+.ca-admin-message-detail__row {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--ca-space-4);
+    padding: var(--ca-space-3) 0;
+    border-bottom: 1px dashed var(--ca-border-color);
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-sm);
+}
+
+.ca-admin-message-detail__row:last-child {
+    border-bottom: none;
+}
+
+.ca-admin-message-detail__label {
+    font-weight: 600;
+    color: var(--ca-color-slate);
+    flex-shrink: 0;
+}
+
+.ca-admin-message-detail__value {
+    display: flex;
+    align-items: center;
+    gap: var(--ca-space-3);
+    color: var(--ca-color-navy);
+    text-align: right;
+}
+
+.ca-admin-message-detail__empty {
+    color: var(--ca-color-slate);
+    font-style: italic;
+}
+
+.ca-admin-message-detail__manual-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: var(--ca-text-xs);
+    color: var(--ca-color-emerald, #0f5b30);
+    text-decoration: underline;
+}
+
+.ca-admin-message-detail__panel {
+    padding: var(--ca-space-4);
+    margin-bottom: var(--ca-space-5);
+    background: var(--ca-color-extra-light-gray, #f4f4f2);
+    border-radius: var(--ca-radius-sm, 4px);
+}
+
+.ca-admin-message-detail__panel-title {
+    margin: 0 0 var(--ca-space-3);
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-xs);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ca-color-slate);
+}
+
+.ca-admin-message-detail__message {
+    margin: 0;
+    white-space: pre-wrap;
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-sm);
+    line-height: 1.6;
+    color: var(--ca-color-navy);
+}
+
+/* --- Status timeline --------------------------------------------------------- */
+
+.ca-admin-message-timeline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ca-space-4);
+    list-style: none;
+    margin: 0 0 var(--ca-space-3);
+    padding: 0;
+}
+
+.ca-admin-message-timeline__item {
+    flex: 1;
+    min-width: 140px;
+    padding: var(--ca-space-3);
+    border: 1px solid var(--ca-border-color);
+    border-radius: var(--ca-radius-sm, 4px);
+    opacity: 0.5;
+}
+
+.ca-admin-message-timeline__item.is-done {
+    opacity: 1;
+    border-color: var(--ca-color-emerald, #0f5b30);
+}
+
+.ca-admin-message-timeline__label {
+    display: block;
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ca-color-slate);
+    margin-bottom: 4px;
+}
+
+.ca-admin-message-timeline__time {
+    display: block;
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-sm);
+    color: var(--ca-color-navy);
+}
+
+.ca-admin-message-detail__handled-by {
+    margin: 0 0 var(--ca-space-2);
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-xs);
+    color: var(--ca-color-slate);
+}
+
+/* --- Action bar ---------------------------------------------------------- */
+
+.ca-admin-message-detail__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ca-space-3);
+    padding-top: var(--ca-space-5);
+    margin-top: var(--ca-space-5);
+    border-top: 1px solid var(--ca-border-color);
+}
+
+.ca-admin-message-detail__actions form {
+    margin: 0;
+}
+
+.ca-admin-message-detail__back {
+    margin-top: var(--ca-space-4);
+}
+
+/* --- Confirm dialog -------------------------------------------------------- */
+
+.ca-admin-confirm-dialog__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--ca-space-3);
+    margin-top: var(--ca-space-4);
+}
+
+.ca-admin-confirm-dialog__actions form {
+    margin: 0;
+}

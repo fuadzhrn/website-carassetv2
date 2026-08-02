@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Media;
 use App\Services\CmsLinkService;
 use App\Services\ContentService;
+use App\Services\SettingsService;
 use App\Services\SimulationFormatterService;
 use Illuminate\View\View;
 
@@ -80,9 +81,21 @@ class PageController extends Controller
         return view('pages.simulation.index', ['simulation' => $simulation]);
     }
 
-    public function aboutContact()
+    public function aboutContact(ContentService $contentService, CmsLinkService $linkService, SettingsService $settingsService, ConsultationFormTokenService $formTokenService): View
     {
-        return view('pages.about-contact.index');
+        $fallbacks = config('about-contact-content.sections', []);
+        $sections = $contentService->getPageSectionsContent('about-contact', $fallbacks);
+        $fallbackImages = config('about-contact-content.fallback_images', []);
+
+        $aboutContact = [
+            'about' => $this->presentAbout($sections['about'], $linkService, $settingsService, $fallbackImages),
+            'vision-mission-values' => $this->presentVisionMissionValues($sections['vision-mission-values']),
+            'legal-partners' => $this->presentLegalPartners($sections['legal-partners']),
+            'faq' => $this->presentFaq($sections['faq']),
+            'contact-form' => $this->presentContactForm($sections['contact-form'], $settingsService, $formTokenService),
+        ];
+
+        return view('pages.about-contact.index', ['aboutContact' => $aboutContact]);
     }
 
     /**
@@ -792,6 +805,195 @@ class PageController extends Controller
             'raw_value' => $value,
             'formatted_value' => $isAvailable ? $formatter->displayValue($value, $format) : null,
             'is_available' => $isAvailable,
+        ];
+    }
+
+    /**
+     * @param array{content: array<string, mixed>, is_active: bool} $section
+     * @param array<string, string> $fallbackImages
+     * @return array<string, mixed>
+     */
+    private function presentAbout(array $section, CmsLinkService $linkService, SettingsService $settingsService, array $fallbackImages): array
+    {
+        $content = $section['content'];
+
+        return [
+            'is_active' => $section['is_active'],
+            'eyebrow' => $content['eyebrow'] ?? null,
+            'title' => $content['title'] ?? null,
+            // about.tagline hanya override — jatuh ke tagline brand global
+            // (satu sumber yang sama dipakai footer) bila kosong.
+            'tagline' => $content['tagline'] ?: $settingsService->get('brand.tagline', 'Mobil Bekerja. Aset Bertumbuh.'),
+            'narrative_paragraphs' => $this->splitLines($content['narrative'] ?? null, "\n\n"),
+            'positioning_lines' => $this->splitLines($content['positioning_statement'] ?? null, "\n"),
+            'image' => $this->resolveImage(
+                $content['image_media_id'] ?? null,
+                $content['image_alt'] ?? null,
+                $fallbackImages['about'] ?? null,
+                '',
+            ),
+            'primary_cta' => $linkService->resolve($content['primary_cta'] ?? null),
+            'secondary_cta' => $linkService->resolve($content['secondary_cta'] ?? null),
+        ];
+    }
+
+    /**
+     * @param array{content: array<string, mixed>, is_active: bool} $section
+     * @return array<string, mixed>
+     */
+    private function presentVisionMissionValues(array $section): array
+    {
+        $content = $section['content'];
+        $vision = $content['vision'] ?? [];
+        $mission = $content['mission'] ?? [];
+
+        $missionItems = ($mission['editorial_status'] ?? 'draft') === 'confirmed'
+            ? $this->filterItems($mission['items'] ?? [], 'text', 8)
+            : [];
+
+        $values = [];
+
+        foreach (['trust', 'growth', 'productive', 'partnership'] as $valueKey) {
+            $value = $content['values'][$valueKey] ?? [];
+
+            if (($value['is_active'] ?? true) === false) {
+                continue;
+            }
+
+            $values[$valueKey] = [
+                'title' => $value['title'] ?? ucfirst($valueKey),
+                'description' => $value['description'] ?? null,
+            ];
+        }
+
+        return [
+            'is_active' => $section['is_active'],
+            'vision' => [
+                'label' => $vision['label'] ?? null,
+                'is_confirmed' => ($vision['editorial_status'] ?? 'draft') === 'confirmed',
+                'statement' => ($vision['editorial_status'] ?? 'draft') === 'confirmed' ? ($vision['statement'] ?? null) : null,
+            ],
+            'mission' => [
+                'label' => $mission['label'] ?? null,
+                'is_confirmed' => ($mission['editorial_status'] ?? 'draft') === 'confirmed',
+                'items' => $missionItems,
+            ],
+            'values' => $values,
+        ];
+    }
+
+    /**
+     * @param array{content: array<string, mixed>, is_active: bool} $section
+     * @return array<string, mixed>
+     */
+    private function presentLegalPartners(array $section): array
+    {
+        $content = $section['content'];
+        $legal = $content['legal'] ?? [];
+        $isLegalConfirmed = ($legal['data_status'] ?? 'draft') === 'confirmed';
+
+        $documents = $isLegalConfirmed
+            ? $this->filterItems($legal['documents'] ?? [], 'title', 10)
+            : [];
+
+        $partners = array_map(function ($partner) {
+            $logoMediaId = $partner['logo_media_id'] ?? null;
+            $media = $logoMediaId ? Media::find($logoMediaId) : null;
+
+            $partner['logo_url'] = $media?->url();
+            $partner['logo_alt'] = $partner['logo_alt'] ?: ($media?->alt_text ?: ($partner['name'] ? 'Logo '.$partner['name'] : ''));
+
+            return $partner;
+        }, $this->filterItems($content['partners'] ?? [], 'name', 12));
+
+        return [
+            'is_active' => $section['is_active'],
+            'eyebrow' => $content['eyebrow'] ?? null,
+            'title' => $content['title'] ?? null,
+            'description' => $content['description'] ?? null,
+            'legal' => [
+                'entity_name' => $isLegalConfirmed ? ($legal['entity_name'] ?? null) : null,
+                'registration_number' => $isLegalConfirmed ? ($legal['registration_number'] ?? null) : null,
+                // registered_address ditampilkan independen dari
+                // legal.data_status — lihat catatan #3 di
+                // config/about-contact-content.php: nilai ini nyata
+                // (ditandai --filled di desain lama), bukan placeholder
+                // yang dipersengketakan seperti entity_name/registration_number.
+                'registered_address' => $legal['registered_address'] ?? null,
+                'documents' => $documents,
+            ],
+            'partners' => $partners,
+            'partner_note' => $content['partner_note'] ?? null,
+        ];
+    }
+
+    /**
+     * @param array{content: array<string, mixed>, is_active: bool} $section
+     * @return array<string, mixed>
+     */
+    private function presentFaq(array $section): array
+    {
+        $content = $section['content'];
+
+        $items = array_filter($content['items'] ?? [], function ($item) {
+            return ($item['is_active'] ?? true) !== false
+                && ($item['question'] ?? '') !== ''
+                && ($item['answer'] ?? '') !== '';
+        });
+
+        return [
+            'is_active' => $section['is_active'],
+            'eyebrow' => $content['eyebrow'] ?? null,
+            'title' => $content['title'] ?? null,
+            'description' => $content['description'] ?? null,
+            'items' => array_slice($items, 0, 20, true),
+            'closing_note' => $content['closing_note'] ?? null,
+        ];
+    }
+
+    /**
+     * @param array{content: array<string, mixed>, is_active: bool} $section
+     * @return array<string, mixed>
+     */
+    private function presentContactForm(array $section, SettingsService $settingsService, ConsultationFormTokenService $formTokenService): array
+    {
+        $content = $section['content'];
+        $form = $content['form'] ?? [];
+        $map = $content['map'] ?? [];
+
+        $address = $settingsService->get('contact.address');
+        $siteDataStatus = $settingsService->get('site.data_status', 'draft');
+
+        $mapAvailable = ($map['is_active'] ?? false) === true
+            && (string) $address !== ''
+            && $siteDataStatus === 'confirmed'
+            && ($map['embed_url'] ?? '') !== '';
+
+        return [
+            'is_active' => $section['is_active'],
+            'eyebrow' => $content['eyebrow'] ?? null,
+            'title' => $content['title'] ?? null,
+            'description' => $content['description'] ?? null,
+            'contact_panel' => [
+                'title' => $content['contact_panel']['title'] ?? null,
+                'description' => $content['contact_panel']['description'] ?? null,
+            ],
+            'form' => [
+                'description' => $form['description'] ?? null,
+                'submit_label' => $form['submit_label'] ?? null,
+                'microcopy' => $form['microcopy'] ?? null,
+                'consent_label' => $form['consent_label'] ?? null,
+                'program_options' => array_filter(
+                    $this->filterItems($form['program_options'] ?? [], 'label', 6),
+                    fn ($option) => ($option['value'] ?? '') !== ''
+                ),
+                'token' => $formTokenService->generate(),
+            ],
+            'map' => [
+                'is_available' => $mapAvailable,
+                'embed_url' => $mapAvailable ? $map['embed_url'] : null,
+                'title' => $mapAvailable ? ($map['title'] ?? null) : null,
+            ],
         ];
     }
 

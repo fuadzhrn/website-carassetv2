@@ -92,24 +92,4 @@ class PageWorkspaceController extends Controller
         ]);
     }
 
-    public function aboutContact(): View
-    {
-        return $this->workspace('about-contact');
-    }
-
-    /**
-     * Render the shared workspace placeholder for a single locked page key.
-     */
-    private function workspace(string $key): View
-    {
-        $page = $this->pages()[$key];
-
-        return view('admin.pages.workspace-placeholder', [
-            'pageKey' => $key,
-            'title' => $page['title'],
-            'description' => $page['description'],
-            'publicRoute' => $page['route'],
-            'sections' => $page['sections'],
-        ]);
-    }
 }
