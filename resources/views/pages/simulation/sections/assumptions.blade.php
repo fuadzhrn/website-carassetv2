@@ -2,21 +2,21 @@
 <section id="dasar-perhitungan" class="ca-assumptions" aria-labelledby="ca-simulation-heading">
     <div class="ca-container">
         <div class="ca-assumptions__header">
-            <span class="ca-assumptions__eyebrow ca-eyebrow">Simulasi & Perlindungan</span>
+            @if ($data['eyebrow'])
+                <span class="ca-assumptions__eyebrow ca-eyebrow">{{ $data['eyebrow'] }}</span>
+            @endif
 
             <h1 id="ca-simulation-heading" class="ca-assumptions__title ca-page-title">
-                Pahami Cara Ilustrasi Operasional Disusun.
+                {{ $data['title'] }}
             </h1>
 
             <p class="ca-assumptions__description ca-body-lg">
-                Simulasi CarAsset menggunakan sejumlah asumsi operasional untuk
-                membantu calon mitra memahami alur pengelolaan kendaraan. Seluruh
-                nilai pada halaman ini masih menunggu konfirmasi final perusahaan.
+                {{ $data['description'] }}
             </p>
 
             <span class="ca-simulation-status">
                 <span class="ca-simulation-status__icon" data-lucide="info" aria-hidden="true"></span>
-                Contoh tampilan 
+                {{ $data['data_status'] === 'confirmed' ? 'Telah Dikonfirmasi' : 'Menunggu Konfirmasi' }}
             </span>
         </div>
 
@@ -26,20 +26,16 @@
 
                 <dl class="ca-assumptions__list">
                     <div class="ca-assumptions__item">
-                        <dt class="ca-simulation-label">Hari Operasional</dt>
-                        <dd
-                            class="ca-simulation-value is-pending"
-                            data-simulation-field="assumptions.operatingDays"
-                            data-simulation-format="days"
-                        >Menunggu angka final klien</dd>
+                        <dt class="ca-simulation-label">{{ $data['fields']['operational_days']['label'] }}</dt>
+                        <dd class="ca-simulation-value {{ $data['fields']['operational_days']['amount']['is_available'] ? 'is-final' : 'is-pending' }}">
+                            {{ $data['fields']['operational_days']['amount']['is_available'] ? $data['fields']['operational_days']['amount']['formatted_value'] : 'Menunggu angka final klien' }}
+                        </dd>
                     </div>
                     <div class="ca-assumptions__item">
-                        <dt class="ca-simulation-label">Setoran / Hasil Operasional Harian</dt>
-                        <dd
-                            class="ca-simulation-value is-pending"
-                            data-simulation-field="assumptions.dailyDeposit"
-                            data-simulation-format="currency"
-                        >Menunggu angka final klien</dd>
+                        <dt class="ca-simulation-label">{{ $data['fields']['daily_result']['label'] }}</dt>
+                        <dd class="ca-simulation-value {{ $data['fields']['daily_result']['amount']['is_available'] ? 'is-final' : 'is-pending' }}">
+                            {{ $data['fields']['daily_result']['amount']['is_available'] ? $data['fields']['daily_result']['amount']['formatted_value'] : 'Menunggu angka final klien' }}
+                        </dd>
                     </div>
                 </dl>
             </div>
@@ -51,20 +47,16 @@
 
                 <dl class="ca-assumptions__list">
                     <div class="ca-assumptions__item">
-                        <dt class="ca-simulation-label">Biaya Operasional</dt>
-                        <dd
-                            class="ca-simulation-value is-pending"
-                            data-simulation-field="assumptions.operationalCost"
-                            data-simulation-format="currency"
-                        >Menunggu angka final klien</dd>
+                        <dt class="ca-simulation-label">{{ $data['fields']['operating_cost']['label'] }}</dt>
+                        <dd class="ca-simulation-value {{ $data['fields']['operating_cost']['amount']['is_available'] ? 'is-final' : 'is-pending' }}">
+                            {{ $data['fields']['operating_cost']['amount']['is_available'] ? $data['fields']['operating_cost']['amount']['formatted_value'] : 'Menunggu angka final klien' }}
+                        </dd>
                     </div>
                     <div class="ca-assumptions__item">
-                        <dt class="ca-simulation-label">Cicilan Kendaraan</dt>
-                        <dd
-                            class="ca-simulation-value is-pending"
-                            data-simulation-field="assumptions.monthlyInstallment"
-                            data-simulation-format="currency"
-                        >Menunggu angka final klien</dd>
+                        <dt class="ca-simulation-label">{{ $data['fields']['vehicle_installment']['label'] }}</dt>
+                        <dd class="ca-simulation-value {{ $data['fields']['vehicle_installment']['amount']['is_available'] ? 'is-final' : 'is-pending' }}">
+                            {{ $data['fields']['vehicle_installment']['amount']['is_available'] ? $data['fields']['vehicle_installment']['amount']['formatted_value'] : 'Menunggu angka final klien' }}
+                        </dd>
                     </div>
                 </dl>
             </div>
@@ -76,29 +68,24 @@
 
                 <dl class="ca-assumptions__list">
                     <div class="ca-assumptions__item">
-                        <dt class="ca-simulation-label">Komponen Pengelolaan</dt>
-                        <dd
-                            class="ca-simulation-value is-pending"
-                            data-simulation-field="assumptions.managementShare"
-                            data-simulation-format="currency"
-                        >Menunggu angka final klien</dd>
+                        <dt class="ca-simulation-label">{{ $data['fields']['management_component']['label'] }}</dt>
+                        <dd class="ca-simulation-value {{ $data['fields']['management_component']['amount']['is_available'] ? 'is-final' : 'is-pending' }}">
+                            {{ $data['fields']['management_component']['amount']['is_available'] ? $data['fields']['management_component']['amount']['formatted_value'] : 'Menunggu angka final klien' }}
+                        </dd>
                     </div>
                     <div class="ca-assumptions__item">
-                        <dt class="ca-simulation-label">Pembagian Hasil Operasional</dt>
-                        <dd
-                            class="ca-simulation-value is-pending"
-                            data-simulation-field="assumptions.ownerShare"
-                            data-simulation-format="currency"
-                        >Menunggu angka final klien</dd>
+                        <dt class="ca-simulation-label">{{ $data['fields']['revenue_share']['label'] }}</dt>
+                        <dd class="ca-simulation-value is-pending">Menunggu angka final klien</dd>
                     </div>
                 </dl>
             </div>
         </div>
 
-        <p class="ca-assumptions__note ca-simulation-note">
-            Nilai final akan disesuaikan setelah asumsi operasional, skema
-            pembiayaan, dan pembagian program dikonfirmasi oleh perusahaan.
-        </p>
+        @if ($data['callout']['is_active'] && $data['callout']['description'])
+            <p class="ca-assumptions__note ca-simulation-note">
+                {{ $data['callout']['description'] }}
+            </p>
+        @endif
 
         <a href="#simulasi-satu-unit" class="ca-assumptions__cta ca-nav-text">
             Lihat Alur Simulasi 1 Unit

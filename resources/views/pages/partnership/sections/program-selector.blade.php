@@ -1,17 +1,16 @@
 {{-- SECTION 1 — Pilih Jalur Kemitraan (Branched Pathway) --}}
 <section id="pilih-program" class="ca-program-selector" aria-labelledby="ca-partnership-heading">
     <div class="ca-container ca-program-selector__intro">
-        <span class="ca-program-selector__eyebrow ca-eyebrow">Program Kemitraan CarAsset</span>
+        @if ($data['eyebrow'])
+            <span class="ca-program-selector__eyebrow ca-eyebrow">{{ $data['eyebrow'] }}</span>
+        @endif
 
         <h1 id="ca-partnership-heading" class="ca-program-selector__title ca-page-title">
-            Satu Ekosistem.<br>
-            Dua Cara untuk Bertumbuh.
+            {!! nl2br(e($data['title'])) !!}
         </h1>
 
         <p class="ca-program-selector__description ca-body-lg">
-            Pilih jalur kemitraan berdasarkan posisi dan tujuan Anda. CarAsset
-            menyediakan program bagi calon pemilik aset dan driver yang ingin
-            membangun peluang kepemilikan kendaraan secara bertahap.
+            {{ $data['description'] }}
         </p>
     </div>
 
@@ -24,40 +23,46 @@
         </svg>
 
         <div class="ca-program-selector__paths">
-            <div class="ca-program-selector__path ca-program-selector__path--owner">
-                <span class="ca-program-selector__path-icon" data-lucide="key-round" aria-hidden="true"></span>
-                <h3 class="ca-program-selector__path-title ca-card-title">Mitra Owner</h3>
-                <p class="ca-program-selector__path-description ca-body-sm">
-                    Saya ingin memiliki kendaraan dan mempercayakan pengelolaan
-                    operasionalnya kepada CarAsset.
-                </p>
-                <a href="#mitra-owner" class="ca-program-selector__path-cta ca-nav-text" data-program-link="mitra-owner">
-                    Jelajahi Mitra Owner
-                </a>
-            </div>
+            @if ($data['owner']['is_active'])
+                <div class="ca-program-selector__path ca-program-selector__path--owner">
+                    <span class="ca-program-selector__path-icon" data-lucide="key-round" aria-hidden="true"></span>
+                    <h3 class="ca-program-selector__path-title ca-card-title">{{ $data['owner']['title'] }}</h3>
+                    <p class="ca-program-selector__path-description ca-body-sm">
+                        {{ $data['owner']['description'] }}
+                    </p>
+                    <a href="#mitra-owner" class="ca-program-selector__path-cta ca-nav-text" data-program-link="mitra-owner">
+                        {{ $data['owner']['cta_label'] }}
+                    </a>
+                </div>
+            @endif
 
-            <div class="ca-program-selector__path ca-program-selector__path--driver">
-                <span class="ca-program-selector__path-icon" data-lucide="route" aria-hidden="true"></span>
-                <h3 class="ca-program-selector__path-title ca-card-title">Mitra Driver</h3>
-                <p class="ca-program-selector__path-description ca-body-sm">
-                    Saya ingin menjalankan kendaraan sambil membangun peluang
-                    menuju kepemilikan sesuai ketentuan program.
-                </p>
-                <a href="#mitra-driver" class="ca-program-selector__path-cta ca-nav-text" data-program-link="mitra-driver">
-                    Jelajahi Mitra Driver
-                </a>
-            </div>
+            @if ($data['driver']['is_active'])
+                <div class="ca-program-selector__path ca-program-selector__path--driver">
+                    <span class="ca-program-selector__path-icon" data-lucide="route" aria-hidden="true"></span>
+                    <h3 class="ca-program-selector__path-title ca-card-title">{{ $data['driver']['title'] }}</h3>
+                    <p class="ca-program-selector__path-description ca-body-sm">
+                        {{ $data['driver']['description'] }}
+                    </p>
+                    <a href="#mitra-driver" class="ca-program-selector__path-cta ca-nav-text" data-program-link="mitra-driver">
+                        {{ $data['driver']['cta_label'] }}
+                    </a>
+                </div>
+            @endif
         </div>
     </div>
 </section>
 
 <nav class="ca-program-nav" aria-label="Navigasi program kemitraan" data-program-nav>
     <div class="ca-container ca-program-nav__inner">
-        <a href="#mitra-owner" class="ca-program-nav__link" data-program-nav-link="mitra-owner">
-            Mitra Owner
-        </a>
-        <a href="#mitra-driver" class="ca-program-nav__link" data-program-nav-link="mitra-driver">
-            Mitra Driver
-        </a>
+        @if ($data['owner']['is_active'])
+            <a href="#mitra-owner" class="ca-program-nav__link" data-program-nav-link="mitra-owner">
+                {{ $data['owner']['label'] }}
+            </a>
+        @endif
+        @if ($data['driver']['is_active'])
+            <a href="#mitra-driver" class="ca-program-nav__link" data-program-nav-link="mitra-driver">
+                {{ $data['driver']['label'] }}
+            </a>
+        @endif
     </div>
 </nav>

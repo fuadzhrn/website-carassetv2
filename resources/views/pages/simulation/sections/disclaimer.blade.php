@@ -4,63 +4,52 @@
         <div class="ca-simulation-disclaimer__panel">
             <span class="ca-simulation-disclaimer__icon" data-lucide="shield-alert" aria-hidden="true"></span>
 
-            <span class="ca-simulation-disclaimer__eyebrow ca-eyebrow">Catatan Penting</span>
+            @if ($data['eyebrow'])
+                <span class="ca-simulation-disclaimer__eyebrow ca-eyebrow">{{ $data['eyebrow'] }}</span>
+            @endif
 
             <h2 class="ca-simulation-disclaimer__title ca-section-title">
-                Simulasi Merupakan Ilustrasi, Bukan Jaminan Hasil.
+                {{ $data['title'] }}
             </h2>
 
             <div class="ca-simulation-disclaimer__body">
-                <p class="ca-body">
-                    Seluruh nilai pada halaman ini merupakan contoh tampilan dan
-                    masih menunggu angka final dari CarAsset. Simulasi disusun
-                    berdasarkan asumsi operasional, pembiayaan, biaya, pembagian,
-                    dan kondisi tertentu yang dapat berubah.
-                </p>
-                <p class="ca-body">
-                    Hasil aktual dapat berbeda karena dipengaruhi oleh aktivitas
-                    kendaraan, biaya operasional, jadwal kerja, kondisi pembiayaan,
-                    perawatan, kondisi pasar, kebijakan mitra operasional, serta
-                    ketentuan program yang berlaku.
-                </p>
-                <p class="ca-body">
-                    Informasi pada halaman ini tidak boleh dianggap sebagai jaminan
-                    penghasilan, keuntungan tetap, atau hasil investasi tertentu.
-                    Calon mitra disarankan mempelajari dokumen program dan
-                    berkonsultasi sebelum mengambil keputusan.
-                </p>
+                @foreach ($data['description_paragraphs'] as $paragraph)
+                    <p class="ca-body">{{ $paragraph }}</p>
+                @endforeach
             </div>
 
-            <ul class="ca-simulation-disclaimer__points ca-list-reset">
-                <li>Angka masih menunggu konfirmasi final</li>
-                <li>Hasil aktual dapat berbeda</li>
-                <li>Kondisi operasional memengaruhi hasil</li>
-                <li>Detail final tersedia dalam konsultasi dan dokumen program</li>
-            </ul>
+            @if ($data['points'])
+                <ul class="ca-simulation-disclaimer__points ca-list-reset">
+                    @foreach ($data['points'] as $point)
+                        <li>{{ $point['text'] }}</li>
+                    @endforeach
+                </ul>
+            @endif
         </div>
 
         <div class="ca-simulation-disclaimer__cta">
             <h3 class="ca-simulation-disclaimer__cta-title ca-card-title">
-                Butuh Simulasi yang Sesuai dengan Rencana Anda?
+                {{ $data['cta_title'] }}
             </h3>
             <p class="ca-body">
-                Sampaikan pilihan program dan jumlah unit yang ingin dipelajari.
-                Tim CarAsset akan membantu menjelaskan asumsi, alur operasional,
-                dan ketentuan yang digunakan.
+                {{ $data['cta_description'] }}
             </p>
 
             <div class="ca-simulation-disclaimer__actions ca-cluster">
-                <x-button href="{{ route('about-contact') }}#contact" variant="primary" size="lg">
-                    Konsultasikan Simulasi
-                </x-button>
-                <x-button href="{{ route('partnership') }}" variant="outline" size="lg">
-                    Pelajari Program Kemitraan
-                </x-button>
+                @if ($data['primary_cta'])
+                    <x-button href="{{ $data['primary_cta']['url'] }}" target="{{ $data['primary_cta']['target'] }}" variant="primary" size="lg">
+                        {{ $data['primary_cta']['label'] }}
+                    </x-button>
+                @endif
+                @if ($data['secondary_cta'])
+                    <x-button href="{{ $data['secondary_cta']['url'] }}" target="{{ $data['secondary_cta']['target'] }}" variant="outline" size="lg">
+                        {{ $data['secondary_cta']['label'] }}
+                    </x-button>
+                @endif
             </div>
 
             <p class="ca-simulation-disclaimer__microcopy ca-body-sm">
-                Konsultasi tidak menggantikan proses verifikasi, analisis
-                kelayakan, atau ketentuan resmi program.
+                {{ $data['microcopy'] }}
             </p>
         </div>
     </div>

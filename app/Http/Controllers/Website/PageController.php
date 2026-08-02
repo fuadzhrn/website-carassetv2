@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Media;
 use App\Services\CmsLinkService;
 use App\Services\ContentService;
+use App\Services\SimulationFormatterService;
 use Illuminate\View\View;
 
 class PageController extends Controller
@@ -44,14 +45,39 @@ class PageController extends Controller
         return view('pages.business.index', ['business' => $business]);
     }
 
-    public function partnership()
+    public function partnership(ContentService $contentService, CmsLinkService $linkService): View
     {
-        return view('pages.partnership.index');
+        $fallbacks = config('partnership-content.sections', []);
+        $sections = $contentService->getPageSectionsContent('partnership', $fallbacks);
+        $fallbackImages = config('partnership-content.fallback_images', []);
+
+        $partnership = [
+            'program-selector' => $this->presentProgramSelector($sections['program-selector']),
+            'owner-program' => $this->presentOwnerProgram($sections['owner-program'], $linkService, $fallbackImages),
+            'driver-program' => $this->presentDriverProgram($sections['driver-program'], $linkService, $fallbackImages),
+            'packages-benefits' => $this->presentPackagesBenefits($sections['packages-benefits'], $linkService),
+            'terms' => $this->presentTerms($sections['terms'], $linkService),
+        ];
+
+        return view('pages.partnership.index', ['partnership' => $partnership]);
     }
 
-    public function simulation()
+    public function simulation(ContentService $contentService, CmsLinkService $linkService, SimulationFormatterService $formatter): View
     {
-        return view('pages.simulation.index');
+        $fallbacks = config('simulation-content.sections', []);
+        $sections = $contentService->getPageSectionsContent('simulation', $fallbacks);
+        $fallbackImages = config('simulation-content.fallback_images', []);
+        $fieldFormats = config('simulation-content.field_formats', []);
+
+        $simulation = [
+            'assumptions' => $this->presentAssumptions($sections['assumptions'], $formatter, $fieldFormats['assumptions'] ?? []),
+            'one-unit' => $this->presentOneUnit($sections['one-unit'], $linkService, $formatter, $fieldFormats['one-unit'] ?? []),
+            'multiple-units' => $this->presentMultipleUnits($sections['multiple-units'], $linkService, $formatter, $fieldFormats['multiple-units'] ?? []),
+            'protection-monitoring' => $this->presentProtectionMonitoring($sections['protection-monitoring'], $linkService, $fallbackImages),
+            'disclaimer' => $this->presentSimulationDisclaimer($sections['disclaimer'], $linkService),
+        ];
+
+        return view('pages.simulation.index', ['simulation' => $simulation]);
     }
 
     public function aboutContact()
@@ -377,6 +403,395 @@ class PageController extends Controller
             'closing_statement' => $content['closing_statement'] ?? null,
             'primary_cta' => $linkService->resolve($content['primary_cta'] ?? null),
             'secondary_cta' => $linkService->resolve($content['secondary_cta'] ?? null),
+        ];
+    }
+
+    /**
+     * @param array{content: array<string, mixed>, is_active: bool} $section
+     * @return array<string, mixed>
+     */
+    private function presentProgramSelector(array $section): array
+    {
+        $content = $section['content'];
+
+        $paths = [];
+
+        foreach (['owner', 'driver'] as $pathKey) {
+            $path = $content[$pathKey] ?? [];
+
+            $paths[$pathKey] = [
+                'label' => $path['label'] ?? null,
+                'title' => $path['title'] ?? null,
+                'description' => $path['description'] ?? null,
+                'cta_label' => $path['cta_label'] ?? null,
+                'is_active' => ($path['is_active'] ?? true) !== false,
+            ];
+        }
+
+        return [
+            'is_active' => $section['is_active'],
+            'eyebrow' => $content['eyebrow'] ?? null,
+            'title' => $content['title'] ?? null,
+            'description' => $content['description'] ?? null,
+            'owner' => $paths['owner'],
+            'driver' => $paths['driver'],
+        ];
+    }
+
+    /**
+     * @param array{content: array<string, mixed>, is_active: bool} $section
+     * @param array<string, string> $fallbackImages
+     * @return array<string, mixed>
+     */
+    private function presentOwnerProgram(array $section, CmsLinkService $linkService, array $fallbackImages): array
+    {
+        $content = $section['content'];
+
+        return [
+            'is_active' => $section['is_active'],
+            'eyebrow' => $content['eyebrow'] ?? null,
+            'title' => $content['title'] ?? null,
+            'narrative' => $content['narrative'] ?? null,
+            'image' => $this->resolveImage(
+                $content['image_media_id'] ?? null,
+                $content['image_alt'] ?? null,
+                $fallbackImages['owner-program'] ?? null,
+                'Calon mitra owner dengan kendaraan listrik yang akan dikelola sebagai aset produktif',
+            ),
+            'callouts' => $this->filterItems($content['callouts'] ?? [], 'label', 4),
+            'partner_roles' => $this->filterItems($content['partner_roles'] ?? [], 'text', 4),
+            'carasset_roles' => $this->filterItems($content['carasset_roles'] ?? [], 'text', 4),
+            'benefits' => $this->filterItems($content['benefits'] ?? [], 'text', 3),
+            'cta' => $linkService->resolve($content['cta'] ?? null),
+            'microcopy' => $content['microcopy'] ?? null,
+        ];
+    }
+
+    /**
+     * @param array{content: array<string, mixed>, is_active: bool} $section
+     * @param array<string, string> $fallbackImages
+     * @return array<string, mixed>
+     */
+    private function presentDriverProgram(array $section, CmsLinkService $linkService, array $fallbackImages): array
+    {
+        $content = $section['content'];
+        $panel = $content['after_unit_panel'] ?? [];
+
+        return [
+            'is_active' => $section['is_active'],
+            'eyebrow' => $content['eyebrow'] ?? null,
+            'title' => $content['title'] ?? null,
+            'narrative' => $content['narrative'] ?? null,
+            'image' => $this->resolveImage(
+                $content['image_media_id'] ?? null,
+                $content['image_alt'] ?? null,
+                $fallbackImages['driver-program'] ?? null,
+                'Driver profesional yang menjalankan kendaraan dalam program Mitra Driver CarAsset',
+            ),
+            'timeline' => $this->filterItems($content['timeline'] ?? [], 'title', 5),
+            'after_unit_panel' => [
+                'is_active' => ($panel['is_active'] ?? true) !== false,
+                'title' => $panel['title'] ?? null,
+                'description' => $panel['description'] ?? null,
+                'items' => $this->filterItems($panel['items'] ?? [], 'text', 3),
+            ],
+            'cta' => $linkService->resolve($content['cta'] ?? null),
+            'note' => $content['note'] ?? null,
+        ];
+    }
+
+    /**
+     * @param array{content: array<string, mixed>, is_active: bool} $section
+     * @return array<string, mixed>
+     */
+    private function presentPackagesBenefits(array $section, CmsLinkService $linkService): array
+    {
+        $content = $section['content'];
+        $featuredPackage = $content['featured_package'] ?? null;
+
+        $packages = [];
+
+        foreach (['one_unit', 'five_units', 'ten_units'] as $packageKey) {
+            $package = $content['packages'][$packageKey] ?? [];
+
+            if (($package['is_active'] ?? true) === false) {
+                continue;
+            }
+
+            $packages[$packageKey] = [
+                'unit_count' => (int) ($package['unit_count'] ?? 0),
+                'label' => $package['label'] ?? null,
+                'title' => $package['title'] ?? null,
+                'description' => $package['description'] ?? null,
+                'benefits' => $this->filterItems($package['benefits'] ?? [], 'text', 3),
+                'is_featured' => $featuredPackage === $packageKey,
+                'cta' => $linkService->resolve($package['cta'] ?? null),
+            ];
+        }
+
+        return [
+            'is_active' => $section['is_active'],
+            'title' => $content['title'] ?? null,
+            'description' => $content['description'] ?? null,
+            'packages' => $packages,
+            'disclaimer' => $content['disclaimer'] ?? null,
+        ];
+    }
+
+    /**
+     * @param array{content: array<string, mixed>, is_active: bool} $section
+     * @return array<string, mixed>
+     */
+    private function presentTerms(array $section, CmsLinkService $linkService): array
+    {
+        $content = $section['content'];
+
+        $group = function (string $key, int $max, string $itemTextField = 'text') use ($content) {
+            $data = $content[$key] ?? [];
+
+            return [
+                'is_active' => ($data['is_active'] ?? true) !== false,
+                'title' => $data['title'] ?? null,
+                'items' => $this->filterItems($data['items'] ?? [], $itemTextField, $max),
+            ];
+        };
+
+        $cancellation = $content['cancellation'] ?? [];
+
+        return [
+            'is_active' => $section['is_active'],
+            'eyebrow' => $content['eyebrow'] ?? null,
+            'title' => $content['title'] ?? null,
+            'description' => $content['description'] ?? null,
+            'checkpoints' => $this->filterItems($content['checkpoints'] ?? [], 'title', 4),
+            'verification' => $group('verification', 4),
+            'payment' => $group('payment', 3),
+            'cancellation' => [
+                'is_active' => ($cancellation['is_active'] ?? true) !== false,
+                'title' => $cancellation['title'] ?? null,
+                'description' => $cancellation['description'] ?? null,
+            ],
+            'rights_obligations' => $group('rights_obligations', 4, 'label'),
+            'operational_terms' => $group('operational_terms', 5),
+            'legal_note' => $content['legal_note'] ?? null,
+            'cta_title' => $content['cta_title'] ?? null,
+            'cta_description' => $content['cta_description'] ?? null,
+            'primary_cta' => $linkService->resolve($content['primary_cta'] ?? null),
+            'secondary_cta' => $linkService->resolve($content['secondary_cta'] ?? null),
+        ];
+    }
+
+    /**
+     * @param array{content: array<string, mixed>, is_active: bool} $section
+     * @param array<string, string> $fieldFormats dot-key ("operational_days.value") => format
+     * @return array<string, mixed>
+     */
+    private function presentAssumptions(array $section, SimulationFormatterService $formatter, array $fieldFormats): array
+    {
+        $content = $section['content'];
+        $dataStatus = $content['data_status'] ?? 'draft';
+
+        $numericFields = ['operational_days', 'daily_result', 'operating_cost', 'vehicle_installment', 'management_component'];
+        $result = [];
+
+        foreach ($numericFields as $field) {
+            $format = $fieldFormats["{$field}.value"] ?? null;
+            $result[$field] = [
+                'label' => $content[$field]['label'] ?? null,
+                'helper' => $content[$field]['helper'] ?? null,
+                'amount' => $this->simulationAmount($content[$field]['value'] ?? null, $format, $dataStatus, $formatter),
+            ];
+        }
+
+        // Jenis nilai (persen/rupiah) belum ditentukan audit — tidak pernah
+        // dianggap tersedia terlepas dari data_status.
+        $result['revenue_share'] = [
+            'label' => $content['revenue_share']['label'] ?? null,
+            'helper' => $content['revenue_share']['helper'] ?? null,
+            'amount' => ['raw_value' => null, 'formatted_value' => null, 'is_available' => false],
+        ];
+
+        return [
+            'is_active' => $section['is_active'],
+            'eyebrow' => $content['eyebrow'] ?? null,
+            'title' => $content['title'] ?? null,
+            'description' => $content['description'] ?? null,
+            'data_status' => $dataStatus,
+            'fields' => $result,
+            'callout' => [
+                'is_active' => ($content['callout']['is_active'] ?? true) !== false,
+                'title' => $content['callout']['title'] ?? null,
+                'description' => $content['callout']['description'] ?? null,
+            ],
+        ];
+    }
+
+    /**
+     * @param array{content: array<string, mixed>, is_active: bool} $section
+     * @param array<string, string> $fieldFormats
+     * @return array<string, mixed>
+     */
+    private function presentOneUnit(array $section, CmsLinkService $linkService, SimulationFormatterService $formatter, array $fieldFormats): array
+    {
+        $content = $section['content'];
+        $dataStatus = $content['data_status'] ?? 'draft';
+
+        $numericFields = ['gross_operational_result', 'operating_cost', 'vehicle_obligation', 'management_component', 'projected_partner_result'];
+        $result = [];
+
+        foreach ($numericFields as $field) {
+            $format = $fieldFormats["{$field}.value"] ?? 'rupiah';
+            $result[$field] = [
+                'label' => $content[$field]['label'] ?? null,
+                'helper' => $content[$field]['helper'] ?? null,
+                'amount' => $this->simulationAmount($content[$field]['value'] ?? null, $format, $dataStatus, $formatter),
+            ];
+        }
+
+        return [
+            'is_active' => $section['is_active'],
+            'eyebrow' => $content['eyebrow'] ?? null,
+            'title' => $content['title'] ?? null,
+            'description' => $content['description'] ?? null,
+            'data_status' => $dataStatus,
+            'fields' => $result,
+            'summary_note' => $content['summary_note'] ?? null,
+            'cta' => $linkService->resolve($content['cta'] ?? null),
+        ];
+    }
+
+    /**
+     * @param array{content: array<string, mixed>, is_active: bool} $section
+     * @param array<string, string> $fieldFormats
+     * @return array<string, mixed>
+     */
+    private function presentMultipleUnits(array $section, CmsLinkService $linkService, SimulationFormatterService $formatter, array $fieldFormats): array
+    {
+        $content = $section['content'];
+        $dataStatus = $content['data_status'] ?? 'draft';
+        $metrics = ['gross_operational_result', 'operating_cost', 'vehicle_obligation', 'management_component', 'projected_partner_result'];
+
+        $units = [];
+
+        foreach (['one_unit', 'five_units', 'ten_units'] as $unitKey) {
+            $unit = $content['units'][$unitKey] ?? [];
+
+            if (($unit['is_active'] ?? true) === false) {
+                continue;
+            }
+
+            $fields = [];
+
+            foreach ($metrics as $metric) {
+                $format = $fieldFormats[$metric] ?? 'rupiah';
+                $fields[$metric] = $this->simulationAmount($unit[$metric] ?? null, $format, $dataStatus, $formatter);
+            }
+
+            $units[$unitKey] = [
+                'unit_count' => (int) ($unit['unit_count'] ?? 0),
+                'label' => $unit['label'] ?? null,
+                'description' => $unit['description'] ?? null,
+                'fields' => $fields,
+                'note' => $unit['note'] ?? null,
+            ];
+        }
+
+        return [
+            'is_active' => $section['is_active'],
+            'eyebrow' => $content['eyebrow'] ?? null,
+            'title' => $content['title'] ?? null,
+            'description' => $content['description'] ?? null,
+            'data_status' => $dataStatus,
+            'units' => $units,
+            'comparison_note' => $content['comparison_note'] ?? null,
+            'cta' => $linkService->resolve($content['cta'] ?? null),
+        ];
+    }
+
+    /**
+     * @param array{content: array<string, mixed>, is_active: bool} $section
+     * @param array<string, string> $fallbackImages
+     * @return array<string, mixed>
+     */
+    private function presentProtectionMonitoring(array $section, CmsLinkService $linkService, array $fallbackImages): array
+    {
+        $content = $section['content'];
+        $features = [];
+
+        foreach (['insurance', 'warranty', 'gps', 'monitoring', 'maintenance', 'reporting'] as $featureKey) {
+            $feature = $content['features'][$featureKey] ?? [];
+
+            if (($feature['is_active'] ?? true) === false || ($feature['title'] ?? '') === '') {
+                continue;
+            }
+
+            $features[$featureKey] = [
+                'title' => $feature['title'] ?? null,
+                'description' => $feature['description'] ?? null,
+            ];
+        }
+
+        return [
+            'is_active' => $section['is_active'],
+            'eyebrow' => $content['eyebrow'] ?? null,
+            'title' => $content['title'] ?? null,
+            'description' => $content['description'] ?? null,
+            'image' => $this->resolveImage(
+                $content['image_media_id'] ?? null,
+                $content['image_alt'] ?? null,
+                $fallbackImages['protection-monitoring'] ?? null,
+                '',
+            ),
+            'features' => $features,
+            'callout' => [
+                'is_active' => ($content['callout']['is_active'] ?? false) !== false && ($content['callout']['description'] ?? '') !== '',
+                'title' => $content['callout']['title'] ?? null,
+                'description' => $content['callout']['description'] ?? null,
+            ],
+            'cta' => $linkService->resolve($content['cta'] ?? null),
+        ];
+    }
+
+    /**
+     * @param array{content: array<string, mixed>, is_active: bool} $section
+     * @return array<string, mixed>
+     */
+    private function presentSimulationDisclaimer(array $section, CmsLinkService $linkService): array
+    {
+        $content = $section['content'];
+
+        return [
+            'is_active' => $section['is_active'],
+            'eyebrow' => $content['eyebrow'] ?? null,
+            'title' => $content['title'] ?? null,
+            'description_paragraphs' => $this->splitLines($content['description'] ?? null, "\n\n"),
+            'points' => $this->filterItems($content['points'] ?? [], 'text', 6),
+            'cta_title' => $content['cta_title'] ?? null,
+            'cta_description' => $content['cta_description'] ?? null,
+            'primary_cta' => $linkService->resolve($content['primary_cta'] ?? null),
+            'secondary_cta' => $linkService->resolve($content['secondary_cta'] ?? null),
+            'microcopy' => $content['microcopy'] ?? null,
+        ];
+    }
+
+    /**
+     * Decide whether a simulation number may be shown as official data.
+     * draft (or any non-"confirmed" status) never surfaces the number,
+     * regardless of whether a value happens to be present — the whole
+     * point of the draft state is that partially-entered numbers must
+     * not leak to the public page. null is never coerced to 0, and 0 is
+     * never treated as "empty".
+     *
+     * @return array{raw_value: int|float|null, formatted_value: ?string, is_available: bool}
+     */
+    private function simulationAmount(int|float|null $value, ?string $format, string $dataStatus, SimulationFormatterService $formatter): array
+    {
+        $isAvailable = $dataStatus === 'confirmed' && $value !== null;
+
+        return [
+            'raw_value' => $value,
+            'formatted_value' => $isAvailable ? $formatter->displayValue($value, $format) : null,
+            'is_available' => $isAvailable,
         ];
     }
 

@@ -2,9 +2,9 @@
 <section id="perlindungan-monitoring" class="ca-protection">
     <div class="ca-container">
         <x-section-heading
-            eyebrow="Perlindungan Aset"
-            title="Aset Produktif Memerlukan Perlindungan dan Monitoring yang Terstruktur."
-            description="CarAsset merancang pengelolaan kendaraan dengan memperhatikan perlindungan, kondisi kendaraan, aktivitas operasional, perawatan, dan informasi pelaporan sesuai ketentuan program."
+            :eyebrow="$data['eyebrow']"
+            :title="$data['title']"
+            :description="$data['description']"
         />
 
         <div class="ca-protection__layout">
@@ -14,8 +14,8 @@
 
                 <div class="ca-protection__core">
                     <img
-                        src="{{ asset('assets/images/simulation/protection-monitoring.webp') }}"
-                        alt=""
+                        src="{{ $data['image']['url'] }}"
+                        alt="{{ $data['image']['alt'] }}"
                         width="1600"
                         height="1065"
                         loading="lazy"
@@ -24,30 +24,26 @@
                     >
                 </div>
 
-                <div class="ca-protection__point ca-protection__point--1">
-                    <span class="ca-protection__point-icon" data-lucide="shield-check" aria-hidden="true"></span>
-                    <span class="ca-protection__point-label ca-label">Asuransi Kendaraan</span>
-                </div>
-                <div class="ca-protection__point ca-protection__point--2">
-                    <span class="ca-protection__point-icon" data-lucide="badge-check" aria-hidden="true"></span>
-                    <span class="ca-protection__point-label ca-label">Garansi Kendaraan</span>
-                </div>
-                <div class="ca-protection__point ca-protection__point--3">
-                    <span class="ca-protection__point-icon" data-lucide="map-pin" aria-hidden="true"></span>
-                    <span class="ca-protection__point-label ca-label">GPS / Pelacakan</span>
-                </div>
-                <div class="ca-protection__point ca-protection__point--4">
-                    <span class="ca-protection__point-icon" data-lucide="activity" aria-hidden="true"></span>
-                    <span class="ca-protection__point-label ca-label">Monitoring Operasional</span>
-                </div>
-                <div class="ca-protection__point ca-protection__point--5">
-                    <span class="ca-protection__point-icon" data-lucide="wrench" aria-hidden="true"></span>
-                    <span class="ca-protection__point-label ca-label">Perawatan Berkala</span>
-                </div>
-                <div class="ca-protection__point ca-protection__point--6">
-                    <span class="ca-protection__point-icon" data-lucide="file-chart-column" aria-hidden="true"></span>
-                    <span class="ca-protection__point-label ca-label">Laporan Operasional</span>
-                </div>
+                @php
+                    $featureIcons = [
+                        'insurance' => 'shield-check',
+                        'warranty' => 'badge-check',
+                        'gps' => 'map-pin',
+                        'monitoring' => 'activity',
+                        'maintenance' => 'wrench',
+                        'reporting' => 'file-chart-column',
+                    ];
+                    $featurePositions = [
+                        'insurance' => 1, 'warranty' => 2, 'gps' => 3,
+                        'monitoring' => 4, 'maintenance' => 5, 'reporting' => 6,
+                    ];
+                @endphp
+                @foreach ($data['features'] as $featureKey => $feature)
+                    <div class="ca-protection__point ca-protection__point--{{ $featurePositions[$featureKey] }}">
+                        <span class="ca-protection__point-icon" data-lucide="{{ $featureIcons[$featureKey] }}" aria-hidden="true"></span>
+                        <span class="ca-protection__point-label ca-label">{{ $feature['title'] }}</span>
+                    </div>
+                @endforeach
             </div>
 
             <p class="ca-protection__orbit-caption ca-caption">Ilustrasi Lapisan Perlindungan Aset</p>

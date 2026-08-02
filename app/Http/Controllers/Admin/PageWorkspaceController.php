@@ -92,16 +92,6 @@ class PageWorkspaceController extends Controller
         ]);
     }
 
-    public function partnership(): View
-    {
-        return $this->workspace('partnership');
-    }
-
-    public function simulation(): View
-    {
-        return $this->workspace('simulation');
-    }
-
     public function aboutContact(): View
     {
         return $this->workspace('about-contact');

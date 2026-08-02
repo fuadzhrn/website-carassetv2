@@ -10,6 +10,10 @@ use App\Http\Controllers\Admin\Pages\BusinessController;
 use App\Http\Controllers\Admin\Pages\BusinessSectionController;
 use App\Http\Controllers\Admin\Pages\HomeController;
 use App\Http\Controllers\Admin\Pages\HomeSectionController;
+use App\Http\Controllers\Admin\Pages\PartnershipController;
+use App\Http\Controllers\Admin\Pages\PartnershipSectionController;
+use App\Http\Controllers\Admin\Pages\SimulationController;
+use App\Http\Controllers\Admin\Pages\SimulationSectionController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\SiteSettingController;
 use Illuminate\Support\Facades\Route;
@@ -40,8 +44,16 @@ Route::prefix('admin')->middleware('admin.security-headers')->group(function () 
             ->whereIn('sectionKey', ['opportunity', 'own', 'operate', 'grow', 'business-flow'])
             ->name('admin.pages.business.sections.update');
 
-        Route::get('pages/partnership', [PageWorkspaceController::class, 'partnership'])->name('admin.pages.partnership');
-        Route::get('pages/simulation', [PageWorkspaceController::class, 'simulation'])->name('admin.pages.simulation');
+        Route::get('pages/partnership', [PartnershipController::class, 'index'])->name('admin.pages.partnership');
+        Route::patch('pages/partnership/sections/{sectionKey}', [PartnershipSectionController::class, 'update'])
+            ->whereIn('sectionKey', ['program-selector', 'owner-program', 'driver-program', 'packages-benefits', 'terms'])
+            ->name('admin.pages.partnership.sections.update');
+
+        Route::get('pages/simulation', [SimulationController::class, 'index'])->name('admin.pages.simulation');
+        Route::patch('pages/simulation/sections/{sectionKey}', [SimulationSectionController::class, 'update'])
+            ->whereIn('sectionKey', ['assumptions', 'one-unit', 'multiple-units', 'protection-monitoring', 'disclaimer'])
+            ->name('admin.pages.simulation.sections.update');
+
         Route::get('pages/about-contact', [PageWorkspaceController::class, 'aboutContact'])->name('admin.pages.about-contact');
 
         Route::get('media', [MediaController::class, 'index'])->name('admin.media.index');

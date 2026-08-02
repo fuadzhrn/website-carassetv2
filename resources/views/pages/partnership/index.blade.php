@@ -19,11 +19,25 @@
 @endpush
 
 @section('content')
-    @include('pages.partnership.sections.program-selector')
-    @include('pages.partnership.sections.owner-program')
-    @include('pages.partnership.sections.driver-program')
-    @include('pages.partnership.sections.packages-benefits')
-    @include('pages.partnership.sections.terms')
+    @if ($partnership['program-selector']['is_active'])
+        @include('pages.partnership.sections.program-selector', ['data' => $partnership['program-selector']])
+    @endif
+
+    @if ($partnership['owner-program']['is_active'])
+        @include('pages.partnership.sections.owner-program', ['data' => $partnership['owner-program']])
+    @endif
+
+    @if ($partnership['driver-program']['is_active'])
+        @include('pages.partnership.sections.driver-program', ['data' => $partnership['driver-program']])
+    @endif
+
+    @if ($partnership['packages-benefits']['is_active'])
+        @include('pages.partnership.sections.packages-benefits', ['data' => $partnership['packages-benefits']])
+    @endif
+
+    @if ($partnership['terms']['is_active'])
+        @include('pages.partnership.sections.terms', ['data' => $partnership['terms']])
+    @endif
 @endsection
 
 @push('scripts')

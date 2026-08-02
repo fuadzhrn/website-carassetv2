@@ -19,6 +19,8 @@ class DatabaseSeeder extends Seeder
             CmsStructureSeeder::class,
             HomeContentSeeder::class,
             BusinessContentSeeder::class,
+            PartnershipContentSeeder::class,
+            SimulationContentSeeder::class,
             SiteSettingSeeder::class,
         ]);
     }

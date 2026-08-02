@@ -3,71 +3,58 @@
     <div class="ca-container">
         <x-section-heading
             align="center"
-            title="Pilih Skala Kemitraan yang Sesuai dengan Rencana Anda."
-            description="Mulai dari satu unit atau kembangkan skala kepemilikan sesuai kebutuhan, kemampuan, proses verifikasi, dan ketentuan program."
+            :title="$data['title']"
+            :description="$data['description']"
         />
 
+        @php
+            // Class modifier --1/--5/--10 mengikuti unit_count (struktur
+            // terkunci, tidak bisa diubah admin). Variant tombol dasar per
+            // paket dipertahankan seperti desain asli; status "unggulan"
+            // (badge + tombol gold) mengikuti featured_package yang dipilih
+            // admin, bukan lagi terkunci ke paket 5 Unit — status gold
+            // bersifat sementara untuk prototipe, WAJIB dikonfirmasi klien
+            // sebelum production.
+            $baseVariants = ['one_unit' => 'outline', 'five_units' => 'secondary', 'ten_units' => 'secondary'];
+            $dataProgramAttr = ['one_unit' => '1-unit', 'five_units' => '5-unit', 'ten_units' => '10-unit'];
+        @endphp
+
         <div class="ca-packages__scale">
-            <div class="ca-packages__package ca-packages__package--1">
-                <span class="ca-packages__label ca-label">Langkah Awal</span>
-                <h3 class="ca-packages__unit ca-display">1 Unit</h3>
-                <p class="ca-packages__description ca-body-sm">
-                    Untuk mitra yang ingin memulai dari satu aset dan memahami
-                    sistem pengelolaan CarAsset.
-                </p>
-                <ul class="ca-packages__benefits ca-list-reset">
-                    <li>Memulai dari satu unit</li>
-                    <li>Mengenal sistem operasional</li>
-                    <li>Mendapatkan informasi monitoring sesuai program</li>
-                </ul>
-                <x-button href="{{ route('about-contact') }}#contact" variant="outline" size="md" data-program="1-unit">
-                    Konsultasi 1 Unit
-                </x-button>
-            </div>
+            @foreach ($data['packages'] as $packageKey => $package)
+                <div class="ca-packages__package ca-packages__package--{{ $package['unit_count'] }}">
+                    @if ($package['is_featured'])
+                        <span class="ca-packages__badge">Pilihan Pengembangan</span>
+                    @endif
 
-            {{-- Status paket unggulan (Gold) bersifat sementara untuk prototipe.
-                 Penetapan paket unggulan yang sesungguhnya WAJIB dikonfirmasi
-                 kepada klien sebelum production. --}}
-            <div class="ca-packages__package ca-packages__package--5">
-                <span class="ca-packages__badge">Pilihan Pengembangan</span>
-                <span class="ca-packages__label ca-label">Pengembangan Portofolio</span>
-                <h3 class="ca-packages__unit ca-display">5 Unit</h3>
-                <p class="ca-packages__description ca-body-sm">
-                    Untuk mitra yang ingin membangun skala kepemilikan lebih luas
-                    secara bertahap.
-                </p>
-                <ul class="ca-packages__benefits ca-list-reset">
-                    <li>Pengelolaan beberapa unit</li>
-                    <li>Dukungan koordinasi operasional</li>
-                    <li>Perencanaan pengembangan kepemilikan</li>
-                </ul>
-                <x-button href="{{ route('about-contact') }}#contact" variant="gold" size="md" data-program="5-unit">
-                    Konsultasi 5 Unit
-                </x-button>
-            </div>
-
-            <div class="ca-packages__package ca-packages__package--10">
-                <span class="ca-packages__label ca-label ca-packages__label--inverse">Skala Armada</span>
-                <h3 class="ca-packages__unit ca-display ca-packages__unit--inverse">10 Unit</h3>
-                <p class="ca-packages__description ca-body-sm ca-packages__description--inverse">
-                    Untuk mitra yang ingin merencanakan pengelolaan kendaraan dalam
-                    skala yang lebih besar.
-                </p>
-                <ul class="ca-packages__benefits ca-packages__benefits--inverse ca-list-reset">
-                    <li>Pendekatan skala armada</li>
-                    <li>Koordinasi program lebih luas</li>
-                    <li>Konsultasi struktur kepemilikan dan operasional</li>
-                </ul>
-                <x-button href="{{ route('about-contact') }}#contact" variant="secondary" size="md" data-program="10-unit">
-                    Konsultasi 10 Unit
-                </x-button>
-            </div>
+                    <span class="ca-packages__label ca-label{{ $packageKey === 'ten_units' ? ' ca-packages__label--inverse' : '' }}">{{ $package['label'] }}</span>
+                    <h3 class="ca-packages__unit ca-display{{ $packageKey === 'ten_units' ? ' ca-packages__unit--inverse' : '' }}">{{ $package['title'] }}</h3>
+                    <p class="ca-packages__description ca-body-sm{{ $packageKey === 'ten_units' ? ' ca-packages__description--inverse' : '' }}">
+                        {{ $package['description'] }}
+                    </p>
+                    <ul class="ca-packages__benefits ca-list-reset{{ $packageKey === 'ten_units' ? ' ca-packages__benefits--inverse' : '' }}">
+                        @foreach ($package['benefits'] as $benefit)
+                            <li>{{ $benefit['text'] }}</li>
+                        @endforeach
+                    </ul>
+                    @if ($package['cta'])
+                        <x-button
+                            href="{{ $package['cta']['url'] }}"
+                            target="{{ $package['cta']['target'] }}"
+                            variant="{{ $package['is_featured'] ? 'gold' : $baseVariants[$packageKey] }}"
+                            size="md"
+                            data-program="{{ $dataProgramAttr[$packageKey] }}"
+                        >
+                            {{ $package['cta']['label'] }}
+                        </x-button>
+                    @endif
+                </div>
+            @endforeach
         </div>
 
         <div class="ca-packages__footnote">
             <span class="ca-packages__footnote-badge">Benefit Menunggu Konfirmasi</span>
             <p class="ca-body-sm">
-                Benefit tambahan mengikuti periode dan ketentuan program yang berlaku.
+                {{ $data['disclaimer'] }}
             </p>
         </div>
     </div>

@@ -61,10 +61,18 @@
                         <p class="ca-admin-quick-access__description">{{ $item['description'] }}</p>
                     </div>
 
-                    <x-admin::status-badge variant="pending">Belum terhubung ke CMS</x-admin::status-badge>
+                    @if (in_array($item['route'], ['admin.pages.home', 'admin.pages.business', 'admin.pages.partnership', 'admin.pages.simulation'], true))
+                        <x-admin::status-badge variant="active">Terhubung ke CMS</x-admin::status-badge>
+                    @else
+                        <x-admin::status-badge variant="pending">Belum terhubung ke CMS</x-admin::status-badge>
+                    @endif
 
                     <x-admin::button :href="route($item['route'])" variant="ghost" size="sm" icon="arrow-right">
-                        Buka Workspace
+                        @if (in_array($item['route'], ['admin.pages.home', 'admin.pages.business', 'admin.pages.partnership', 'admin.pages.simulation'], true))
+                            Buka Editor
+                        @else
+                            Buka Workspace
+                        @endif
                     </x-admin::button>
                 </div>
             @endforeach
@@ -106,7 +114,11 @@
             </li>
             <li class="ca-admin-status-list__item">
                 <span>Editor Program Kemitraan</span>
-                <x-admin::status-badge variant="pending">Belum Tersedia</x-admin::status-badge>
+                <x-admin::status-badge variant="active">Aktif</x-admin::status-badge>
+            </li>
+            <li class="ca-admin-status-list__item">
+                <span>Editor Simulasi & Perlindungan</span>
+                <x-admin::status-badge variant="active">Aktif</x-admin::status-badge>
             </li>
             <li class="ca-admin-status-list__item">
                 <span>Draft &amp; Publish</span>
