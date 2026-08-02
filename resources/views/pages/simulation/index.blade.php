@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/pages/simulation/multiple-units.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/pages/simulation/protection-monitoring.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/pages/simulation/disclaimer.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/responsive/simulation-mobile.css') }}">
 @endpush
 
 @section('content')

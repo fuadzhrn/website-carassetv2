@@ -54,12 +54,29 @@
             @endif
         </a>
 
-        @include('partials.desktop-navigation')
+        <button
+            type="button"
+            class="ca-header__menu-toggle"
+            data-mobile-menu-toggle
+            data-label-open="Buka menu navigasi"
+            data-label-close="Tutup menu navigasi"
+            aria-expanded="false"
+            aria-controls="ca-mobile-nav-panel"
+        >
+            <span class="ca-header__menu-icon ca-header__menu-icon--open" data-lucide="menu" aria-hidden="true"></span>
+            <span class="ca-header__menu-icon ca-header__menu-icon--close" data-lucide="x" aria-hidden="true"></span>
+        </button>
 
-        <div class="ca-header__actions">
-            <x-button href="{{ route('about-contact') }}#contact" variant="primary" size="md">
-                Konsultasi Sekarang
-            </x-button>
+        <div class="ca-header__nav-panel" id="ca-mobile-nav-panel" data-mobile-nav-panel>
+            @include('partials.desktop-navigation')
+
+            <div class="ca-header__actions">
+                <x-button href="{{ route('about-contact') }}#contact" variant="primary" size="md">
+                    Konsultasi Sekarang
+                </x-button>
+            </div>
         </div>
     </div>
 </header>
+
+<div class="ca-header__overlay" data-mobile-nav-overlay aria-hidden="true"></div>

@@ -1,0 +1,109 @@
+/* ==========================================================================
+   CarAsset — About & Contact Mobile (about-contact-mobile.css)
+   Responsive enhancement for About, Vision/Mission/Values, Legal &
+   Partners, FAQ, Contact Form. Desktop rules in
+   pages/about-contact/*.css are untouched.
+   ========================================================================== */
+
+/* -------------------------------------------------------------------------
+   ABOUT
+   ------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    .ca-about__body {
+        margin-top: var(--ca-space-10);
+        padding-top: var(--ca-space-10);
+    }
+
+    .ca-about__tagline {
+        font-size: clamp(24px, 8vw, 34px);
+        padding-top: var(--ca-space-6);
+    }
+
+    .ca-about__strip {
+        height: 140px;
+        margin-top: var(--ca-space-10);
+    }
+}
+
+/* -------------------------------------------------------------------------
+   VISION, MISSION & VALUES — Trust/Growth/Productive/Partnership go to a
+   single column on small phones (still 2-column just above that).
+   ------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    .ca-vision__mission-block {
+        margin-top: var(--ca-space-10);
+        padding-top: var(--ca-space-8);
+    }
+
+    .ca-vision__values {
+        margin-top: var(--ca-space-12);
+        gap: var(--ca-space-8);
+    }
+}
+
+@media (max-width: 479px) {
+    .ca-vision__values {
+        grid-template-columns: 1fr;
+    }
+
+    .ca-vision__value--2,
+    .ca-vision__value--4 {
+        margin-top: 0;
+    }
+}
+
+/* -------------------------------------------------------------------------
+   LEGAL & PARTNERS
+   ------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    .ca-legal__registry {
+        padding: var(--ca-space-6);
+        margin-top: var(--ca-space-8);
+    }
+
+    .ca-legal__partner-grid {
+        gap: var(--ca-space-2);
+    }
+}
+
+@media (max-width: 479px) {
+    .ca-legal__partner-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* -------------------------------------------------------------------------
+   FAQ — numbered index column shrinks so more width goes to the question.
+   ------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    .ca-faq__item {
+        grid-template-columns: 28px 1fr;
+        gap: var(--ca-space-3);
+    }
+
+    .ca-faq__number {
+        font-size: var(--ca-text-lg);
+        padding-top: var(--ca-space-4);
+    }
+
+    .ca-faq__trigger-text {
+        font-size: var(--ca-text-base);
+    }
+}
+
+/* -------------------------------------------------------------------------
+   CONTACT FORM
+   ------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    .ca-contact__layout {
+        gap: var(--ca-space-10);
+    }
+
+    .ca-contact__info-panel {
+        padding: var(--ca-space-6);
+    }
+
+    .ca-contact-map__iframe {
+        height: 220px;
+    }
+}

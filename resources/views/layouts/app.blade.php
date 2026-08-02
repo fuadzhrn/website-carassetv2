@@ -21,6 +21,12 @@
     <link rel="stylesheet" href="{{ asset('assets/css/components/form-field.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/components/whatsapp-button.css') }}">
 
+    {{-- Responsive enhancement — loaded last among shared styles so its
+         media-query overrides win over the desktop rules above; each
+         page additionally pushes its own {page}-mobile.css after this
+         via @stack('styles'). --}}
+    <link rel="stylesheet" href="{{ asset('assets/css/responsive/global-mobile.css') }}">
+
     @if ($previewMode ?? false)
         <link rel="stylesheet" href="{{ asset('assets/admin/css/admin-preview-banner.css') }}">
     @endif
@@ -72,6 +78,7 @@
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
     <script src="{{ asset('assets/js/global/lucide-init.js') }}" defer></script>
     <script src="{{ asset('assets/js/global/header-scroll.js') }}" defer></script>
+    <script src="{{ asset('assets/js/global/mobile-navigation.js') }}" defer></script>
 
     @stack('scripts')
 </body>

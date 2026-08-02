@@ -1,0 +1,102 @@
+/* ==========================================================================
+   CarAsset — Partnership Mobile (partnership-mobile.css)
+   Responsive enhancement for Program Selector, Owner Program, Driver
+   Program, Packages & Benefits, Terms. Desktop rules in
+   pages/partnership/*.css are untouched.
+   ========================================================================== */
+
+/* -------------------------------------------------------------------------
+   PROGRAM SELECTOR — Owner/Driver paths stack vertically; sticky segment
+   nav keeps working (still position: sticky under the 80px header).
+   ------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    .ca-program-selector__branch-line {
+        display: none;
+    }
+
+    .ca-program-selector__paths {
+        grid-template-columns: 1fr;
+        gap: var(--ca-space-8);
+        margin-top: 0;
+    }
+
+    .ca-program-selector__branch {
+        margin-top: var(--ca-space-8);
+    }
+
+    .ca-program-nav__inner {
+        gap: var(--ca-space-4);
+        overflow-x: auto;
+        justify-content: flex-start;
+    }
+}
+
+/* -------------------------------------------------------------------------
+   OWNER PROGRAM
+   ------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    .ca-owner-program__roles {
+        padding: var(--ca-space-6);
+        margin-top: var(--ca-space-12);
+    }
+
+    .ca-owner-program__benefits {
+        gap: var(--ca-space-5);
+        justify-content: flex-start;
+    }
+}
+
+/* -------------------------------------------------------------------------
+   DRIVER PROGRAM — 5-milestone timeline becomes a vertical list.
+   ------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    .ca-driver-program__timeline {
+        grid-template-columns: 1fr;
+        gap: var(--ca-space-8);
+        margin-top: var(--ca-space-10);
+    }
+
+    .ca-driver-program__milestone:nth-child(3),
+    .ca-driver-program__milestone:nth-child(5) {
+        margin-top: 0;
+    }
+
+    .ca-driver-program__milestone-title,
+    .ca-driver-program__milestone-description {
+        max-width: none;
+    }
+
+    .ca-driver-program__after {
+        padding: var(--ca-space-6);
+        margin-top: var(--ca-space-12);
+    }
+}
+
+/* -------------------------------------------------------------------------
+   PACKAGES & BENEFITS — 1/5/10 unit already single column from 1180px;
+   just reduce internal padding on small phones.
+   ------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    .ca-packages__package {
+        padding: var(--ca-space-6);
+    }
+
+    .ca-packages__package--5 {
+        padding-top: var(--ca-space-10);
+    }
+}
+
+/* -------------------------------------------------------------------------
+   TERMS — checkpoint row + accordion
+   ------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    .ca-terms__checkpoint {
+        justify-content: flex-start;
+        padding: var(--ca-space-4);
+        gap: var(--ca-space-3);
+    }
+
+    .ca-terms__cta {
+        margin-top: var(--ca-space-12);
+    }
+}

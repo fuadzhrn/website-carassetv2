@@ -16,6 +16,23 @@
     border-bottom-color: var(--ca-color-light-gray);
 }
 
+/* `.ca-header` establishes its own stacking context (position:sticky +
+   z-index), so `.ca-header__nav-panel`'s z-index (--ca-z-modal, see
+   below) is only ever compared against OTHER elements inside that same
+   context — never against `.ca-header__overlay`, which is a sibling of
+   <header> living in the outer/body-level context. Left as-is, the
+   overlay (--ca-z-overlay, 300) painted above the header's own level
+   (--ca-z-sticky, 200) and silently intercepted every tap on the nav
+   links, even though the panel "looked" open and correctly styled.
+   Elevating the header itself above the overlay only while the menu is
+   open brings its whole subtree — including the trapped nav panel —
+   above the overlay in the outer context too. Confirmed the actual bug
+   (not a hunch) via document.elementFromPoint() on a real synthesized
+   tap: it returned .ca-header__overlay, not the link, before this fix. */
+.ca-header--menu-open {
+    z-index: var(--ca-z-modal);
+}
+
 .ca-header__inner {
     display: flex;
     align-items: center;
@@ -140,25 +157,30 @@
 }
 
 /* -------------------------------------------------------------------------
-   NAVIGASI — warna terang khusus saat header transparan di atas Hero Home
+   NAVIGASI — warna terang khusus saat header transparan di atas Hero Home.
+   Setiap rule ini WAJIB juga menyertakan :not(.ca-header--menu-open) —
+   begitu mobile nav panel terbuka, header selalu tampil solid (lihat
+   aturan .ca-header--overlay.ca-header--menu-open di bawah), sehingga
+   teks link HARUS ikut kembali ke warna solid (dark-gray/navy/gold),
+   bukan warna terang transparan yang tidak terbaca di atas panel putih.
    ------------------------------------------------------------------------- */
-.ca-header--overlay:not(.ca-header--scrolled) .ca-navigation__link {
+.ca-header--overlay:not(.ca-header--scrolled):not(.ca-header--menu-open) .ca-navigation__link {
     color: rgba(255, 255, 255, 0.92);
 }
 
-.ca-header--overlay:not(.ca-header--scrolled) .ca-navigation__link:hover {
+.ca-header--overlay:not(.ca-header--scrolled):not(.ca-header--menu-open) .ca-navigation__link:hover {
     color: var(--ca-color-green);
 }
 
-.ca-header--overlay:not(.ca-header--scrolled) .ca-navigation__link--active {
+.ca-header--overlay:not(.ca-header--scrolled):not(.ca-header--menu-open) .ca-navigation__link--active {
     color: var(--ca-color-gold);
 }
 
-.ca-header--overlay:not(.ca-header--scrolled) .ca-navigation__link--active::after {
+.ca-header--overlay:not(.ca-header--scrolled):not(.ca-header--menu-open) .ca-navigation__link--active::after {
     background-color: var(--ca-color-gold);
 }
 
-.ca-header--overlay:not(.ca-header--scrolled) .ca-navigation__link:focus-visible {
+.ca-header--overlay:not(.ca-header--scrolled):not(.ca-header--menu-open) .ca-navigation__link:focus-visible {
     box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5);
 }
 
@@ -182,4 +204,186 @@
     .ca-header__logo-fallback-tagline {
         display: none;
     }
+}
+
+/* -------------------------------------------------------------------------
+   MOBILE MENU TOGGLE — hidden on desktop, shown below 1024px
+   ------------------------------------------------------------------------- */
+.ca-header__menu-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    margin-left: auto;
+    background: none;
+    border: none;
+    border-radius: var(--ca-radius-sm);
+    color: var(--ca-color-navy);
+    cursor: pointer;
+}
+
+.ca-header--overlay:not(.ca-header--scrolled):not(.ca-header--menu-open) .ca-header__menu-toggle {
+    color: var(--ca-color-white);
+}
+
+/* Added by mobile-navigation.js while the panel is open, so the header
+   over a transparent Hero (Home) switches to its solid appearance —
+   otherwise a navy close icon would sit on a navy background. This is a
+   dedicated class (not header-scroll.js's own .ca-header--scrolled) so
+   the two scripts never fight over the same class. */
+.ca-header--overlay.ca-header--menu-open {
+    background-color: var(--ca-color-white);
+    border-bottom-color: var(--ca-color-light-gray);
+}
+
+.ca-header--overlay.ca-header--menu-open .ca-header__logo--solid {
+    opacity: 1;
+}
+
+.ca-header--overlay.ca-header--menu-open .ca-header__logo--transparent {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.ca-header__menu-toggle:focus-visible {
+    outline: none;
+    box-shadow: var(--ca-shadow-focus);
+}
+
+.ca-header__menu-icon {
+    width: 26px;
+    height: 26px;
+}
+
+.ca-header__menu-icon--close {
+    display: none;
+}
+
+.ca-header__menu-toggle.is-active .ca-header__menu-icon--open {
+    display: none;
+}
+
+.ca-header__menu-toggle.is-active .ca-header__menu-icon--close {
+    display: inline-flex;
+}
+
+/* -------------------------------------------------------------------------
+   MOBILE NAV PANEL — overlay penuh, berisi nav + CTA yang SAMA dengan
+   desktop (tidak diduplikasi, hanya direposisi lewat CSS + class is-open
+   dari mobile-navigation.js).
+   ------------------------------------------------------------------------- */
+@media (max-width: 1023px) {
+    .ca-header__menu-toggle {
+        display: inline-flex;
+    }
+
+    .ca-header__nav-panel {
+        /* Positioned via `right` (never `transform`) — a position:fixed
+           element offset with `transform: translateX()` still contributes
+           to the document's horizontal scrollable area in Chromium/WebKit
+           even while visually off-screen, which was causing a real
+           horizontal-scroll bug on every page. -400px is comfortably wider
+           than the panel's own max width (360px), so it is always fully
+           off-screen regardless of the min(85vw, 360px) computed width. */
+        position: fixed;
+        top: 0;
+        right: -400px;
+        bottom: 0;
+        z-index: var(--ca-z-modal);
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--ca-space-8);
+        width: min(85vw, 360px);
+        padding: calc(80px + env(safe-area-inset-top, 0px) + var(--ca-space-8)) var(--ca-space-6) calc(var(--ca-space-8) + env(safe-area-inset-bottom, 0px));
+        background-color: var(--ca-color-white);
+        box-shadow: var(--ca-shadow-lg);
+        overflow-y: auto;
+        visibility: hidden;
+        transition: right var(--ca-transition-base), visibility 0s linear var(--ca-transition-base);
+    }
+
+    .ca-header__nav-panel.is-open {
+        right: 0;
+        visibility: visible;
+        transition: right var(--ca-transition-base), visibility 0s linear 0s;
+    }
+
+    .ca-header__nav-panel .ca-navigation {
+        width: 100%;
+    }
+
+    .ca-header__nav-panel .ca-navigation__list {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--ca-space-1);
+        width: 100%;
+    }
+
+    .ca-header__nav-panel .ca-navigation__item {
+        width: 100%;
+    }
+
+    .ca-header__nav-panel .ca-navigation__link {
+        display: flex;
+        width: 100%;
+        padding: var(--ca-space-3) var(--ca-space-2);
+        font-size: var(--ca-text-lg);
+    }
+
+    .ca-header__nav-panel .ca-navigation__link::after {
+        display: none;
+    }
+
+    .ca-header__nav-panel .ca-header__actions {
+        width: 100%;
+    }
+
+    .ca-header__nav-panel .ca-header__actions .ca-btn {
+        width: 100%;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .ca-header__nav-panel {
+            transition: none;
+        }
+    }
+}
+
+@media (min-width: 1024px) {
+    .ca-header__nav-panel {
+        display: contents;
+    }
+}
+
+/* -------------------------------------------------------------------------
+   OVERLAY BACKDROP
+   ------------------------------------------------------------------------- */
+.ca-header__overlay {
+    display: none;
+}
+
+@media (max-width: 1023px) {
+    .ca-header__overlay {
+        display: block;
+        position: fixed;
+        inset: 0;
+        z-index: var(--ca-z-overlay);
+        background-color: rgba(15, 23, 42, 0.5);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity var(--ca-transition-base);
+    }
+
+    .ca-header__overlay.is-open {
+        opacity: 1;
+        pointer-events: auto;
+    }
+}
+
+/* Body scroll lock helper applied by mobile-navigation.js */
+body.ca-body--menu-open {
+    overflow: hidden;
 }

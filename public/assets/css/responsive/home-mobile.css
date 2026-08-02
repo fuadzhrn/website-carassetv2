@@ -1,0 +1,153 @@
+/* ==========================================================================
+   CarAsset — Home Mobile (home-mobile.css)
+   Responsive enhancement for Hero, Income Opportunity, Process Summary,
+   Partnership Choice, Consultation CTA. Desktop rules in pages/home/*.css
+   are untouched — everything here is scoped to mobile breakpoints.
+   ========================================================================== */
+
+/* -------------------------------------------------------------------------
+   HERO
+   ------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    .ca-hero--center-stage {
+        padding-top: calc(80px + var(--ca-space-8));
+        padding-bottom: var(--ca-space-10);
+    }
+
+    .ca-hero__subheadline {
+        font-size: var(--ca-text-xl);
+    }
+
+    .ca-hero__description {
+        font-size: var(--ca-text-base);
+    }
+
+    .ca-hero__stage {
+        height: 170px;
+        margin-top: var(--ca-space-8);
+    }
+
+    .ca-hero__mark,
+    .ca-hero__mark-ring--outer {
+        width: 96px;
+        height: 96px;
+    }
+
+    .ca-hero__mark-ring--inner {
+        width: 72px;
+        height: 72px;
+    }
+
+    .ca-hero__mark-core {
+        width: 56px;
+        height: 56px;
+    }
+
+    .ca-hero__mark-icon {
+        width: 26px;
+        height: 26px;
+    }
+
+    .ca-hero-status {
+        margin-top: calc(-1 * var(--ca-space-6));
+        padding: var(--ca-space-3) var(--ca-space-4);
+        gap: var(--ca-space-3);
+    }
+
+    .ca-hero-status__item {
+        white-space: normal;
+    }
+
+    .ca-hero-status__label {
+        overflow-wrap: anywhere;
+    }
+}
+
+@media (max-width: 479px) {
+    .ca-hero__stage {
+        height: 140px;
+    }
+
+    .ca-hero-status {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--ca-space-2);
+    }
+
+    .ca-hero-status__separator {
+        display: none;
+    }
+}
+
+/* -------------------------------------------------------------------------
+   INCOME OPPORTUNITY — already single-column from the 1180px breakpoint;
+   only spacing needs further reduction.
+   ------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    .ca-income__inner {
+        gap: var(--ca-space-8);
+    }
+}
+
+/* -------------------------------------------------------------------------
+   PROCESS SUMMARY (OWN / OPERATE / GROW) — becomes a vertical list;
+   the horizontal dashed track and desktop stagger offsets stop applying.
+   ------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    .ca-process__timeline {
+        grid-template-columns: 1fr;
+        gap: var(--ca-space-8);
+        margin-top: var(--ca-space-10);
+    }
+
+    .ca-process__track {
+        display: none;
+    }
+
+    .ca-process__step--operate,
+    .ca-process__step--grow {
+        margin-top: 0;
+    }
+
+    .ca-process__description {
+        max-width: none;
+    }
+
+    .ca-process__cta {
+        margin-top: var(--ca-space-10);
+    }
+}
+
+/* -------------------------------------------------------------------------
+   PARTNERSHIP CHOICE (Owner / Driver panels)
+   ------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    .ca-partnership-choice__grid {
+        margin-top: var(--ca-space-10);
+        gap: var(--ca-space-6);
+    }
+
+    .ca-partnership-panel,
+    .ca-partnership-panel--driver {
+        min-height: 380px;
+    }
+
+    .ca-partnership-panel__content {
+        padding: var(--ca-space-6);
+        max-width: none;
+    }
+}
+
+/* -------------------------------------------------------------------------
+   CONSULTATION CTA
+   ------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    .ca-consultation__inner {
+        gap: var(--ca-space-8);
+    }
+
+    .ca-consultation__trust {
+        padding: var(--ca-space-6);
+        gap: var(--ca-space-4);
+    }
+}

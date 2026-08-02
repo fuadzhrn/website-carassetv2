@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/pages/partnership/driver-program.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/pages/partnership/packages-benefits.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/pages/partnership/terms.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/responsive/partnership-mobile.css') }}">
 @endpush
 
 @section('content')

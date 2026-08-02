@@ -1,0 +1,136 @@
+/* ==========================================================================
+   CarAsset — Business Mobile (business-mobile.css)
+   Responsive enhancement for Opportunity, OWN, OPERATE, GROW, Business
+   Flow. Desktop rules in pages/business/*.css are untouched.
+   ========================================================================== */
+
+/* -------------------------------------------------------------------------
+   OPPORTUNITY — full-width hero + 4-step diagram
+   ------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    .ca-opportunity__hero {
+        min-height: 420px;
+    }
+
+    .ca-opportunity__hero-content {
+        padding-block: var(--ca-space-12);
+        max-width: none;
+        gap: var(--ca-space-4);
+    }
+
+    .ca-opportunity__title {
+        max-width: none;
+    }
+
+    .ca-opportunity__description {
+        max-width: none;
+    }
+
+    .ca-opportunity__diagram-section {
+        padding-block: var(--ca-space-10);
+    }
+}
+
+@media (max-width: 479px) {
+    .ca-opportunity__hero {
+        min-height: 380px;
+    }
+
+    .ca-opportunity__diagram {
+        grid-template-columns: 1fr;
+        row-gap: var(--ca-space-6);
+    }
+}
+
+/* -------------------------------------------------------------------------
+   OWN
+   ------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    .ca-own__inner {
+        gap: var(--ca-space-8);
+    }
+
+    .ca-own__title,
+    .ca-own__description {
+        max-width: none;
+    }
+
+    .ca-own__badge {
+        left: var(--ca-space-4);
+        bottom: var(--ca-space-4);
+    }
+}
+
+/* -------------------------------------------------------------------------
+   OPERATE (monitoring dashboard illustration)
+   ------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    .ca-operate__inner {
+        gap: var(--ca-space-8);
+    }
+
+    .ca-operate__title,
+    .ca-operate__description {
+        max-width: none;
+    }
+
+    .ca-operate__dashboard {
+        padding: var(--ca-space-5);
+    }
+
+    .ca-operate__dashboard-header {
+        flex-wrap: wrap;
+        gap: var(--ca-space-2);
+    }
+}
+
+/* -------------------------------------------------------------------------
+   GROW — stages already wrap via flex; the horizontal dashed track and
+   desktop stagger stop applying so the stack reads as a clean vertical
+   sequence.
+   ------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    .ca-grow__track {
+        display: none;
+    }
+
+    .ca-grow__journey {
+        margin-top: var(--ca-space-4);
+    }
+
+    .ca-grow__stage,
+    .ca-grow__stage--1,
+    .ca-grow__stage--2,
+    .ca-grow__stage--3 {
+        flex: 1 1 100%;
+        margin-top: 0;
+    }
+
+    .ca-grow__stage-title {
+        max-width: none;
+    }
+}
+
+/* -------------------------------------------------------------------------
+   BUSINESS FLOW — 5-step timeline becomes a vertical list.
+   ------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    .ca-business-flow__timeline {
+        grid-template-columns: 1fr;
+        gap: var(--ca-space-8);
+        margin-top: var(--ca-space-10);
+    }
+
+    .ca-business-flow__step--2,
+    .ca-business-flow__step--4 {
+        margin-top: 0;
+    }
+
+    .ca-business-flow__description {
+        max-width: none;
+    }
+
+    .ca-business-flow__footer {
+        margin-top: var(--ca-space-10);
+    }
+}

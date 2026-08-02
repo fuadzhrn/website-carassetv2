@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/pages/business/operate.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/pages/business/grow.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/pages/business/business-flow.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/responsive/business-mobile.css') }}">
 @endpush
 
 @section('content')

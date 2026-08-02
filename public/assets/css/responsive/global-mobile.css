@@ -1,0 +1,272 @@
+/* ==========================================================================
+   CarAsset — Global Mobile Responsive (global-mobile.css)
+   Responsive ENHANCEMENT only — desktop rules in base/*.css and
+   layouts/*.css are never rewritten, only extended via media queries.
+   Breakpoints used project-wide:
+     - max-width: 1023px  -> tablet & small screens (mobile menu turns on)
+     - max-width: 767px   -> mobile
+     - max-width: 479px   -> small mobile
+   Prefix wajib: ca-
+   ========================================================================== */
+
+/* -------------------------------------------------------------------------
+   ROOT OVERFLOW GUARD — the mobile nav panel (header.css) is a
+   position:fixed off-canvas drawer parked outside the viewport (via
+   `right: -400px`) until opened. Verified via Chrome DevTools Protocol
+   (getBoundingClientRect on every element) that this off-screen box is
+   the ONLY source of horizontal scroll on every page — it still
+   contributes to documentElement.scrollWidth even though nothing is
+   painted there, which is expected Chromium/WebKit behavior for
+   fixed-position off-canvas panels (the same reason every off-canvas-menu
+   implementation, e.g. Bootstrap's offcanvas, pairs it with this rule).
+   This is the identified fix for that one root cause, not a blanket
+   mask — do not add further ad-hoc overflow-x rules elsewhere.
+   ------------------------------------------------------------------------- */
+html,
+body {
+    overflow-x: hidden;
+}
+
+/* -------------------------------------------------------------------------
+   CONTAINER GUTTER — redefining the tokens themselves means every
+   .ca-container/.ca-container-wide/.ca-container-narrow usage across all
+   5 pages shrinks consistently, with no per-page overrides needed.
+   ------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    :root {
+        --ca-container-padding: 20px;
+    }
+}
+
+@media (max-width: 479px) {
+    :root {
+        --ca-container-padding: 16px;
+    }
+}
+
+/* -------------------------------------------------------------------------
+   SECTION SPACING — same token-redefinition approach. Every section that
+   already reduces to --ca-section-space-small at the existing 1180px
+   "desktop-small" breakpoint shrinks further here automatically.
+   ------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    :root {
+        --ca-section-space: 72px;
+        --ca-section-space-small: 64px;
+    }
+}
+
+@media (max-width: 479px) {
+    :root {
+        --ca-section-space: 64px;
+        --ca-section-space-small: 56px;
+    }
+}
+
+/* -------------------------------------------------------------------------
+   TYPOGRAPHY — headings that use a fixed px token (not already clamp()'d
+   like --ca-text-hero) get a smaller mobile token. Body/label/caption
+   sizes are left untouched (already a comfortable reading size).
+   ------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    :root {
+        --ca-text-4xl: 30px;
+        --ca-text-3xl: 24px;
+    }
+}
+
+@media (max-width: 479px) {
+    :root {
+        --ca-text-4xl: 26px;
+        --ca-text-3xl: 22px;
+    }
+}
+
+/* Long CMS-authored text (titles, CTA labels, names, addresses) must wrap
+   instead of overflowing — applied narrowly to text-bearing primitives,
+   never to layout containers. */
+@media (max-width: 767px) {
+    .ca-page-title,
+    .ca-section-title,
+    .ca-display,
+    .ca-card-title,
+    .ca-body,
+    .ca-body-lg,
+    .ca-body-sm,
+    .ca-btn {
+        overflow-wrap: anywhere;
+    }
+}
+
+/* -------------------------------------------------------------------------
+   BUTTONS — comfortable touch target, labels allowed to wrap instead of
+   being clipped, never wider than the viewport.
+   ------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    .ca-btn {
+        min-height: 44px;
+        white-space: normal;
+        text-align: center;
+        max-width: 100%;
+    }
+
+    /* Two CTAs side by side (hero, consultation, terms, etc.) stack
+       vertically and go full-width once space is tight — never two long
+       labels squeezed onto one cramped row. */
+    .ca-cluster:has(.ca-btn) {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .ca-cluster:has(.ca-btn) .ca-btn {
+        width: 100%;
+    }
+}
+
+/* Fallback for browsers without :has() support: the rule above is a
+   progressive enhancement — without it, buttons still wrap via ca-cluster's
+   existing flex-wrap, just not forced to full width. */
+
+/* -------------------------------------------------------------------------
+   IMAGES — defensive safety net (most images already set width:100% /
+   height:auto themselves; this only catches ones that don't).
+   ------------------------------------------------------------------------- */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* -------------------------------------------------------------------------
+   FORM — checkbox slightly larger for touch, error/help text never
+   escapes the field width.
+   ------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    .ca-field__checkbox-input {
+        width: 20px;
+        height: 20px;
+    }
+
+    .ca-field__error,
+    .ca-field__help {
+        overflow-wrap: anywhere;
+    }
+}
+
+/* -------------------------------------------------------------------------
+   FOOTER — single column, bottom bar stacks instead of side-by-side.
+   ------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    .ca-footer__grid {
+        grid-template-columns: 1fr;
+        row-gap: var(--ca-space-8);
+        padding-block: var(--ca-space-12);
+    }
+
+    .ca-footer__contact {
+        grid-column: auto;
+    }
+
+    .ca-footer__summary {
+        max-width: none;
+    }
+
+    .ca-footer__bottom-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--ca-space-2);
+        padding-block: var(--ca-space-5);
+    }
+}
+
+/* -------------------------------------------------------------------------
+   FLOATING WHATSAPP — safe-area aware, slightly smaller and closer to the
+   edge on small phones so it never competes with page content or a
+   thumb's natural reach.
+   ------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    .ca-whatsapp-button {
+        right: calc(var(--ca-space-4) + env(safe-area-inset-right, 0px));
+        bottom: calc(var(--ca-space-4) + env(safe-area-inset-bottom, 0px));
+        width: 52px;
+        height: 52px;
+    }
+}
+
+@media (max-width: 479px) {
+    .ca-whatsapp-button {
+        width: 48px;
+        height: 48px;
+    }
+
+    .ca-whatsapp-button__icon {
+        width: 22px;
+        height: 22px;
+    }
+}
+
+/* -------------------------------------------------------------------------
+   PREVIEW BANNER (PROMPT 23) — stack actions vertically once the banner
+   text + two links no longer comfortably fit one row.
+   ------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    .ca-preview-banner__inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .ca-preview-banner__actions {
+        width: 100%;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .ca-preview-banner__seo {
+        flex-direction: column;
+        gap: 4px;
+    }
+}
+
+/* -------------------------------------------------------------------------
+   PUBLIC FLASH / STATUS MESSAGES — full width, text wraps, never clipped
+   by the viewport.
+   ------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    .ca-contact__form-message {
+        overflow-wrap: anywhere;
+    }
+}
+
+/* -------------------------------------------------------------------------
+   TOUCH — never rely on :hover alone for meaningful state; guard
+   decorative hover-only affordances so they don't linger "stuck" active
+   after a tap on touch devices.
+   ------------------------------------------------------------------------- */
+@media (hover: none) {
+    .ca-whatsapp-button:hover {
+        transform: none;
+    }
+}
+
+/* -------------------------------------------------------------------------
+   MOTION
+   ------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* -------------------------------------------------------------------------
+   SAFE-AREA — sticky/fixed header keeps clear of a notch in landscape;
+   harmless (0px) on devices without one.
+   ------------------------------------------------------------------------- */
+@media (max-width: 1023px) {
+    .ca-header__inner {
+        padding-left: env(safe-area-inset-left, 0px);
+        padding-right: env(safe-area-inset-right, 0px);
+    }
+}

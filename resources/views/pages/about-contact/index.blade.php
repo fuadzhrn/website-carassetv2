@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/pages/about-contact/legal-partners.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/pages/about-contact/faq.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/pages/about-contact/contact-form.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/responsive/about-contact-mobile.css') }}">
 @endpush
 
 @section('content')
