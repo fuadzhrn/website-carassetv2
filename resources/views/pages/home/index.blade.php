@@ -1,12 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'CarAsset — Mobil Bekerja, Aset Bertumbuh')
-
-@section(
-    'meta_description',
-    'CarAsset membantu mitra memiliki dan mengelola kendaraan produktif melalui sistem operasional yang profesional dan transparan.'
-)
-
+{{-- Title/meta description now come from PageSeoService (see partials.seo-meta) --}}
 @section('body-class', 'ca-page ca-page--home')
 
 @push('styles')

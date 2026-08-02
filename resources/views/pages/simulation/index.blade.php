@@ -1,12 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Simulasi dan Perlindungan Aset CarAsset')
-
-@section(
-    'meta_description',
-    'Pelajari contoh ilustrasi operasional, perbandingan skala unit, serta sistem perlindungan dan monitoring aset dalam program CarAsset.'
-)
-
+{{-- Title/meta description now come from PageSeoService (see partials.seo-meta) --}}
 @section('body-class', 'ca-page ca-page--simulation')
 
 @push('styles')

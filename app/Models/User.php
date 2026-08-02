@@ -67,4 +67,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(ContentRevision::class, 'created_by');
     }
+
+    public function seoUpdatedPages(): HasMany
+    {
+        return $this->hasMany(Page::class, 'seo_updated_by');
+    }
+
+    public function seoPublishedPages(): HasMany
+    {
+        return $this->hasMany(Page::class, 'seo_published_by');
+    }
 }

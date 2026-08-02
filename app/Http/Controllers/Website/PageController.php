@@ -4,38 +4,80 @@ namespace App\Http\Controllers\Website;
 
 use App\Http\Controllers\Controller;
 use App\Models\Media;
+use App\Models\Page;
 use App\Services\CmsLinkService;
 use App\Services\ConsultationFormTokenService;
 use App\Services\ContentService;
+use App\Services\PageSeoService;
 use App\Services\SettingsService;
 use App\Services\SimulationFormatterService;
 use Illuminate\View\View;
 
 class PageController extends Controller
 {
-    public function home(ContentService $contentService, CmsLinkService $linkService): View
+    public function home(ContentService $contentService, CmsLinkService $linkService, PageSeoService $seoService): View
     {
-        return view('pages.home.index', ['home' => $this->homeData($contentService, $linkService, 'published')]);
+        return view('pages.home.index', [
+            'home' => $this->homeData($contentService, $linkService, 'published'),
+            'seo' => $this->seoFor('home', $seoService, 'published'),
+        ]);
     }
 
-    public function business(ContentService $contentService, CmsLinkService $linkService): View
+    public function business(ContentService $contentService, CmsLinkService $linkService, PageSeoService $seoService): View
     {
-        return view('pages.business.index', ['business' => $this->businessData($contentService, $linkService, 'published')]);
+        return view('pages.business.index', [
+            'business' => $this->businessData($contentService, $linkService, 'published'),
+            'seo' => $this->seoFor('business', $seoService, 'published'),
+        ]);
     }
 
-    public function partnership(ContentService $contentService, CmsLinkService $linkService): View
+    public function partnership(ContentService $contentService, CmsLinkService $linkService, PageSeoService $seoService): View
     {
-        return view('pages.partnership.index', ['partnership' => $this->partnershipData($contentService, $linkService, 'published')]);
+        return view('pages.partnership.index', [
+            'partnership' => $this->partnershipData($contentService, $linkService, 'published'),
+            'seo' => $this->seoFor('partnership', $seoService, 'published'),
+        ]);
     }
 
-    public function simulation(ContentService $contentService, CmsLinkService $linkService, SimulationFormatterService $formatter): View
+    public function simulation(ContentService $contentService, CmsLinkService $linkService, SimulationFormatterService $formatter, PageSeoService $seoService): View
     {
-        return view('pages.simulation.index', ['simulation' => $this->simulationData($contentService, $linkService, $formatter, 'published')]);
+        return view('pages.simulation.index', [
+            'simulation' => $this->simulationData($contentService, $linkService, $formatter, 'published'),
+            'seo' => $this->seoFor('simulation', $seoService, 'published'),
+        ]);
     }
 
-    public function aboutContact(ContentService $contentService, CmsLinkService $linkService, SettingsService $settingsService, ConsultationFormTokenService $formTokenService): View
+    public function aboutContact(ContentService $contentService, CmsLinkService $linkService, SettingsService $settingsService, ConsultationFormTokenService $formTokenService, PageSeoService $seoService): View
     {
-        return view('pages.about-contact.index', ['aboutContact' => $this->aboutContactData($contentService, $linkService, $settingsService, $formTokenService, 'published')]);
+        return view('pages.about-contact.index', [
+            'aboutContact' => $this->aboutContactData($contentService, $linkService, $settingsService, $formTokenService, 'published'),
+            'seo' => $this->seoFor('about-contact', $seoService, 'published'),
+        ]);
+    }
+
+    /**
+     * Shared SEO data builder — used by both the public routes (always
+     * $version='published') and ContentPreviewController (always
+     * $version='preview'), exactly like the 5 *Data() content builders
+     * above. Never derives $version from a request/query parameter.
+     *
+     * @return array{title: string, description: ?string, robots: string, canonical: string, source: array<string, string>}
+     */
+    public function seoFor(string $slug, PageSeoService $seoService, string $version): array
+    {
+        $page = Page::where('slug', $slug)->first();
+
+        if (! $page) {
+            return [
+                'title' => $seoService->staticFallback($slug)['title'] ?? '',
+                'description' => null,
+                'robots' => 'index,follow',
+                'canonical' => url()->current(),
+                'source' => ['title' => 'static', 'description' => 'static', 'robots' => 'default', 'canonical' => 'route'],
+            ];
+        }
+
+        return $seoService->getForPage($page, $seoService->staticFallback($slug), $version);
     }
 
     /**

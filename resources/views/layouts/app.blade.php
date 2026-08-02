@@ -44,6 +44,15 @@
                     <a href="{{ $previewEditorUrl }}" class="ca-preview-banner__link">Kembali ke Editor</a>
                     <a href="{{ $previewPublishedUrl }}" class="ca-preview-banner__link" target="_blank" rel="noopener noreferrer">Buka Versi Published</a>
                 </div>
+
+                @if ($previewSeoTarget ?? null)
+                    <div class="ca-preview-banner__seo">
+                        <span class="ca-preview-banner__seo-label">SEO Target Setelah Publish:</span>
+                        <span>Judul: {{ $previewSeoTarget['meta_title'] ?? '(memakai fallback)' }}</span>
+                        <span>Robots: {{ $previewSeoTarget['meta_robots'] === 'noindex,nofollow' ? 'Jangan Indeks Halaman' : 'Izinkan Pengindeksan' }}</span>
+                        <span>Canonical: {{ $previewSeoTarget['canonical_url'] ?? '(otomatis dari route)' }}</span>
+                    </div>
+                @endif
             </div>
         </div>
     @endif

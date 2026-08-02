@@ -8,6 +8,7 @@ use App\Models\Page;
 use App\Services\CmsLinkService;
 use App\Services\ConsultationFormTokenService;
 use App\Services\ContentService;
+use App\Services\PageSeoService;
 use App\Services\SettingsService;
 use App\Services\SimulationFormatterService;
 use Illuminate\Http\Response;
@@ -40,6 +41,7 @@ class ContentPreviewController extends Controller
         SettingsService $settingsService,
         SimulationFormatterService $formatter,
         ConsultationFormTokenService $formTokenService,
+        PageSeoService $seoService,
     ): Response {
         if (! in_array($page->slug, self::ALLOWED_SLUGS, true)) {
             throw new NotFoundHttpException();
@@ -49,6 +51,11 @@ class ContentPreviewController extends Controller
             'previewMode' => true,
             'previewEditorUrl' => route('admin.pages.'.$page->slug),
             'previewPublishedUrl' => route($page->route_name),
+            // Shown only in the preview banner (never to public visitors) —
+            // what SEO would become Published if the admin hits Publish
+            // SEO right now. Null when there is no SEO Draft to show.
+            'previewSeoTarget' => $page->hasSeoDraft() ? $page->editorSeoData() : null,
+            'seo' => $pageController->seoFor($page->slug, $seoService, 'preview'),
         ];
 
         [$view, $dataKey, $data] = match ($page->slug) {

@@ -1,12 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Tentang dan Kontak CarAsset')
-
-@section(
-    'meta_description',
-    'Kenali CarAsset, nilai perusahaan, informasi legalitas, pertanyaan umum, dan cara berkonsultasi mengenai program kendaraan produktif.'
-)
-
+{{-- Title/meta description now come from PageSeoService (see partials.seo-meta) --}}
 @section('body-class', 'ca-page ca-page--about-contact')
 
 @push('styles')

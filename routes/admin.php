@@ -8,7 +8,6 @@ use App\Http\Controllers\Admin\ContentRevisionController;
 use App\Http\Controllers\Admin\ContentWorkflowController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MediaController;
-use App\Http\Controllers\Admin\ModulePlaceholderController;
 use App\Http\Controllers\Admin\PageWorkspaceController;
 use App\Http\Controllers\Admin\Pages\AboutContactController;
 use App\Http\Controllers\Admin\Pages\AboutContactSectionController;
@@ -21,6 +20,8 @@ use App\Http\Controllers\Admin\Pages\PartnershipSectionController;
 use App\Http\Controllers\Admin\Pages\SimulationController;
 use App\Http\Controllers\Admin\Pages\SimulationSectionController;
 use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\SeoController;
+use App\Http\Controllers\Admin\SeoWorkflowController;
 use App\Http\Controllers\Admin\SiteSettingController;
 use Illuminate\Support\Facades\Route;
 
@@ -92,7 +93,23 @@ Route::prefix('admin')->middleware('admin.security-headers')->group(function () 
         Route::put('media/{media}/replace', [MediaController::class, 'replace'])->name('admin.media.replace');
         Route::delete('media/{media}', [MediaController::class, 'destroy'])->name('admin.media.destroy');
 
-        Route::get('seo', [ModulePlaceholderController::class, 'seo'])->name('admin.seo.index');
+        // SEO per halaman — dibatasi ke 5 slug CMS yang terkunci; {page:slug}
+        // adalah binding Eloquent asli (bukan wildcard bebas), diperkuat lagi
+        // dengan whereIn agar sebuah slug tak terduga tidak pernah lolos ke
+        // controller sama sekali.
+        Route::get('seo', [SeoController::class, 'index'])->name('admin.seo.index');
+        Route::get('seo/{page:slug}', [SeoController::class, 'edit'])
+            ->whereIn('page', array_keys(config('cms.pages')))
+            ->name('admin.seo.edit');
+        Route::patch('seo/{page:slug}/draft', [SeoWorkflowController::class, 'saveDraft'])
+            ->whereIn('page', array_keys(config('cms.pages')))
+            ->name('admin.seo.draft.update');
+        Route::patch('seo/{page:slug}/publish', [SeoWorkflowController::class, 'publish'])
+            ->whereIn('page', array_keys(config('cms.pages')))
+            ->name('admin.seo.publish');
+        Route::delete('seo/{page:slug}/draft', [SeoWorkflowController::class, 'discardDraft'])
+            ->whereIn('page', array_keys(config('cms.pages')))
+            ->name('admin.seo.draft.discard');
 
         Route::get('messages', [ContactMessageController::class, 'index'])->name('admin.messages.index');
         Route::get('messages/{contactMessage}', [ContactMessageController::class, 'show'])->name('admin.messages.show');

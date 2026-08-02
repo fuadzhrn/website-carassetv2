@@ -1,12 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Bisnis CarAsset — Own, Operate, Grow')
-
-@section(
-    'meta_description',
-    'Pelajari bagaimana CarAsset membantu mitra memiliki, mengoperasikan, dan mengembangkan aset kendaraan produktif melalui sistem yang profesional.'
-)
-
+{{-- Title/meta description now come from PageSeoService (see partials.seo-meta) --}}
 @section('body-class', 'ca-page ca-page--business')
 
 @push('styles')

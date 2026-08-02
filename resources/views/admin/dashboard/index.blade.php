@@ -151,10 +151,20 @@
                 <span>Riwayat Revisi</span>
                 <x-admin::status-badge variant="active">Aktif</x-admin::status-badge>
             </li>
+            <li class="ca-admin-status-list__item">
+                <span>SEO Per Halaman</span>
+                <x-admin::status-badge variant="active">Aktif</x-admin::status-badge>
+            </li>
             @if ($draftSectionCount > 0)
                 <li class="ca-admin-status-list__item">
                     <span>Draft Belum Dipublikasikan</span>
                     <x-admin::status-badge variant="draft">{{ $draftSectionCount }} section</x-admin::status-badge>
+                </li>
+            @endif
+            @if ($draftSeoCount > 0)
+                <li class="ca-admin-status-list__item">
+                    <span>Draft SEO Belum Dipublikasikan</span>
+                    <x-admin::status-badge variant="draft">{{ $draftSeoCount }} halaman</x-admin::status-badge>
                 </li>
             @endif
         </ul>

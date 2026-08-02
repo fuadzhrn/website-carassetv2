@@ -1,12 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Program Kemitraan CarAsset')
-
-@section(
-    'meta_description',
-    'Pelajari program Mitra Owner dan Mitra Driver CarAsset serta pilihan skala kemitraan kendaraan produktif.'
-)
-
+{{-- Title/meta description now come from PageSeoService (see partials.seo-meta) --}}
 @section('body-class', 'ca-page ca-page--partnership')
 
 @push('styles')

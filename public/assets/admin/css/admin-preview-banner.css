@@ -65,3 +65,20 @@
 .ca-preview-banner__link:hover {
     color: #10b981;
 }
+
+.ca-preview-banner__seo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+    width: 100%;
+    padding-top: 8px;
+    margin-top: 4px;
+    border-top: 1px dashed rgba(255, 255, 255, 0.2);
+    font-size: 0.75rem;
+    color: #e2e8f0;
+}
+
+.ca-preview-banner__seo-label {
+    font-weight: 600;
+    color: #10b981;
+}

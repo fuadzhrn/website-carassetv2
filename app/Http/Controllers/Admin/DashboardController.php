@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ContactMessage;
+use App\Models\Page;
 use App\Models\PageSection;
 use Illuminate\View\View;
 
@@ -24,6 +25,7 @@ class DashboardController extends Controller
             ],
             'newMessageCount' => ContactMessage::query()->where('status', ContactMessage::STATUS_NEW)->count(),
             'draftSectionCount' => PageSection::query()->where('workflow_status', PageSection::WORKFLOW_DRAFT)->count(),
+            'draftSeoCount' => Page::query()->where('seo_workflow_status', Page::SEO_WORKFLOW_DRAFT)->count(),
         ]);
     }
 }
