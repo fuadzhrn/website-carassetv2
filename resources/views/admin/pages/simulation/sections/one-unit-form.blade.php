@@ -55,8 +55,8 @@
         name-prefix="content[management_component]"
         error-key-prefix="content.management_component"
         :values="$content['management_component'] ?? []"
-        field-label="Komponen Pengelolaan"
-        format="rupiah"
+        field-label="Komponen Pengelolaan (Porsi CarAsset)"
+        format="percentage"
         :label-max="120"
     />
 
@@ -64,8 +64,8 @@
         name-prefix="content[projected_partner_result]"
         error-key-prefix="content.projected_partner_result"
         :values="$content['projected_partner_result'] ?? []"
-        field-label="Proyeksi Hasil Operasional Mitra"
-        format="rupiah"
+        field-label="Proyeksi Hasil Operasional Mitra (Porsi Mitra)"
+        format="percentage"
         :label-max="120"
     />
 </fieldset>

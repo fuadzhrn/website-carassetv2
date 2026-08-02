@@ -103,11 +103,27 @@ class ContentService
      * (e.g. the public Home page) instead of one getSectionContent() call
      * per section.
      *
+     * $version controls which content is read — this is the ONLY switch
+     * between the two, and it must always be decided server-side by the
+     * caller (public controllers always pass 'published'; only
+     * ContentPreviewController ever passes 'preview'). Never derive this
+     * from a request/query parameter.
+     *
+     * - 'published' (default): reads content/is_active ONLY. Never touches
+     *   draft_content/draft_is_active, even if a Draft exists. This is
+     *   what every public page controller uses.
+     * - 'preview': reads draft_content/draft_is_active when a Draft
+     *   exists, falling back to content/is_active otherwise (see
+     *   PageSection::editorContent()/editorIsActive()). Admin editors use
+     *   this same mode so the form always shows the Draft being worked on.
+     *
      * @param array<string, array<string, mixed>> $fallbacks section_key => fallback content
      * @return array<string, array{content: array<string, mixed>, is_active: bool, section_name: ?string}>
      */
-    public function getPageSectionsContent(string $pageSlug, array $fallbacks = []): array
+    public function getPageSectionsContent(string $pageSlug, array $fallbacks = [], string $version = 'published'): array
     {
+        $usePreview = $version === 'preview';
+
         $page = $this->getPage($pageSlug);
         $sectionsByKey = $page ? $page->sections()->ordered()->get()->keyBy('section_key') : collect();
 
@@ -126,11 +142,13 @@ class ContentService
                 continue;
             }
 
-            $hasContent = is_array($section->content) && $section->content !== [];
+            $sectionContent = $usePreview ? $section->editorContent() : ($section->content ?? []);
+            $sectionIsActive = $usePreview ? $section->editorIsActive() : (bool) $section->is_active;
+            $hasContent = $sectionContent !== [];
 
             $result[$sectionKey] = [
-                'content' => $hasContent ? $this->mergeContent($fallbackContent, $section->content) : $fallbackContent,
-                'is_active' => (bool) $section->is_active,
+                'content' => $hasContent ? $this->mergeContent($fallbackContent, $sectionContent) : $fallbackContent,
+                'is_active' => $sectionIsActive,
                 'section_name' => $section->section_name,
             ];
         }

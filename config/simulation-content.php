@@ -10,47 +10,43 @@
 | PROMPT 20 ditulis. TIDAK ADA rumus, TIDAK ADA angka baru, TIDAK ADA
 | nilai contoh — hanya salinan teks dan struktur.
 |
-| ANGKA — KEPUTUSAN AUDIT (WAJIB DIBACA SEBELUM MENGUBAH):
-| public/assets/js/pages/simulation/simulation-config.js menyimpan angka
-| yang KOMENTARNYA SENDIRI menyatakan "resmi dari dokumen klien"
-| (operatingDays=27, dailyDeposit=230000, operationalCost=500000,
-| monthlyInstallment=5100000) dan menandai scenarios.fiveUnits/tenUnits
-| sebagai "ESTIMASI LINEAR — bukan angka resmi terpisah" (1 unit x 5/x10).
+| ANGKA — KEPUTUSAN 2026-08-02 (menggantikan keputusan audit PROMPT 20):
+| PROMPT 20 sebelumnya menemukan bahwa public/assets/js/pages/simulation/
+| simulation-config.js menyimpan angka yang KOMENTARNYA SENDIRI menyatakan
+| "resmi dari dokumen klien" (operatingDays=27, dailyDeposit=230000,
+| operationalCost=500000, monthlyInstallment=5100000), namun PROMPT 20
+| juga mendaftarkan angka-angka ini sebagai BELUM KONSISTEN berdasarkan
+| pembahasan proyek yang lebih baru (di luar repo ini): hari operasional
+| 27 vs 28 hari, cicilan ~Rp5.100.000 vs ~Rp5.200.000, dan nilai harian
+| ~Rp60.000 vs ~Rp70.000 (catatan: nilai harian yang disengketakan itu
+| adalah setoran skema Mitra Driver — TIDAK dibahas di simulation-config.js
+| sama sekali, sehingga tidak relevan dengan field-field di bawah). Karena
+| konflik itu, seluruh angka sempat dikosongkan (null, data_status='draft').
 |
-| PROMPT 20 secara eksplisit mendaftarkan angka-angka ini sebagai BELUM
-| KONSISTEN berdasarkan pembahasan proyek terbaru (di luar repo ini):
-| - hari operasional 27 ATAU 28 hari;
-| - nilai ~Rp5.100.000 ATAU ~Rp5.200.000 (cicilan kendaraan);
-| - nilai harian ~Rp60.000 ATAU ~Rp70.000.
-| Instruksi PROMPT 20 lebih baru dan lebih otoritatif daripada komentar
-| lama di simulation-config.js, dan secara eksplisit melarang memilih
-| salah satu, merata-ratakan, atau memakai angka lama yang saling
-| bertentangan sebagai fallback.
+| Pemilik proyek secara eksplisit meminta (2026-08-02) agar angka yang
+| SUDAH ADA di simulation-config.js dipakai sebagai data resmi CMS,
+| menggantikan sikap tunggu-konfirmasi sebelumnya. Maka:
+| - assumptions.*, one-unit.*, multiple-units.units.one_unit.* diisi
+|   persis dari scenarios.oneUnit (dan assumptions) di simulation-config.js;
+| - multiple-units.units.five_units/ten_units diisi dari scenarios.fiveUnits/
+|   tenUnits — nilai ini TETAP estimasi linear (1 unit x5/x10), bukan angka
+|   resmi terpisah, sehingga badge "Estimasi Linear — Bukan Angka Resmi"
+|   (lihat sections/multiple-units.blade.php) tetap tampil untuk keduanya;
+| - data_status seluruh 3 section = 'confirmed' agar publik tidak lagi
+|   menampilkan teks "Menunggu angka final klien"/"Menunggu Konfirmasi".
+| simulation-config.js/simulation-render.js sendiri tetap tidak di-include
+| lagi di halaman (lihat pages/simulation/index.blade.php) — angka publik
+| sekarang murni berasal dari CMS ini, bukan dari JS tersebut.
 |
-| Karena operational_days (komponen dari gross_operational_result =
-| operatingDays x dailyDeposit) dan vehicle_installment/vehicle_obligation
-| SAMA-SAMA masuk daftar konflik, seluruh rantai angka yang bergantung
-| padanya (assumptions.*, one-unit.*, multiple-units.units.*) diperlakukan
-| sebagai BELUM DIKONFIRMASI: seluruh value numerik = null,
-| data_status = 'draft'. Ini BUKAN penghapusan data — angka lama tetap
-| ada di simulation-config.js sebagai referensi historis, hanya tidak
-| dipindahkan ke fallback CMS karena tidak lolos syarat "konsisten dan
-| jelas dikonfirmasi".
-|
-| scenarios.fiveUnits/tenUnits SUDAH ditandai non-resmi oleh proyek itu
-| sendiri (isEstimate: true) sehingga juga tidak dipindahkan.
-|
-| assumptions.managementShare / assumptions.ownerShare / one-unit
-| managementComponent/projectedOwnerResult di JS lama disimpan sebagai
-| TEKS RASIO ("40% dari hasil operasional"), BUKAN nominal Rupiah bersih
-| dan bukan pula persentase numerik bersih. Skema PROMPT 20 memisahkan
-| ini menjadi dua field berbeda:
-| - management_component -> nominal Rupiah (integer) — belum ada angka
-|   Rupiah resmi untuk ini, tetap null;
-| - revenue_share -> rasio pembagian hasil, jenisnya (persen/rupiah)
-|   BELUM ditentukan oleh audit (sumber lama hanya teks gabungan), maka
-|   'format' => null dan value => null, field dikunci read-only di admin
-|   sampai jenisnya resmi ditentukan.
+| assumptions.managementShare / assumptions.ownerShare / one-unit &
+| multiple-units managementComponent/projectedOwnerResult di JS lama
+| disimpan sebagai TEKS RASIO ("40% dari hasil operasional"), bukan
+| nominal Rupiah. Skema CMS di sini menampilkan rasio itu APA ADANYA
+| sebagai nilai persentase (format 'percentage', value 40/60) — bukan
+| menghitung/mengarang nominal Rupiah yang tidak pernah ada di sumber.
+| assumptions.revenue_share sebelumnya terkunci karena jenisnya belum
+| ditentukan; sekarang ditentukan sebagai persentase (60, bagian Mitra)
+| untuk melengkapi assumptions.management_component (40, bagian CarAsset).
 |
 | Field yang TIDAK punya rumus/relasi otomatis apa pun di sini — setiap
 | angka independen, admin mengisi manual, sistem tidak pernah menghitung
@@ -65,44 +61,43 @@ return [
             'title' => 'Pahami Cara Ilustrasi Operasional Disusun.',
             'description' => 'Simulasi CarAsset menggunakan sejumlah asumsi operasional untuk membantu calon mitra memahami alur pengelolaan kendaraan. Seluruh nilai pada halaman ini masih menunggu konfirmasi final perusahaan.',
 
-            'data_status' => 'draft',
+            'data_status' => 'confirmed',
             'status_note' => null,
 
             'operational_days' => [
                 'label' => 'Hari Operasional',
-                'value' => null,
-                'helper' => 'Jumlah hari operasional per periode. Menunggu konfirmasi resmi (masih terdapat perbedaan angka pada pembahasan internal).',
+                'value' => 27,
+                'helper' => 'Jumlah hari operasional per periode, dalam hari.',
             ],
 
             'daily_result' => [
                 'label' => 'Setoran / Hasil Operasional Harian',
-                'value' => null,
-                'helper' => 'Nilai hasil atau setoran operasional per hari, dalam Rupiah. Menunggu konfirmasi resmi.',
+                'value' => 230000,
+                'helper' => 'Nilai hasil atau setoran operasional per hari, dalam Rupiah.',
             ],
 
             'operating_cost' => [
                 'label' => 'Biaya Operasional',
-                'value' => null,
-                'helper' => 'Biaya operasional per bulan, dalam Rupiah. Menunggu konfirmasi resmi.',
+                'value' => 500000,
+                'helper' => 'Biaya operasional per bulan, dalam Rupiah.',
             ],
 
             'vehicle_installment' => [
                 'label' => 'Cicilan Kendaraan',
-                'value' => null,
-                'helper' => 'Cicilan atau kewajiban kendaraan per bulan, dalam Rupiah. Menunggu konfirmasi resmi (masih terdapat perbedaan angka pada pembahasan internal).',
+                'value' => 5100000,
+                'helper' => 'Cicilan atau kewajiban kendaraan per bulan, dalam Rupiah.',
             ],
 
             'management_component' => [
                 'label' => 'Komponen Pengelolaan',
-                'value' => null,
-                'helper' => 'Nominal komponen pengelolaan dalam Rupiah. Belum tersedia angka resmi — sumber lama hanya menyebutkan rasio, bukan nominal.',
+                'value' => 40,
+                'helper' => 'Porsi pembagian hasil operasional untuk CarAsset, dalam persen.',
             ],
 
             'revenue_share' => [
                 'label' => 'Pembagian Hasil Operasional',
-                'value' => null,
-                'format' => null,
-                'helper' => 'Jenis nilai (persentase atau Rupiah) belum ditentukan secara resmi. Sumber lama hanya menyebutkan rasio dalam bentuk teks.',
+                'value' => 60,
+                'helper' => 'Porsi pembagian hasil operasional untuk Mitra, dalam persen.',
             ],
 
             // Dipetakan dari paragraf catatan yang sudah ada di Blade lama
@@ -119,37 +114,37 @@ return [
             'title' => 'Melihat Alur Operasional dari Satu Kendaraan.',
             'description' => 'Ilustrasi ini menunjukkan bagaimana hasil operasional satu kendaraan dialokasikan ke berbagai komponen sesuai skema program.',
 
-            'data_status' => 'draft',
+            'data_status' => 'confirmed',
             'status_note' => null,
 
             'gross_operational_result' => [
                 'label' => 'Hasil Operasional Bruto',
-                'value' => null,
+                'value' => 6210000,
                 'helper' => 'Nilai sebelum dikurangi komponen biaya dan kewajiban.',
             ],
 
             'operating_cost' => [
                 'label' => 'Biaya Operasional',
-                'value' => null,
+                'value' => 500000,
                 'helper' => 'Mencakup komponen biaya yang telah ditetapkan dalam program.',
             ],
 
             'vehicle_obligation' => [
                 'label' => 'Kewajiban Kendaraan',
-                'value' => null,
+                'value' => 5100000,
                 'helper' => 'Mencakup cicilan atau kewajiban kendaraan sesuai skema pembiayaan.',
             ],
 
             'management_component' => [
                 'label' => 'Komponen Pengelolaan',
-                'value' => null,
-                'helper' => 'Mengikuti sistem pengelolaan dan pembagian yang disepakati.',
+                'value' => 40,
+                'helper' => 'Porsi pembagian hasil operasional untuk CarAsset, dalam persen.',
             ],
 
             'projected_partner_result' => [
                 'label' => 'Proyeksi Hasil Operasional Mitra',
-                'value' => null,
-                'helper' => 'Nilai ini merupakan ilustrasi, bukan jaminan hasil.',
+                'value' => 60,
+                'helper' => 'Porsi pembagian hasil operasional untuk Mitra, dalam persen. Nilai ini merupakan ilustrasi, bukan jaminan hasil.',
             ],
 
             'summary_note' => 'Hasil aktual dapat berbeda.',
@@ -170,7 +165,7 @@ return [
             'title' => 'Bandingkan Struktur Simulasi untuk Beberapa Skala Unit.',
             'description' => 'Perbandingan ini membantu calon mitra melihat bagaimana jumlah unit memengaruhi struktur pengelolaan. Nilai skala 5 dan 10 unit merupakan estimasi linear dari simulasi 1 unit, bukan angka resmi terpisah.',
 
-            'data_status' => 'draft',
+            'data_status' => 'confirmed',
             'status_note' => null,
 
             'units' => [
@@ -178,11 +173,11 @@ return [
                     'unit_count' => 1,
                     'label' => 'Skala Awal',
                     'description' => null,
-                    'gross_operational_result' => null,
-                    'operating_cost' => null,
-                    'vehicle_obligation' => null,
-                    'management_component' => null,
-                    'projected_partner_result' => null,
+                    'gross_operational_result' => 6210000,
+                    'operating_cost' => 500000,
+                    'vehicle_obligation' => 5100000,
+                    'management_component' => 40,
+                    'projected_partner_result' => 60,
                     'note' => null,
                     'is_active' => true,
                 ],
@@ -190,11 +185,11 @@ return [
                     'unit_count' => 5,
                     'label' => 'Skala Pengembangan',
                     'description' => null,
-                    'gross_operational_result' => null,
-                    'operating_cost' => null,
-                    'vehicle_obligation' => null,
-                    'management_component' => null,
-                    'projected_partner_result' => null,
+                    'gross_operational_result' => 31050000,
+                    'operating_cost' => 2500000,
+                    'vehicle_obligation' => 25500000,
+                    'management_component' => 40,
+                    'projected_partner_result' => 60,
                     'note' => null,
                     'is_active' => true,
                 ],
@@ -202,11 +197,11 @@ return [
                     'unit_count' => 10,
                     'label' => 'Skala Armada',
                     'description' => null,
-                    'gross_operational_result' => null,
-                    'operating_cost' => null,
-                    'vehicle_obligation' => null,
-                    'management_component' => null,
-                    'projected_partner_result' => null,
+                    'gross_operational_result' => 62100000,
+                    'operating_cost' => 5000000,
+                    'vehicle_obligation' => 51000000,
+                    'management_component' => 40,
+                    'projected_partner_result' => 60,
                     'note' => null,
                     'is_active' => true,
                 ],
@@ -327,22 +322,22 @@ return [
             'daily_result.value' => 'rupiah',
             'operating_cost.value' => 'rupiah',
             'vehicle_installment.value' => 'rupiah',
-            'management_component.value' => 'rupiah',
-            'revenue_share.value' => null,
+            'management_component.value' => 'percentage',
+            'revenue_share.value' => 'percentage',
         ],
         'one-unit' => [
             'gross_operational_result.value' => 'rupiah',
             'operating_cost.value' => 'rupiah',
             'vehicle_obligation.value' => 'rupiah',
-            'management_component.value' => 'rupiah',
-            'projected_partner_result.value' => 'rupiah',
+            'management_component.value' => 'percentage',
+            'projected_partner_result.value' => 'percentage',
         ],
         'multiple-units' => [
             'gross_operational_result' => 'rupiah',
             'operating_cost' => 'rupiah',
             'vehicle_obligation' => 'rupiah',
-            'management_component' => 'rupiah',
-            'projected_partner_result' => 'rupiah',
+            'management_component' => 'percentage',
+            'projected_partner_result' => 'percentage',
         ],
     ],
 ];

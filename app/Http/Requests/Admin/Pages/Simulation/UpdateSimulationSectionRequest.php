@@ -14,12 +14,11 @@ use Illuminate\Validation\Rule;
  *
  * - Every nominal is integer|nullable — never a formatted string, never a
  *   float, negative values rejected.
- * - Locked/undetermined fields (revenue_share.value/format, unit_count)
- *   have NO validation rule at all, so they can never be written by an
- *   admin submission and permanently fall back to
- *   config/simulation-content.php's value via ContentService::mergeContent()
- *   — the same "no rule = locked" mechanism used for Partnership's
- *   packages.*.unit_count (PROMPT 19).
+ * - Locked/undetermined fields (unit_count) have NO validation rule at
+ *   all, so they can never be written by an admin submission and
+ *   permanently fall back to config/simulation-content.php's value via
+ *   ContentService::mergeContent() — the same "no rule = locked"
+ *   mechanism used for Partnership's packages.*.unit_count (PROMPT 19).
  * - data_status (draft|confirmed) is validated per-section, with a
  *   withValidator() pass enforcing that "confirmed" cannot be chosen while
  *   that section's main numeric fields are still null — this is the only
@@ -86,14 +85,11 @@ class UpdateSimulationSectionRequest extends FormRequest
             'content.vehicle_installment.helper' => ['nullable', 'string', 'max:300'],
 
             'content.management_component.label' => ['nullable', 'string', 'max:100'],
-            'content.management_component.value' => $this->nominalRule(),
+            'content.management_component.value' => $this->percentageRule(),
             'content.management_component.helper' => ['nullable', 'string', 'max:300'],
 
-            // revenue_share.value / .format sengaja TIDAK divalidasi —
-            // jenisnya (persen/rupiah) belum ditentukan audit, field
-            // terkunci sampai resmi ditentukan. Hanya label/helper yang
-            // dapat diubah admin.
             'content.revenue_share.label' => ['nullable', 'string', 'max:100'],
+            'content.revenue_share.value' => $this->percentageRule(),
             'content.revenue_share.helper' => ['nullable', 'string', 'max:300'],
 
             'content.callout.title' => ['nullable', 'string', 'max:140'],
@@ -128,11 +124,11 @@ class UpdateSimulationSectionRequest extends FormRequest
             'content.vehicle_obligation.helper' => ['nullable', 'string', 'max:300'],
 
             'content.management_component.label' => ['nullable', 'string', 'max:120'],
-            'content.management_component.value' => $this->nominalRule(),
+            'content.management_component.value' => $this->percentageRule(),
             'content.management_component.helper' => ['nullable', 'string', 'max:300'],
 
             'content.projected_partner_result.label' => ['nullable', 'string', 'max:120'],
-            'content.projected_partner_result.value' => $this->nominalRule(),
+            'content.projected_partner_result.value' => $this->percentageRule(),
             'content.projected_partner_result.helper' => ['nullable', 'string', 'max:300'],
 
             'content.summary_note' => ['nullable', 'string', 'max:500'],
@@ -163,8 +159,8 @@ class UpdateSimulationSectionRequest extends FormRequest
             $rules["{$prefix}.gross_operational_result"] = $this->nominalRule();
             $rules["{$prefix}.operating_cost"] = $this->nominalRule();
             $rules["{$prefix}.vehicle_obligation"] = $this->nominalRule();
-            $rules["{$prefix}.management_component"] = $this->nominalRule();
-            $rules["{$prefix}.projected_partner_result"] = $this->nominalRule();
+            $rules["{$prefix}.management_component"] = $this->percentageRule();
+            $rules["{$prefix}.projected_partner_result"] = $this->percentageRule();
             $rules["{$prefix}.note"] = ['nullable', 'string', 'max:400'];
             $rules["{$prefix}.is_active"] = ['boolean'];
             // unit_count sengaja TIDAK divalidasi — dikunci server per
@@ -240,6 +236,19 @@ class UpdateSimulationSectionRequest extends FormRequest
     }
 
     /**
+     * Shared rule for the ratio fields whose source data was only ever a
+     * plain-text ratio ("40% dari hasil operasional"), never a Rupiah
+     * nominal — stored/displayed as a percentage instead of being invented
+     * as a computed Rupiah figure.
+     *
+     * @return array<int, mixed>
+     */
+    private function percentageRule(): array
+    {
+        return ['nullable', 'numeric', 'min:0', 'max:100'];
+    }
+
+    /**
      * Shared validation rules for a CTA object at the given dot-path.
      *
      * @return array<string, mixed>
@@ -280,6 +289,7 @@ class UpdateSimulationSectionRequest extends FormRequest
                     'content.operating_cost.value' => $content['operating_cost']['value'] ?? null,
                     'content.vehicle_installment.value' => $content['vehicle_installment']['value'] ?? null,
                     'content.management_component.value' => $content['management_component']['value'] ?? null,
+                    'content.revenue_share.value' => $content['revenue_share']['value'] ?? null,
                 ],
                 'one-unit' => [
                     'content.gross_operational_result.value' => $content['gross_operational_result']['value'] ?? null,

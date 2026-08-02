@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Pages;
 
 use App\Http\Controllers\Controller;
 use App\Models\Media;
+use App\Models\Page;
 use App\Services\ContentService;
 use Illuminate\View\View;
 
@@ -20,7 +21,7 @@ class SimulationController extends Controller
     public function index(): View
     {
         $fallbacks = config('simulation-content.sections', []);
-        $sections = $this->contentService->getPageSectionsContent('simulation', $fallbacks);
+        $sections = $this->contentService->getPageSectionsContent('simulation', $fallbacks, 'preview');
 
         $mediaIds = $this->collectMediaIds($sections);
         $mediaById = $mediaIds === []
@@ -30,6 +31,7 @@ class SimulationController extends Controller
         $sectionModels = $this->contentService->getSections('simulation', false)->keyBy('section_key');
 
         return view('admin.pages.simulation.index', [
+            'page' => Page::where('slug', 'simulation')->firstOrFail(),
             'sections' => $sections,
             'sectionModels' => $sectionModels,
             'mediaById' => $mediaById,

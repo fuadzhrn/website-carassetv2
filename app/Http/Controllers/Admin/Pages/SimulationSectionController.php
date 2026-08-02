@@ -4,35 +4,35 @@ namespace App\Http\Controllers\Admin\Pages;
 
 use App\Http\Requests\Admin\Pages\Simulation\UpdateSimulationSectionRequest;
 use App\Models\Page;
+use App\Services\ContentWorkflowService;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\DB;
 
 class SimulationSectionController
 {
+    public function __construct(private readonly ContentWorkflowService $workflowService)
+    {
+    }
+
     /**
-     * Save one Simulasi & Perlindungan section's content + active status.
-     *
-     * section_name, sort_order, page_id, and unit_count are never touched
-     * here — only content, is_active, and updated_by. $sectionKey is
-     * already constrained to the 5 known keys at the route level.
-     *
-     * No cache to clear here: ContentService reads page_sections directly
-     * on every request (unlike SettingsService, it never caches), so there
-     * is nothing to invalidate after this save.
+     * Save one Simulasi & Perlindungan section's content + active status
+     * AS A DRAFT — this never touches the Published content/is_active
+     * the public site reads. section_name, sort_order, page_id, and
+     * unit_count are never touched either. $sectionKey is already
+     * constrained to the 5 known keys at the route level.
      */
     public function update(UpdateSimulationSectionRequest $request, string $sectionKey): RedirectResponse
     {
         $page = Page::where('slug', 'simulation')->firstOrFail();
         $section = $page->sections()->where('section_key', $sectionKey)->firstOrFail();
 
-        DB::transaction(function () use ($request, $section) {
-            $section->content = $request->validated('content', []);
-            $section->is_active = $request->boolean('is_active');
-            $section->updated_by = $request->user()->id;
-            $section->save();
-        });
+        $this->workflowService->saveDraft(
+            $section,
+            $request->validated('content', []),
+            $request->boolean('is_active'),
+            $request->user(),
+        );
 
         return redirect(route('admin.pages.simulation').'#section-'.$sectionKey)
-            ->with('success', 'Section Simulasi & Perlindungan berhasil diperbarui.');
+            ->with('success', 'Draft section berhasil disimpan.');
     }
 }

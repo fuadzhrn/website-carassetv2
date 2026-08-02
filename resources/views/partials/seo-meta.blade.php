@@ -2,7 +2,9 @@
     $seoDefaultTitle = $siteSettings['seo.default_title'] ?? 'CarAsset — Mobil Bekerja. Aset Bertumbuh.';
     $seoDefaultDescription = $siteSettings['seo.default_description']
         ?? 'CarAsset membantu mengelola kendaraan produktif melalui sistem kemitraan yang profesional dan transparan.';
-    $seoDefaultRobots = str_replace(',', ', ', $siteSettings['seo.default_robots'] ?? 'index,follow');
+    $seoDefaultRobots = ($previewMode ?? false)
+        ? 'noindex, nofollow, noarchive'
+        : str_replace(',', ', ', $siteSettings['seo.default_robots'] ?? 'index,follow');
 
     $faviconSrc = $siteFaviconUrl ?? (file_exists(public_path('assets/images/brand/favicon.png'))
         ? asset('assets/images/brand/favicon.png')

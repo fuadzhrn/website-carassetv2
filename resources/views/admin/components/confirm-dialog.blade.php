@@ -14,11 +14,14 @@
     'confirmLabel' => 'Hapus Permanen',
     'triggerLabel' => 'Hapus Permanen',
     'triggerIcon' => 'trash-2',
+    // 'danger' (default, e.g. permanent delete) or 'primary' (e.g.
+    // Publish — a confirmed action, not a destructive one).
+    'variant' => 'danger',
 ])
 
 <button
     type="button"
-    class="ca-admin-btn ca-admin-btn--danger ca-admin-btn--sm"
+    class="ca-admin-btn ca-admin-btn--{{ $variant }} ca-admin-btn--sm"
     data-confirm-dialog-open="{{ $id }}"
 >
     <span class="ca-admin-btn__icon" data-lucide="{{ $triggerIcon }}" aria-hidden="true"></span>
@@ -46,7 +49,7 @@
                 @if (strtoupper($formMethod) !== 'POST')
                     @method($formMethod)
                 @endif
-                <button type="submit" class="ca-admin-btn ca-admin-btn--danger">
+                <button type="submit" class="ca-admin-btn ca-admin-btn--{{ $variant }}">
                     {{ $confirmLabel }}
                 </button>
             </form>

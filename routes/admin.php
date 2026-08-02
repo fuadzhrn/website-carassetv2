@@ -3,6 +3,9 @@
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\Auth\PasswordController;
 use App\Http\Controllers\Admin\ContactMessageController;
+use App\Http\Controllers\Admin\ContentPreviewController;
+use App\Http\Controllers\Admin\ContentRevisionController;
+use App\Http\Controllers\Admin\ContentWorkflowController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\ModulePlaceholderController;
@@ -61,6 +64,25 @@ Route::prefix('admin')->middleware('admin.security-headers')->group(function () 
         Route::patch('pages/about-contact/sections/{sectionKey}', [AboutContactSectionController::class, 'update'])
             ->whereIn('sectionKey', ['about', 'vision-mission-values', 'legal-partners', 'faq', 'contact-form'])
             ->name('admin.pages.about-contact.sections.update');
+
+        // Draft/Preview/Publish/Revision workflow — {page:slug} is a real
+        // (unambiguous) Eloquent binding; {sectionKey} stays a plain string
+        // resolved manually inside each controller via
+        // $page->sections()->where('section_key', ...), exactly like every
+        // section-update route above, so a section can never be looked up
+        // outside its own page (no IDOR via implicit-binding mismatches).
+        Route::patch('pages/{page:slug}/sections/{sectionKey}/publish', [ContentWorkflowController::class, 'publish'])
+            ->name('admin.content.publish');
+        Route::delete('pages/{page:slug}/sections/{sectionKey}/draft', [ContentWorkflowController::class, 'discardDraft'])
+            ->name('admin.content.draft.discard');
+        Route::get('pages/{page:slug}/sections/{sectionKey}/revisions', [ContentRevisionController::class, 'index'])
+            ->name('admin.content.revisions.index');
+        Route::post('pages/{page:slug}/sections/{sectionKey}/revisions/{contentRevision}/restore', [ContentRevisionController::class, 'restore'])
+            ->name('admin.content.revisions.restore');
+
+        Route::get('preview/{page:slug}', [ContentPreviewController::class, 'show'])
+            ->middleware('signed')
+            ->name('admin.preview.page');
 
         Route::get('media', [MediaController::class, 'index'])->name('admin.media.index');
         Route::get('media/create', [MediaController::class, 'create'])->name('admin.media.create');

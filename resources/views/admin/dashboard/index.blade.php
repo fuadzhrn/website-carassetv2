@@ -140,9 +140,23 @@
                 <x-admin::status-badge variant="active">Aktif</x-admin::status-badge>
             </li>
             <li class="ca-admin-status-list__item">
-                <span>Draft &amp; Publish</span>
-                <x-admin::status-badge variant="pending">Belum Tersedia</x-admin::status-badge>
+                <span>Draft &amp; Preview</span>
+                <x-admin::status-badge variant="active">Aktif</x-admin::status-badge>
             </li>
+            <li class="ca-admin-status-list__item">
+                <span>Publish</span>
+                <x-admin::status-badge variant="active">Aktif</x-admin::status-badge>
+            </li>
+            <li class="ca-admin-status-list__item">
+                <span>Riwayat Revisi</span>
+                <x-admin::status-badge variant="active">Aktif</x-admin::status-badge>
+            </li>
+            @if ($draftSectionCount > 0)
+                <li class="ca-admin-status-list__item">
+                    <span>Draft Belum Dipublikasikan</span>
+                    <x-admin::status-badge variant="draft">{{ $draftSectionCount }} section</x-admin::status-badge>
+                </li>
+            @endif
         </ul>
     </section>
 

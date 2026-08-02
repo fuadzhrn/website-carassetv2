@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Pages;
 
 use App\Http\Controllers\Controller;
 use App\Models\Media;
+use App\Models\Page;
 use App\Services\ContentService;
 use Illuminate\View\View;
 
@@ -19,7 +20,7 @@ class HomeController extends Controller
     public function index(): View
     {
         $fallbacks = config('home-content.sections', []);
-        $sections = $this->contentService->getPageSectionsContent('home', $fallbacks);
+        $sections = $this->contentService->getPageSectionsContent('home', $fallbacks, 'preview');
 
         $mediaIds = $this->collectMediaIds($sections);
         $mediaById = $mediaIds === []
@@ -29,6 +30,7 @@ class HomeController extends Controller
         $sectionModels = $this->contentService->getSections('home', false)->keyBy('section_key');
 
         return view('admin.pages.home.index', [
+            'page' => Page::where('slug', 'home')->firstOrFail(),
             'sections' => $sections,
             'sectionModels' => $sectionModels,
             'mediaById' => $mediaById,

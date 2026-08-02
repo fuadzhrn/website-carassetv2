@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Pages;
 
 use App\Http\Controllers\Controller;
 use App\Models\Media;
+use App\Models\Page;
 use App\Services\ContentService;
 use Illuminate\View\View;
 
@@ -19,7 +20,7 @@ class PartnershipController extends Controller
     public function index(): View
     {
         $fallbacks = config('partnership-content.sections', []);
-        $sections = $this->contentService->getPageSectionsContent('partnership', $fallbacks);
+        $sections = $this->contentService->getPageSectionsContent('partnership', $fallbacks, 'preview');
 
         $mediaIds = $this->collectMediaIds($sections);
         $mediaById = $mediaIds === []
@@ -29,6 +30,7 @@ class PartnershipController extends Controller
         $sectionModels = $this->contentService->getSections('partnership', false)->keyBy('section_key');
 
         return view('admin.pages.partnership.index', [
+            'page' => Page::where('slug', 'partnership')->firstOrFail(),
             'sections' => $sections,
             'sectionModels' => $sectionModels,
             'mediaById' => $mediaById,

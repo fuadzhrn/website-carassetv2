@@ -15,88 +15,123 @@ class PageController extends Controller
 {
     public function home(ContentService $contentService, CmsLinkService $linkService): View
     {
+        return view('pages.home.index', ['home' => $this->homeData($contentService, $linkService, 'published')]);
+    }
+
+    public function business(ContentService $contentService, CmsLinkService $linkService): View
+    {
+        return view('pages.business.index', ['business' => $this->businessData($contentService, $linkService, 'published')]);
+    }
+
+    public function partnership(ContentService $contentService, CmsLinkService $linkService): View
+    {
+        return view('pages.partnership.index', ['partnership' => $this->partnershipData($contentService, $linkService, 'published')]);
+    }
+
+    public function simulation(ContentService $contentService, CmsLinkService $linkService, SimulationFormatterService $formatter): View
+    {
+        return view('pages.simulation.index', ['simulation' => $this->simulationData($contentService, $linkService, $formatter, 'published')]);
+    }
+
+    public function aboutContact(ContentService $contentService, CmsLinkService $linkService, SettingsService $settingsService, ConsultationFormTokenService $formTokenService): View
+    {
+        return view('pages.about-contact.index', ['aboutContact' => $this->aboutContactData($contentService, $linkService, $settingsService, $formTokenService, 'published')]);
+    }
+
+    /**
+     * Shared data builder for the Home page — used by both the public
+     * route (always $version='published') and ContentPreviewController
+     * (always $version='preview'). $version is never taken from a
+     * request/query parameter; the caller decides it server-side.
+     *
+     * @return array<string, mixed>
+     */
+    public function homeData(ContentService $contentService, CmsLinkService $linkService, string $version): array
+    {
         $fallbacks = config('home-content.sections', []);
-        $sections = $contentService->getPageSectionsContent('home', $fallbacks);
+        $sections = $contentService->getPageSectionsContent('home', $fallbacks, $version);
         $fallbackImages = config('home-content.fallback_images', []);
 
-        $home = [
+        return [
             'hero' => $this->presentHero($sections['hero'], $linkService),
             'income-opportunity' => $this->presentIncomeOpportunity($sections['income-opportunity'], $linkService, $fallbackImages),
             'process-summary' => $this->presentProcessSummary($sections['process-summary'], $linkService),
             'partnership-choice' => $this->presentPartnershipChoice($sections['partnership-choice'], $linkService, $fallbackImages),
             'consultation-cta' => $this->presentConsultationCta($sections['consultation-cta'], $linkService),
         ];
-
-        return view('pages.home.index', ['home' => $home]);
     }
 
-    public function business(ContentService $contentService, CmsLinkService $linkService): View
+    /**
+     * @return array<string, mixed>
+     */
+    public function businessData(ContentService $contentService, CmsLinkService $linkService, string $version): array
     {
         $fallbacks = config('business-content.sections', []);
-        $sections = $contentService->getPageSectionsContent('business', $fallbacks);
+        $sections = $contentService->getPageSectionsContent('business', $fallbacks, $version);
         $fallbackImages = config('business-content.fallback_images', []);
 
-        $business = [
+        return [
             'opportunity' => $this->presentBusinessOpportunity($sections['opportunity'], $linkService, $fallbackImages),
             'own' => $this->presentBusinessOwn($sections['own'], $fallbackImages),
             'operate' => $this->presentBusinessOperate($sections['operate']),
             'grow' => $this->presentBusinessGrow($sections['grow'], $linkService),
             'business-flow' => $this->presentBusinessFlow($sections['business-flow'], $linkService),
         ];
-
-        return view('pages.business.index', ['business' => $business]);
     }
 
-    public function partnership(ContentService $contentService, CmsLinkService $linkService): View
+    /**
+     * @return array<string, mixed>
+     */
+    public function partnershipData(ContentService $contentService, CmsLinkService $linkService, string $version): array
     {
         $fallbacks = config('partnership-content.sections', []);
-        $sections = $contentService->getPageSectionsContent('partnership', $fallbacks);
+        $sections = $contentService->getPageSectionsContent('partnership', $fallbacks, $version);
         $fallbackImages = config('partnership-content.fallback_images', []);
 
-        $partnership = [
+        return [
             'program-selector' => $this->presentProgramSelector($sections['program-selector']),
             'owner-program' => $this->presentOwnerProgram($sections['owner-program'], $linkService, $fallbackImages),
             'driver-program' => $this->presentDriverProgram($sections['driver-program'], $linkService, $fallbackImages),
             'packages-benefits' => $this->presentPackagesBenefits($sections['packages-benefits'], $linkService),
             'terms' => $this->presentTerms($sections['terms'], $linkService),
         ];
-
-        return view('pages.partnership.index', ['partnership' => $partnership]);
     }
 
-    public function simulation(ContentService $contentService, CmsLinkService $linkService, SimulationFormatterService $formatter): View
+    /**
+     * @return array<string, mixed>
+     */
+    public function simulationData(ContentService $contentService, CmsLinkService $linkService, SimulationFormatterService $formatter, string $version): array
     {
         $fallbacks = config('simulation-content.sections', []);
-        $sections = $contentService->getPageSectionsContent('simulation', $fallbacks);
+        $sections = $contentService->getPageSectionsContent('simulation', $fallbacks, $version);
         $fallbackImages = config('simulation-content.fallback_images', []);
         $fieldFormats = config('simulation-content.field_formats', []);
 
-        $simulation = [
+        return [
             'assumptions' => $this->presentAssumptions($sections['assumptions'], $formatter, $fieldFormats['assumptions'] ?? []),
             'one-unit' => $this->presentOneUnit($sections['one-unit'], $linkService, $formatter, $fieldFormats['one-unit'] ?? []),
             'multiple-units' => $this->presentMultipleUnits($sections['multiple-units'], $linkService, $formatter, $fieldFormats['multiple-units'] ?? []),
             'protection-monitoring' => $this->presentProtectionMonitoring($sections['protection-monitoring'], $linkService, $fallbackImages),
             'disclaimer' => $this->presentSimulationDisclaimer($sections['disclaimer'], $linkService),
         ];
-
-        return view('pages.simulation.index', ['simulation' => $simulation]);
     }
 
-    public function aboutContact(ContentService $contentService, CmsLinkService $linkService, SettingsService $settingsService, ConsultationFormTokenService $formTokenService): View
+    /**
+     * @return array<string, mixed>
+     */
+    public function aboutContactData(ContentService $contentService, CmsLinkService $linkService, SettingsService $settingsService, ConsultationFormTokenService $formTokenService, string $version): array
     {
         $fallbacks = config('about-contact-content.sections', []);
-        $sections = $contentService->getPageSectionsContent('about-contact', $fallbacks);
+        $sections = $contentService->getPageSectionsContent('about-contact', $fallbacks, $version);
         $fallbackImages = config('about-contact-content.fallback_images', []);
 
-        $aboutContact = [
+        return [
             'about' => $this->presentAbout($sections['about'], $linkService, $settingsService, $fallbackImages),
             'vision-mission-values' => $this->presentVisionMissionValues($sections['vision-mission-values']),
             'legal-partners' => $this->presentLegalPartners($sections['legal-partners']),
             'faq' => $this->presentFaq($sections['faq']),
             'contact-form' => $this->presentContactForm($sections['contact-form'], $settingsService, $formTokenService),
         ];
-
-        return view('pages.about-contact.index', ['aboutContact' => $aboutContact]);
     }
 
     /**
@@ -605,7 +640,7 @@ class PageController extends Controller
         $content = $section['content'];
         $dataStatus = $content['data_status'] ?? 'draft';
 
-        $numericFields = ['operational_days', 'daily_result', 'operating_cost', 'vehicle_installment', 'management_component'];
+        $numericFields = ['operational_days', 'daily_result', 'operating_cost', 'vehicle_installment', 'management_component', 'revenue_share'];
         $result = [];
 
         foreach ($numericFields as $field) {
@@ -616,14 +651,6 @@ class PageController extends Controller
                 'amount' => $this->simulationAmount($content[$field]['value'] ?? null, $format, $dataStatus, $formatter),
             ];
         }
-
-        // Jenis nilai (persen/rupiah) belum ditentukan audit — tidak pernah
-        // dianggap tersedia terlepas dari data_status.
-        $result['revenue_share'] = [
-            'label' => $content['revenue_share']['label'] ?? null,
-            'helper' => $content['revenue_share']['helper'] ?? null,
-            'amount' => ['raw_value' => null, 'formatted_value' => null, 'is_available' => false],
-        ];
 
         return [
             'is_active' => $section['is_active'],

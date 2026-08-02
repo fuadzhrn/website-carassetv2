@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ContactMessage;
+use App\Models\PageSection;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
@@ -22,6 +23,7 @@ class DashboardController extends Controller
                 ['route' => 'admin.pages.about-contact', 'title' => 'Tentang & Kontak', 'description' => 'Profil perusahaan, legalitas, FAQ, dan kontak.'],
             ],
             'newMessageCount' => ContactMessage::query()->where('status', ContactMessage::STATUS_NEW)->count(),
+            'draftSectionCount' => PageSection::query()->where('workflow_status', PageSection::WORKFLOW_DRAFT)->count(),
         ]);
     }
 }

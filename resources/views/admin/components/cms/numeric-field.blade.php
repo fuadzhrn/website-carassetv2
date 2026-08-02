@@ -7,14 +7,13 @@
     the source of truth (validation server-side is).
 
     $format: 'rupiah'|'days'|'percentage'|null — null renders the value
-    input disabled with a "belum ditentukan" notice instead (used for
-    assumptions.revenue_share, whose type audit could not determine).
+    input disabled with a "belum ditentukan" notice instead, reserved for
+    a future field whose type audit cannot yet be determined.
 --}}
 {{--
     NOTE: $format's @props default is intentionally null, NOT 'rupiah'.
     Blade's @props macro resolves defaults via `$var ?? $default`, so a
-    caller explicitly passing `:format="null"` (used for revenue_share,
-    whose type audit could not determine) would otherwise be silently
+    caller explicitly passing `:format="null"` would otherwise be silently
     overwritten back to a non-null default — null and "not passed" must
     stay indistinguishable from each other, never from a real format.
     Every other caller passes an explicit non-null format string, so this

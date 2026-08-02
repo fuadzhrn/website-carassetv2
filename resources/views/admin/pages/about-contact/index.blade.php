@@ -15,6 +15,7 @@
     {{-- Shell/nav/panel/CTA/repeater generik dipakai ulang dari editor Home (PROMPT 17) --}}
     <link rel="stylesheet" href="{{ asset('assets/admin/css/admin-home-editor.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/admin/css/admin-about-contact-editor.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/admin/css/admin-content-workflow.css') }}">
 @endpush
 
 @php
@@ -45,9 +46,9 @@
         </x-admin::button>
     </div>
 
-    <div class="ca-admin-home-editor-notice">
+    <div class="ca-admin-workflow-page-notice">
         <span data-lucide="info" aria-hidden="true"></span>
-        Perubahan yang disimpan akan langsung tampil pada halaman publik, kecuali data yang masih berstatus draft.
+        Perubahan yang disimpan akan menjadi Draft. Website publik hanya berubah setelah Draft dipublikasikan.
     </div>
 
     <div class="ca-admin-home-editor-notice">
@@ -81,13 +82,8 @@
                     <div class="ca-admin-home-panel__header">
                         <div>
                             <h2 class="ca-admin-home-panel__title">{{ $label }}</h2>
-                            @if ($sectionModel?->updated_at)
-                                <p class="ca-admin-home-panel__meta">
-                                    Terakhir diperbarui {{ $sectionModel->updated_at->translatedFormat('d F Y, H:i') }}
-                                    @if ($sectionModel->updatedBy)
-                                        oleh {{ $sectionModel->updatedBy->name }}
-                                    @endif
-                                </p>
+                            @if ($sectionModel)
+                                <x-admin::cms.workflow-status :section="$sectionModel" />
                             @endif
                         </div>
 
@@ -114,9 +110,13 @@
                         @include($sectionFormViews[$key], ['content' => $content])
 
                         <div class="ca-admin-home-form__actions">
-                            <x-admin::button type="submit" variant="primary">Simpan Section</x-admin::button>
+                            <x-admin::button type="submit" variant="primary">Simpan Draft</x-admin::button>
                         </div>
                     </form>
+
+                    @if ($sectionModel)
+                        <x-admin::cms.section-action-bar :page="$page" :section-key="$key" :has-draft="$sectionModel->hasDraft()" />
+                    @endif
                 </section>
             @endforeach
         </div>
@@ -127,4 +127,5 @@
     <script src="{{ asset('assets/admin/js/media-picker.js') }}" defer></script>
     <script src="{{ asset('assets/admin/js/admin-repeaters.js') }}" defer></script>
     <script src="{{ asset('assets/admin/js/admin-about-contact-editor.js') }}" defer></script>
+    <script src="{{ asset('assets/admin/js/admin-content-workflow.js') }}" defer></script>
 @endpush

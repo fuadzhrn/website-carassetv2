@@ -56,16 +56,16 @@
         name-prefix="content[management_component]"
         error-key-prefix="content.management_component"
         :values="$content['management_component'] ?? []"
-        field-label="Komponen Pengelolaan"
-        format="rupiah"
+        field-label="Komponen Pengelolaan (Porsi CarAsset)"
+        format="percentage"
     />
 
     <x-admin::cms.numeric-field
         name-prefix="content[revenue_share]"
         error-key-prefix="content.revenue_share"
         :values="$content['revenue_share'] ?? []"
-        field-label="Pembagian Hasil Operasional"
-        :format="null"
+        field-label="Pembagian Hasil Operasional (Porsi Mitra)"
+        format="percentage"
     />
 </fieldset>
 

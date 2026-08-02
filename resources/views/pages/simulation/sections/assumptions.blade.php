@@ -75,7 +75,9 @@
                     </div>
                     <div class="ca-assumptions__item">
                         <dt class="ca-simulation-label">{{ $data['fields']['revenue_share']['label'] }}</dt>
-                        <dd class="ca-simulation-value is-pending">Menunggu angka final klien</dd>
+                        <dd class="ca-simulation-value {{ $data['fields']['revenue_share']['amount']['is_available'] ? 'is-final' : 'is-pending' }}">
+                            {{ $data['fields']['revenue_share']['amount']['is_available'] ? $data['fields']['revenue_share']['amount']['formatted_value'] : 'Menunggu angka final klien' }}
+                        </dd>
                     </div>
                 </dl>
             </div>

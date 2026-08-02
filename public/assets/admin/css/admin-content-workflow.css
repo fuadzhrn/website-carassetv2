@@ -1,0 +1,105 @@
+/* ==========================================================================
+   CarAsset Admin — Draft/Preview/Publish/Revision Workflow
+   (admin-content-workflow.css)
+   Prefix wajib: ca-admin-
+   ========================================================================== */
+
+/* --- Workflow status (Draft/Published badge + metadata) ------------------ */
+
+.ca-admin-workflow-status {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ca-space-3);
+    margin-bottom: var(--ca-space-3);
+}
+
+.ca-admin-workflow-status__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.ca-admin-workflow-status__meta-item {
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-xs);
+    color: var(--ca-color-slate);
+}
+
+.ca-admin-workflow-status__notice {
+    margin: 2px 0 0;
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-xs);
+    font-weight: 600;
+    color: #7a5a13;
+}
+
+/* --- Section action bar --------------------------------------------------- */
+
+.ca-admin-section-action-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ca-space-3);
+    padding-top: var(--ca-space-4);
+    margin-top: var(--ca-space-4);
+    border-top: 1px dashed var(--ca-border-color);
+}
+
+.ca-admin-section-action-bar form {
+    margin: 0;
+    display: inline-block;
+}
+
+/* --- Draft-changes notice at the top of each editor page ------------------ */
+
+.ca-admin-workflow-page-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--ca-space-3);
+    padding: var(--ca-space-3) var(--ca-space-4);
+    margin: 0 0 var(--ca-space-4);
+    background: var(--ca-color-extra-light-gray, #f4f4f2);
+    border-radius: var(--ca-radius-sm, 4px);
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-sm);
+    color: var(--ca-color-navy);
+}
+
+.ca-admin-workflow-page-notice span[data-lucide] {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    color: var(--ca-color-slate);
+}
+
+/* --- Revision history snapshot summary ------------------------------------ */
+
+.ca-admin-revision-summary {
+    margin: var(--ca-space-2) 0 0;
+    padding: var(--ca-space-2) var(--ca-space-3);
+    background: var(--ca-color-extra-light-gray, #f4f4f2);
+    border-radius: var(--ca-radius-sm, 4px);
+    max-width: 320px;
+}
+
+.ca-admin-revision-summary__row {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--ca-space-3);
+    padding: 3px 0;
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-xs);
+}
+
+.ca-admin-revision-summary__row dt {
+    font-weight: 600;
+    color: var(--ca-color-slate);
+}
+
+.ca-admin-revision-summary__row dd {
+    margin: 0;
+    color: var(--ca-color-navy);
+    text-align: right;
+    word-break: break-word;
+}

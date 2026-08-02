@@ -57,4 +57,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(ContactMessage::class, 'handled_by');
     }
+
+    public function publishedSections(): HasMany
+    {
+        return $this->hasMany(PageSection::class, 'published_by');
+    }
+
+    public function contentRevisions(): HasMany
+    {
+        return $this->hasMany(ContentRevision::class, 'created_by');
+    }
 }

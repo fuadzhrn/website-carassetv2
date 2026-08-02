@@ -57,15 +57,19 @@
         </x-admin::form.field>
 
         @foreach ($metricLabels as $metricKey => $metricLabel)
-            <div class="ca-admin-numeric-field" data-numeric-field data-numeric-format="rupiah">
+            @php
+                $isPercentageMetric = in_array($metricKey, ['management_component', 'projected_partner_result'], true);
+                $metricFormat = $isPercentageMetric ? 'percentage' : 'rupiah';
+            @endphp
+            <div class="ca-admin-numeric-field" data-numeric-field data-numeric-format="{{ $metricFormat }}">
                 <p class="ca-admin-numeric-field__title">{{ $metricLabel }}</p>
 
-                <x-admin::form.field :name="'content.units.'.$unitKey.'.'.$metricKey" label="Nilai (Rupiah)">
+                <x-admin::form.field :name="'content.units.'.$unitKey.'.'.$metricKey" :label="'Nilai ('.($isPercentageMetric ? 'Persen' : 'Rupiah').')'">
                     <input
                         type="number"
                         inputmode="numeric"
                         min="0"
-                        step="1"
+                        step="{{ $isPercentageMetric ? '0.01' : '1' }}"
                         name="content[units][{{ $unitKey }}][{{ $metricKey }}]"
                         id="content.units.{{ $unitKey }}.{{ $metricKey }}"
                         value="{{ old('content.units.'.$unitKey.'.'.$metricKey, $unit[$metricKey] ?? '') }}"

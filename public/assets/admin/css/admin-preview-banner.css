@@ -1,0 +1,67 @@
+/* ==========================================================================
+   CarAsset — Preview Draft Banner (admin-preview-banner.css)
+   Loaded ONLY on the signed admin preview route — never on real public
+   pages. Sticky, safe z-index, does not cover page content.
+   Prefix wajib: ca-preview-
+   ========================================================================== */
+
+.ca-preview-banner {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    background: #0f172a;
+    color: #ffffff;
+    font-family: var(--ca-font-ui, sans-serif);
+    border-bottom: 2px solid #10b981;
+}
+
+.ca-preview-banner__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 10px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 20px;
+}
+
+.ca-preview-banner__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: #10b981;
+    white-space: nowrap;
+}
+
+.ca-preview-banner__label span[data-lucide] {
+    width: 16px;
+    height: 16px;
+}
+
+.ca-preview-banner__description {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: #e2e8f0;
+    flex: 1;
+    min-width: 200px;
+}
+
+.ca-preview-banner__actions {
+    display: flex;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.ca-preview-banner__link {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #ffffff;
+    text-decoration: underline;
+    white-space: nowrap;
+}
+
+.ca-preview-banner__link:hover {
+    color: #10b981;
+}
