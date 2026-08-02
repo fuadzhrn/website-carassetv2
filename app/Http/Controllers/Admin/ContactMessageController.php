@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ContactMessages\UpdateContactMessageStatusRequest;
 use App\Models\ContactMessage;
 use App\Services\ContactMessageService;

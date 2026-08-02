@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Website;
 use App\Http\Controllers\Controller;
 use App\Models\Media;
 use App\Services\CmsLinkService;
+use App\Services\ConsultationFormTokenService;
 use App\Services\ContentService;
 use App\Services\SettingsService;
 use App\Services\SimulationFormatterService;

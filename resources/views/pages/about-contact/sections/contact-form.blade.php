@@ -105,7 +105,15 @@
 
                 <input type="hidden" name="form_token" value="{{ $data['form']['token'] }}">
 
-                <x-button type="submit" variant="primary" size="lg" icon="send" data-contact-submit @if (! $data['form']['consent_label']) disabled aria-disabled="true" @endif>
+                <x-button
+                    type="submit"
+                    variant="primary"
+                    size="lg"
+                    icon="send"
+                    data-contact-submit
+                    :disabled="! $data['form']['consent_label']"
+                    :aria-disabled="! $data['form']['consent_label'] ? 'true' : 'false'"
+                >
                     {{ $data['form']['submit_label'] ?? 'Siapkan Pesan Konsultasi' }}
                 </x-button>
 
