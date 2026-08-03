@@ -1,0 +1,170 @@
+/* ==========================================================================
+   CarAsset — Produk BYD ATTO 1 Mobile (product-byd-atto-1-mobile.css)
+   Responsive ENHANCEMENT only — desktop rules in pages/product-byd-atto-1/
+   *.css are never rewritten, only extended via media queries. Breakpoints
+   match the project-wide convention (see responsive/global-mobile.css):
+     - max-width: 1023px  -> tablet & small screens
+     - max-width: 767px   -> mobile
+     - max-width: 479px   -> small mobile
+   Markup/structure/JSON schema are untouched — only CSS (and small
+   additive JS safety guards) are added here.
+   Prefix wajib: ca-
+   ========================================================================== */
+
+/* -------------------------------------------------------------------------
+   PRODUCT STAGE HERO
+   ------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    .ca-product-hero__inner {
+        gap: var(--ca-space-3);
+    }
+
+    .ca-product-hero__title,
+    .ca-product-hero__tagline,
+    .ca-product-hero__description {
+        max-width: none;
+    }
+
+    .ca-product-hero__actions {
+        margin-top: var(--ca-space-3);
+    }
+
+    .ca-product-hero__stage {
+        margin-top: var(--ca-space-6);
+    }
+
+    .ca-product-hero__badge-floating {
+        left: var(--ca-space-3);
+        bottom: var(--ca-space-3);
+        font-size: 11px;
+        padding: var(--ca-space-1) var(--ca-space-3);
+    }
+}
+
+/* -------------------------------------------------------------------------
+   PRODUCT GALLERY
+   ------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    .ca-product-colors__visual {
+        margin-top: var(--ca-space-8);
+    }
+
+    .ca-product-gallery {
+        gap: var(--ca-space-3);
+    }
+
+    .ca-product-gallery__stage-image {
+        aspect-ratio: 4 / 3;
+    }
+
+    .ca-product-gallery__badge-floating {
+        left: var(--ca-space-3);
+        bottom: var(--ca-space-3);
+        font-size: 11px;
+        padding: var(--ca-space-1) var(--ca-space-3);
+    }
+
+    /* Three per row — thumbnails stay big enough to recognize the vehicle
+       view while still showing several at once (mobile core-check:
+       "480-767px: tiga atau empat kolom"). */
+    .ca-product-gallery__thumbs {
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--ca-space-2);
+    }
+
+    .ca-product-gallery__thumb {
+        min-height: 44px;
+        padding: var(--ca-space-1);
+    }
+}
+
+@media (max-width: 479px) {
+    /* Two per row — keeps each thumbnail comfortably large on the
+       smallest phones instead of shrinking to fit three ("320-479px: dua
+       kolom, atau tiga kolom bila thumbnail tetap cukup besar" — two is
+       the safer choice at this width). */
+    .ca-product-gallery__thumbs {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* -------------------------------------------------------------------------
+   PRODUCT VARIANTS — highlights/specs switch from a single space-between
+   row to a stacked label-above-value layout once the row is too narrow
+   for both to sit comfortably side by side ("320-430px: label di atas,
+   value di bawah").
+   ------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    .ca-product-variants__body {
+        padding: var(--ca-space-5);
+    }
+
+    .ca-product-variants__featured-badge {
+        font-size: 11px;
+        padding: 4px var(--ca-space-2);
+    }
+}
+
+@media (max-width: 479px) {
+    .ca-product-variants__highlights li {
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .ca-product-variants__spec-row {
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .ca-product-variants__spec-row dd {
+        text-align: left;
+    }
+}
+
+/* -------------------------------------------------------------------------
+   SPECIFICATIONS & FEATURES — category/feature grids already collapse to
+   one column via existing `repeat(auto-fit, minmax(...))` desktop rules
+   once the viewport is narrower than one card's minmax floor, so no
+   column-count override is needed here — only the label/value row needs
+   the same stacked treatment as Variants' spec rows.
+   ------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    .ca-product-specifications__category {
+        padding: var(--ca-space-5);
+    }
+}
+
+@media (max-width: 479px) {
+    .ca-product-specifications__row {
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .ca-product-specifications__row dd {
+        text-align: left;
+    }
+}
+
+/* -------------------------------------------------------------------------
+   OVERFLOW SAFETY — long CMS-authored label/value text (spec values,
+   variant highlight values, gallery view labels) must wrap inside their
+   row instead of forcing horizontal scroll; flex/grid children default to
+   min-width:auto which ignores max-width unless reset.
+   ------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    .ca-product-variants__highlights li,
+    .ca-product-variants__spec-row,
+    .ca-product-specifications__row,
+    .ca-product-gallery__thumb {
+        min-width: 0;
+    }
+
+    .ca-product-variants__highlight-value,
+    .ca-product-variants__spec-row dd,
+    .ca-product-specifications__row dd,
+    .ca-product-gallery__thumb-label,
+    .ca-product-hero__badge-floating,
+    .ca-product-gallery__badge-floating {
+        overflow-wrap: anywhere;
+    }
+}

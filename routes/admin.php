@@ -17,6 +17,8 @@ use App\Http\Controllers\Admin\Pages\HomeController;
 use App\Http\Controllers\Admin\Pages\HomeSectionController;
 use App\Http\Controllers\Admin\Pages\PartnershipController;
 use App\Http\Controllers\Admin\Pages\PartnershipSectionController;
+use App\Http\Controllers\Admin\Pages\ProductBydAtto1Controller;
+use App\Http\Controllers\Admin\Pages\ProductBydAtto1SectionController;
 use App\Http\Controllers\Admin\Pages\SimulationController;
 use App\Http\Controllers\Admin\Pages\SimulationSectionController;
 use App\Http\Controllers\Admin\ProfileController;
@@ -65,6 +67,11 @@ Route::prefix('admin')->middleware('admin.security-headers')->group(function () 
         Route::patch('pages/about-contact/sections/{sectionKey}', [AboutContactSectionController::class, 'update'])
             ->whereIn('sectionKey', ['about', 'vision-mission-values', 'legal-partners', 'faq', 'contact-form'])
             ->name('admin.pages.about-contact.sections.update');
+
+        Route::get('pages/product-byd-atto-1', [ProductBydAtto1Controller::class, 'index'])->name('admin.pages.product-byd-atto-1');
+        Route::patch('pages/product-byd-atto-1/sections/{sectionKey}', [ProductBydAtto1SectionController::class, 'update'])
+            ->whereIn('sectionKey', ['product-hero', 'product-colors', 'product-variants', 'product-specifications'])
+            ->name('admin.pages.product-byd-atto-1.sections.update');
 
         // Draft/Preview/Publish/Revision workflow — {page:slug} is a real
         // (unambiguous) Eloquent binding; {sectionKey} stays a plain string

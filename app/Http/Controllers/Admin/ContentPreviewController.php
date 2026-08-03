@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Public\ProductBydAtto1Controller;
 use App\Http\Controllers\Website\PageController;
 use App\Models\Page;
 use App\Services\CmsLinkService;
@@ -23,7 +24,7 @@ class ContentPreviewController extends Controller
      *
      * @var array<int, string>
      */
-    private const ALLOWED_SLUGS = ['home', 'business', 'partnership', 'simulation', 'about-contact'];
+    private const ALLOWED_SLUGS = ['home', 'business', 'partnership', 'simulation', 'about-contact', 'product-byd-atto-1'];
 
     /**
      * Renders one page using Draft-or-Published content (see
@@ -36,6 +37,7 @@ class ContentPreviewController extends Controller
     public function show(
         Page $page,
         PageController $pageController,
+        ProductBydAtto1Controller $productController,
         ContentService $contentService,
         CmsLinkService $linkService,
         SettingsService $settingsService,
@@ -47,6 +49,7 @@ class ContentPreviewController extends Controller
             throw new NotFoundHttpException();
         }
 
+        $seoSlug = $page->slug;
         $previewData = [
             'previewMode' => true,
             'previewEditorUrl' => route('admin.pages.'.$page->slug),
@@ -55,7 +58,9 @@ class ContentPreviewController extends Controller
             // what SEO would become Published if the admin hits Publish
             // SEO right now. Null when there is no SEO Draft to show.
             'previewSeoTarget' => $page->hasSeoDraft() ? $page->editorSeoData() : null,
-            'seo' => $pageController->seoFor($page->slug, $seoService, 'preview'),
+            'seo' => $page->slug === 'product-byd-atto-1'
+                ? $productController->seoFor($seoService, 'preview')
+                : $pageController->seoFor($seoSlug, $seoService, 'preview'),
         ];
 
         [$view, $dataKey, $data] = match ($page->slug) {
@@ -64,6 +69,7 @@ class ContentPreviewController extends Controller
             'partnership' => ['pages.partnership.index', 'partnership', $pageController->partnershipData($contentService, $linkService, 'preview')],
             'simulation' => ['pages.simulation.index', 'simulation', $pageController->simulationData($contentService, $linkService, $formatter, 'preview')],
             'about-contact' => ['pages.about-contact.index', 'aboutContact', $pageController->aboutContactData($contentService, $linkService, $settingsService, $formTokenService, 'preview')],
+            'product-byd-atto-1' => ['pages.product-byd-atto-1.index', 'product', $productController->productData($contentService, $linkService, 'preview')],
         };
 
         return response()

@@ -151,6 +151,10 @@ class PageSeoService
                 'title' => 'CarAsset — Mobil Bekerja, Aset Bertumbuh',
                 'description' => 'CarAsset membantu mitra memiliki dan mengelola kendaraan produktif melalui sistem operasional yang profesional dan transparan.',
             ],
+            'product-byd-atto-1' => [
+                'title' => 'BYD ATTO 1 — Produk Kendaraan CarAsset',
+                'description' => 'Kenali BYD ATTO 1, pilihan warna dan varian, spesifikasi kendaraan, serta keterkaitannya dengan program kepemilikan dan pengelolaan aset CarAsset.',
+            ],
             'business' => [
                 'title' => 'Bisnis CarAsset — Own, Operate, Grow',
                 'description' => 'Pelajari bagaimana CarAsset membantu mitra memiliki, mengoperasikan, dan mengembangkan aset kendaraan produktif melalui sistem yang profesional.',

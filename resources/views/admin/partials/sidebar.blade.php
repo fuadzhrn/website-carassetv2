@@ -36,6 +36,7 @@
             $contentPages = [
                 ['route' => 'admin.pages.index', 'label' => 'Semua Halaman', 'icon' => 'panels-top-left'],
                 ['route' => 'admin.pages.home', 'label' => 'Home', 'icon' => 'house'],
+                ['route' => 'admin.pages.product-byd-atto-1', 'label' => 'Produk BYD ATTO 1', 'icon' => 'car-front'],
                 ['route' => 'admin.pages.business', 'label' => 'Bisnis CarAsset', 'icon' => 'briefcase-business'],
                 ['route' => 'admin.pages.partnership', 'label' => 'Program Kemitraan', 'icon' => 'handshake'],
                 ['route' => 'admin.pages.simulation', 'label' => 'Simulasi & Perlindungan', 'icon' => 'shield-check'],

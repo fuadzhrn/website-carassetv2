@@ -42,6 +42,7 @@
             <h3 class="ca-footer__heading">Navigasi</h3>
             <ul class="ca-footer__links ca-list-reset">
                 <li><a href="{{ route('home') }}" class="ca-footer__link">Home</a></li>
+                <li><a href="{{ route('product.byd-atto-1') }}" class="ca-footer__link">Produk</a></li>
                 <li><a href="{{ route('business') }}" class="ca-footer__link">Bisnis CarAsset</a></li>
                 <li><a href="{{ route('partnership') }}" class="ca-footer__link">Program Kemitraan</a></li>
                 <li><a href="{{ route('simulation') }}" class="ca-footer__link">Simulasi & Perlindungan</a></li>

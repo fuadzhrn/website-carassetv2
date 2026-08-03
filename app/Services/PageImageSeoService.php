@@ -31,6 +31,7 @@ class PageImageSeoService
         'partnership' => 'partnership-content',
         'simulation' => 'simulation-content',
         'about-contact' => 'about-contact-content',
+        'product-byd-atto-1' => 'product-byd-atto-1-content',
     ];
 
     /**
@@ -115,7 +116,17 @@ class PageImageSeoService
             // uses" — the public page falls back to a static asset in that
             // case (see PageController::resolveImage()), so its alt text is
             // still worth auditing, not silently skipped.
-            $altKey = $key === 'media_id' ? 'alt' : preg_replace('/_media_id$/', '_alt', $key);
+            //
+            // Bare `media_id` has two different sibling-name conventions in
+            // use across pages: `alt` (Produk's gallery items) and
+            // `media_alt` (Produk's features array) — both are tried, never
+            // guessed beyond these two documented names.
+            if ($key === 'media_id') {
+                $altKey = array_key_exists('alt', $content) ? 'alt' : 'media_alt';
+            } else {
+                $altKey = preg_replace('/_media_id$/', '_alt', $key);
+            }
+
             $altOverride = $content[$altKey] ?? null;
             $altFallback = $fallbackContent[$altKey] ?? null;
 

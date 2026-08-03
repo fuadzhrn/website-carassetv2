@@ -20,6 +20,10 @@ use RuntimeException;
  */
 class SeoWorkflowService
 {
+    public function __construct(private readonly ActivityLogService $activityLog)
+    {
+    }
+
     /**
      * Save an SEO Draft. Never touches the Published SEO columns, never
      * touches seo_published_at/seo_published_by.
@@ -38,6 +42,8 @@ class SeoWorkflowService
             $page->seo_draft_updated_at = now();
             $page->save();
         });
+
+        $this->activityLog->record('seo.draft_saved', $page->slug, null, $admin);
 
         return $page->refresh();
     }
@@ -82,6 +88,8 @@ class SeoWorkflowService
             $locked->seo_workflow_status = Page::SEO_WORKFLOW_PUBLISHED;
             $locked->save();
 
+            $this->activityLog->record('seo.published', $locked->slug, null, $admin);
+
             return $locked;
         });
     }
@@ -102,6 +110,8 @@ class SeoWorkflowService
             $page->seo_updated_by = $admin->id;
             $page->save();
         });
+
+        $this->activityLog->record('seo.draft_discarded', $page->slug, null, $admin);
 
         return $page->refresh();
     }

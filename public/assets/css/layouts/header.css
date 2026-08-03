@@ -187,12 +187,6 @@
 /* -------------------------------------------------------------------------
    ACTIONS
    ------------------------------------------------------------------------- */
-.ca-header__actions {
-    display: flex;
-    align-items: center;
-    flex-shrink: 0;
-}
-
 /* -------------------------------------------------------------------------
    DESKTOP-SMALL SAFETY (bukan breakpoint mobile)
    ------------------------------------------------------------------------- */
@@ -335,14 +329,6 @@
 
     .ca-header__nav-panel .ca-navigation__link::after {
         display: none;
-    }
-
-    .ca-header__nav-panel .ca-header__actions {
-        width: 100%;
-    }
-
-    .ca-header__nav-panel .ca-header__actions .ca-btn {
-        width: 100%;
     }
 
     @media (prefers-reduced-motion: reduce) {

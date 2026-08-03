@@ -1,0 +1,88 @@
+/* ==========================================================================
+   CarAsset — Produk BYD ATTO 1: Spesifikasi & Fitur (product-specifications.css)
+   ========================================================================== */
+
+.ca-product-specifications__categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--ca-space-6);
+    margin-top: var(--ca-space-8);
+}
+
+/* Aksen garis kiri navy — pola yang sama seperti Business/OWN's
+   .ca-own__frame, bukan garis atas hijau. */
+.ca-product-specifications__category {
+    padding: var(--ca-space-6);
+    background-color: var(--ca-color-white);
+    border: 1px solid var(--ca-border-color);
+    border-left: 3px solid var(--ca-color-navy);
+    border-radius: var(--ca-radius-md);
+}
+
+.ca-product-specifications__category-title {
+    margin: 0 0 var(--ca-space-2);
+}
+
+.ca-product-specifications__category-description {
+    margin: 0 0 var(--ca-space-4);
+    color: var(--ca-color-slate);
+}
+
+.ca-product-specifications__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-2);
+    margin: 0;
+}
+
+.ca-product-specifications__row {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--ca-space-3);
+    padding-block: var(--ca-space-2);
+    border-bottom: 1px solid var(--ca-border-color);
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-sm);
+}
+
+.ca-product-specifications__row dt {
+    color: var(--ca-color-slate);
+}
+
+.ca-product-specifications__row dd {
+    margin: 0;
+    font-weight: 600;
+    color: var(--ca-color-navy);
+    text-align: right;
+}
+
+.ca-product-specifications__features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--ca-space-6);
+    margin-top: var(--ca-space-12);
+}
+
+.ca-product-specifications__feature {
+    border: 1px solid var(--ca-border-color);
+    border-radius: var(--ca-radius-md);
+    overflow: hidden;
+}
+
+.ca-product-specifications__feature-image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    margin: 0;
+}
+
+.ca-product-specifications__feature-title {
+    margin: var(--ca-space-4) var(--ca-space-4) var(--ca-space-1);
+}
+
+.ca-product-specifications__feature-description {
+    margin: 0 var(--ca-space-4) var(--ca-space-4);
+    color: var(--ca-color-slate);
+}
+

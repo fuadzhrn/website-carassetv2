@@ -31,6 +31,17 @@ class PageWorkspaceController extends Controller
                     'CTA Konsultasi',
                 ],
             ],
+            'product-byd-atto-1' => [
+                'title' => 'Produk BYD ATTO 1',
+                'description' => 'Tampilan produk, pilihan warna, varian, spesifikasi, dan fitur.',
+                'route' => 'product.byd-atto-1',
+                'sections' => [
+                    'Hero Produk',
+                    'Galeri Kendaraan',
+                    'Varian',
+                    'Spesifikasi & Fitur',
+                ],
+            ],
             'business' => [
                 'title' => 'Bisnis CarAsset',
                 'description' => 'Penjelasan model bisnis CarAsset — dari kepemilikan hingga pengembangan aset.',

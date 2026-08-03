@@ -35,7 +35,7 @@
                 <tr>
                     <td>{{ $page['title'] }}</td>
                     <td><code>{{ route($page['route']) }}</code></td>
-                    <td>5 section</td>
+                    <td>{{ count($page['sections']) }} section</td>
                     <td>
                         <x-admin::status-badge variant="active">Terhubung ke CMS</x-admin::status-badge>
                     </td>

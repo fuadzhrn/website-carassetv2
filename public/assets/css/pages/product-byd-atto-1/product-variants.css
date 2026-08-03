@@ -1,0 +1,132 @@
+/* ==========================================================================
+   CarAsset — Produk BYD ATTO 1: Varian (product-variants.css)
+   ========================================================================== */
+
+.ca-product-variants__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--ca-space-6);
+    margin-top: var(--ca-space-8);
+}
+
+/* Layout tetap fleksibel dengan hanya 1 varian terkonfirmasi — grid
+   multi-kolom hanya diterapkan bila memang ada 2+ varian. */
+.ca-product-variants__grid--count-2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.ca-product-variants__grid--count-3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.ca-product-variants__card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--ca-border-color);
+    border-radius: var(--ca-radius-lg);
+    overflow: hidden;
+    background-color: var(--ca-color-white);
+}
+
+/* Featured = border emas + bayangan lebih tegas + badge pill mengambang
+   di sudut atas — pola yang sama seperti Partnership's paket unggulan
+   (.ca-packages__package--5 + .ca-packages__badge). */
+.ca-product-variants__card--featured {
+    border-color: var(--ca-color-gold);
+    box-shadow: var(--ca-shadow-md);
+}
+
+.ca-product-variants__featured-badge {
+    position: absolute;
+    top: var(--ca-space-3);
+    right: var(--ca-space-3);
+    z-index: 1;
+    padding: var(--ca-space-1) var(--ca-space-3);
+    background-color: var(--ca-color-gold);
+    color: var(--ca-color-navy);
+    border-radius: var(--ca-radius-pill);
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-xs);
+    font-weight: 700;
+}
+
+.ca-product-variants__image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+}
+
+.ca-product-variants__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-2);
+    padding: var(--ca-space-6);
+}
+
+.ca-product-variants__badge {
+    align-self: flex-start;
+    padding: var(--ca-space-1) var(--ca-space-3);
+    background-color: var(--ca-color-extra-light-gray);
+    border-radius: var(--ca-radius-pill);
+    color: var(--ca-color-navy);
+}
+
+.ca-product-variants__name {
+    margin: 0;
+}
+
+.ca-product-variants__subtitle,
+.ca-product-variants__description {
+    color: var(--ca-color-slate);
+}
+
+.ca-product-variants__highlights {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-1);
+    margin: 0;
+}
+
+.ca-product-variants__highlights li {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--ca-space-3);
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-sm);
+    color: var(--ca-color-navy);
+}
+
+.ca-product-variants__highlight-value {
+    font-weight: 600;
+}
+
+.ca-product-variants__specs {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-1);
+    margin: 0;
+    padding-top: var(--ca-space-2);
+    border-top: 1px solid var(--ca-border-color);
+}
+
+.ca-product-variants__spec-row {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--ca-space-3);
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-sm);
+    color: var(--ca-color-slate);
+}
+
+.ca-product-variants__spec-row dt {
+    color: var(--ca-color-navy);
+}
+
+@media (max-width: 1023px) {
+    .ca-product-variants__grid--count-2,
+    .ca-product-variants__grid--count-3 {
+        grid-template-columns: 1fr;
+    }
+}

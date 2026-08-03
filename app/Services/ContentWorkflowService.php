@@ -22,6 +22,10 @@ use RuntimeException;
  */
 class ContentWorkflowService
 {
+    public function __construct(private readonly ActivityLogService $activityLog)
+    {
+    }
+
     /**
      * Save a Draft. Never touches content/is_active/published_at/
      * published_by, never creates a revision.
@@ -38,6 +42,8 @@ class ContentWorkflowService
             $section->draft_updated_at = now();
             $section->save();
         });
+
+        $this->activityLog->record('content.draft_saved', $section->page?->slug, $section->section_key, $admin);
 
         return $section->refresh();
     }
@@ -84,6 +90,8 @@ class ContentWorkflowService
             $locked->workflow_status = PageSection::WORKFLOW_PUBLISHED;
             $locked->save();
 
+            $this->activityLog->record('content.published', $locked->page?->slug, $locked->section_key, $admin);
+
             return $locked;
         });
     }
@@ -104,6 +112,8 @@ class ContentWorkflowService
             $section->save();
         });
 
+        $this->activityLog->record('content.draft_discarded', $section->page?->slug, $section->section_key, $admin);
+
         return $section->refresh();
     }
 
@@ -122,6 +132,8 @@ class ContentWorkflowService
             $section->draft_updated_at = now();
             $section->save();
         });
+
+        $this->activityLog->record('content.revision_restored', $section->page?->slug, $section->section_key, $admin);
 
         return $section->refresh();
     }

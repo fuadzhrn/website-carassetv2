@@ -1,0 +1,107 @@
+/* ==========================================================================
+   CarAsset — Produk BYD ATTO 1: Product Gallery
+   (product-colors.css)
+   Kolom tunggal, dipusatkan — foto sebagai kartu berbayang lembut + badge
+   putih mengambang, bahasa visual yang sama seperti Business/OWN.
+   ========================================================================== */
+
+.ca-product-colors__visual {
+    max-width: 720px;
+    margin: var(--ca-space-10) auto 0;
+    min-width: 0;
+}
+
+/* -------------------------------------------------------------------------
+   GALERI — foto berbayang lembut + badge mengambang (identik dengan
+   .ca-own__image/.ca-own__badge), thumbnail sebagai kartu kecil serupa.
+   ------------------------------------------------------------------------- */
+.ca-product-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-3);
+}
+
+.ca-product-gallery__stage {
+    position: relative;
+}
+
+.ca-product-gallery__stage-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 10 / 7;
+    object-fit: cover;
+    border-radius: var(--ca-radius-lg);
+    box-shadow: var(--ca-shadow-md);
+}
+
+.ca-product-gallery__badge-floating {
+    position: absolute;
+    left: var(--ca-space-5);
+    bottom: var(--ca-space-5);
+    padding: var(--ca-space-2) var(--ca-space-4);
+    background-color: var(--ca-color-white);
+    border-radius: var(--ca-radius-pill);
+    box-shadow: var(--ca-shadow-md);
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-xs);
+    font-weight: 500;
+    color: var(--ca-color-navy);
+}
+
+.ca-product-gallery__badge-floating[hidden] {
+    display: none;
+}
+
+.ca-product-gallery__caption {
+    margin: 0;
+    color: var(--ca-color-slate);
+}
+
+.ca-product-gallery__thumbs {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: var(--ca-space-3);
+}
+
+.ca-product-gallery__thumb {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--ca-space-1);
+    padding: var(--ca-space-2);
+    background-color: var(--ca-color-white);
+    border: 1px solid var(--ca-border-color);
+    border-radius: var(--ca-radius-md);
+    cursor: pointer;
+    transition: box-shadow var(--ca-transition-base), border-color var(--ca-transition-base);
+}
+
+.ca-product-gallery__thumb img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 10 / 7;
+    object-fit: cover;
+    border-radius: var(--ca-radius-sm);
+}
+
+.ca-product-gallery__thumb.is-active {
+    border-color: var(--ca-color-green);
+    box-shadow: var(--ca-shadow-sm);
+}
+
+.ca-product-gallery__thumb:focus-visible {
+    outline: none;
+    box-shadow: var(--ca-shadow-focus);
+}
+
+.ca-product-gallery__thumb-label {
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-xs);
+    color: var(--ca-color-navy);
+}
+
+.ca-product-gallery__note {
+    color: var(--ca-color-slate);
+}

@@ -9,6 +9,13 @@
         </li>
         <li class="ca-navigation__item">
             <a
+                href="{{ route('product.byd-atto-1') }}"
+                class="ca-navigation__link ca-nav-text {{ request()->routeIs('product.byd-atto-1') ? 'ca-navigation__link--active' : '' }}"
+                @if (request()->routeIs('product.byd-atto-1')) aria-current="page" @endif
+            >Produk</a>
+        </li>
+        <li class="ca-navigation__item">
+            <a
                 href="{{ route('business') }}"
                 class="ca-navigation__link ca-nav-text {{ request()->routeIs('business') ? 'ca-navigation__link--active' : '' }}"
                 @if (request()->routeIs('business')) aria-current="page" @endif

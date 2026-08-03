@@ -5,7 +5,7 @@
 .ca-navigation__list {
     display: flex;
     align-items: center;
-    gap: var(--ca-space-8);
+    gap: 20px;
 }
 
 .ca-navigation__link {
@@ -14,15 +14,18 @@
     align-items: center;
     padding-block: var(--ca-space-2);
     color: var(--ca-color-dark-gray);
+    font-size: 14.5px;
+    font-weight: 500;
+    white-space: nowrap;
     transition: color var(--ca-transition-fast);
 }
 
 .ca-navigation__link::after {
     content: "";
     position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -2px;
+    left: 4px;
+    right: 4px;
+    bottom: -4px;
     height: 2px;
     border-radius: var(--ca-radius-pill);
     background-color: var(--ca-color-green);

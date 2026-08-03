@@ -1,0 +1,122 @@
+/* ==========================================================================
+   CarAsset — Produk BYD ATTO 1: Product Stage Hero (product-hero.css)
+   Vertikal & terpusat (terkunci — bukan split kiri-kanan). Bahasa visual
+   disamakan dengan pola yang sudah dipakai di halaman lain: eyebrow
+   beraksen garis emas, foto sebagai kartu berbayang lembut (shadow-md +
+   radius-lg, bukan kotak bergaris tegas) dengan badge putih mengambang
+   di sudut bawah (pola yang sama seperti Business/OWN).
+   ========================================================================== */
+
+.ca-product-hero {
+    background-color: var(--ca-color-white);
+}
+
+.ca-product-hero__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--ca-space-4);
+}
+
+.ca-product-hero__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ca-space-2);
+}
+
+.ca-product-hero__eyebrow::before {
+    content: "";
+    display: inline-block;
+    width: 20px;
+    height: 2px;
+    background-color: var(--ca-color-gold);
+}
+
+.ca-product-hero__model {
+    color: var(--ca-color-slate);
+}
+
+.ca-product-hero__title {
+    max-width: 60ch;
+    margin: 0;
+}
+
+.ca-product-hero__tagline {
+    max-width: 56ch;
+    color: var(--ca-color-navy);
+}
+
+.ca-product-hero__description {
+    max-width: 68ch;
+    color: var(--ca-color-slate);
+}
+
+.ca-product-hero__actions {
+    justify-content: center;
+    margin-top: var(--ca-space-2);
+}
+
+.ca-product-hero__badges {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--ca-space-2);
+    margin: 0;
+}
+
+.ca-product-hero__badge {
+    padding: var(--ca-space-1) var(--ca-space-3);
+    background-color: var(--ca-color-extra-light-gray);
+    border-radius: var(--ca-radius-pill);
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-xs);
+    font-weight: 600;
+    color: var(--ca-color-navy);
+}
+
+/* -------------------------------------------------------------------------
+   STAGE — foto sebagai kartu berbayang lembut, badge putih mengambang di
+   sudut bawah (pola yang sama seperti Business/OWN's .ca-own__image +
+   .ca-own__badge), bukan kotak bergaris tegas.
+   ------------------------------------------------------------------------- */
+.ca-product-hero__stage {
+    position: relative;
+    width: 100%;
+    max-width: 640px;
+    margin-top: var(--ca-space-8);
+}
+
+.ca-product-hero__image {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--ca-radius-lg);
+    box-shadow: var(--ca-shadow-md);
+}
+
+.ca-product-hero__badge-floating {
+    position: absolute;
+    left: var(--ca-space-6);
+    bottom: var(--ca-space-6);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ca-space-2);
+    padding: var(--ca-space-2) var(--ca-space-4);
+    background-color: var(--ca-color-white);
+    border-radius: var(--ca-radius-pill);
+    box-shadow: var(--ca-shadow-md);
+    font-family: var(--ca-font-ui);
+    font-size: var(--ca-text-xs);
+    font-weight: 500;
+    color: var(--ca-color-navy);
+    max-width: calc(100% - var(--ca-space-12));
+}
+
+.ca-product-hero__badge-icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    color: var(--ca-color-green);
+}

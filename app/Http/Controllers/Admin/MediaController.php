@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\Media\ReplaceMediaRequest;
 use App\Http\Requests\Admin\Media\StoreMediaRequest;
 use App\Http\Requests\Admin\Media\UpdateMediaRequest;
 use App\Models\Media;
+use App\Services\ActivityLogService;
 use App\Services\MediaService;
 use App\Services\MediaUsageService;
 use App\Services\SettingsService;
@@ -19,6 +20,7 @@ class MediaController extends Controller
     public function __construct(
         private readonly MediaService $mediaService,
         private readonly MediaUsageService $mediaUsageService,
+        private readonly ActivityLogService $activityLog,
     ) {
     }
 
@@ -61,6 +63,8 @@ class MediaController extends Controller
             $request->user(),
         );
 
+        $this->activityLog->record('media.uploaded', null, null, $request->user());
+
         return redirect()->route('admin.media.index')
             ->with('success', 'Media berhasil diunggah.');
     }
@@ -94,7 +98,7 @@ class MediaController extends Controller
             ->with('success', 'File media berhasil diganti.');
     }
 
-    public function destroy(Media $media): RedirectResponse
+    public function destroy(Media $media, Request $request): RedirectResponse
     {
         if ($this->mediaUsageService->isUsed($media)) {
             return redirect()->route('admin.media.edit', $media)
@@ -102,6 +106,8 @@ class MediaController extends Controller
         }
 
         $this->mediaService->delete($media);
+
+        $this->activityLog->record('media.deleted', null, null, $request->user());
 
         return redirect()->route('admin.media.index')
             ->with('success', 'Media berhasil dihapus.');

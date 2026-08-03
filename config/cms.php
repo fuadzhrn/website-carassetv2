@@ -47,6 +47,32 @@ return [
             ],
         ],
 
+        'product-byd-atto-1' => [
+            'name' => 'Produk BYD ATTO 1',
+            'slug' => 'product-byd-atto-1',
+            'route_name' => 'product.byd-atto-1',
+            'public_path' => '/produk/byd-atto-1',
+            'status' => 'active',
+            'sections' => [
+                'product-hero' => [
+                    'name' => 'Hero Produk',
+                    'sort_order' => 1,
+                ],
+                'product-colors' => [
+                    'name' => 'Galeri Kendaraan',
+                    'sort_order' => 2,
+                ],
+                'product-variants' => [
+                    'name' => 'Varian',
+                    'sort_order' => 3,
+                ],
+                'product-specifications' => [
+                    'name' => 'Spesifikasi & Fitur',
+                    'sort_order' => 4,
+                ],
+            ],
+        ],
+
         'business' => [
             'name' => 'Bisnis CarAsset',
             'slug' => 'business',

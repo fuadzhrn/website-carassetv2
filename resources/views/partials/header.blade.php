@@ -69,12 +69,6 @@
 
         <div class="ca-header__nav-panel" id="ca-mobile-nav-panel" data-mobile-nav-panel>
             @include('partials.desktop-navigation')
-
-            <div class="ca-header__actions">
-                <x-button href="{{ route('about-contact') }}#contact" variant="primary" size="md">
-                    Konsultasi Sekarang
-                </x-button>
-            </div>
         </div>
     </div>
 </header>

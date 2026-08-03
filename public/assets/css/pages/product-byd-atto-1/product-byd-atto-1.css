@@ -1,0 +1,37 @@
+/* ==========================================================================
+   CarAsset — Produk BYD ATTO 1 (product-byd-atto-1.css)
+   Hanya aturan bersama lintas section Produk. Setiap section tetap punya
+   file CSS sendiri untuk gaya spesifiknya.
+   ========================================================================== */
+
+.ca-page--product-byd-atto-1 {
+    background-color: var(--ca-color-white);
+}
+
+.ca-product-hero,
+.ca-product-colors,
+.ca-product-variants,
+.ca-product-specifications {
+    padding-block: var(--ca-section-space);
+}
+
+/* Hero already ends with its own visual close (framed vehicle photo +
+   microcopy), so it doesn't need the full section-space again as
+   trailing space before Colors' own top padding starts — stacking both
+   in full created a noticeably oversized gap between section 1 and 2. */
+.ca-product-hero {
+    padding-bottom: var(--ca-space-12);
+}
+
+@media (max-width: 1180px) {
+    .ca-product-hero,
+    .ca-product-colors,
+    .ca-product-variants,
+    .ca-product-specifications {
+        padding-block: var(--ca-section-space-small);
+    }
+
+    .ca-product-hero {
+        padding-bottom: var(--ca-space-10);
+    }
+}

@@ -18,6 +18,7 @@ class DashboardController extends Controller
         return view('admin.dashboard.index', [
             'quickAccessPages' => [
                 ['route' => 'admin.pages.home', 'title' => 'Home', 'description' => 'Hero, penawaran, dan CTA utama halaman depan.'],
+                ['route' => 'admin.pages.product-byd-atto-1', 'title' => 'Produk BYD ATTO 1', 'description' => 'Warna, varian, spesifikasi, fitur, dan keterkaitan dengan CarAsset.'],
                 ['route' => 'admin.pages.business', 'title' => 'Bisnis CarAsset', 'description' => 'Model bisnis, OWN, OPERATE, GROW, dan alur bisnis.'],
                 ['route' => 'admin.pages.partnership', 'title' => 'Program Kemitraan', 'description' => 'Mitra Owner, Mitra Driver, paket, dan persyaratan.'],
                 ['route' => 'admin.pages.simulation', 'title' => 'Simulasi & Perlindungan', 'description' => 'Dasar perhitungan, simulasi unit, dan perlindungan.'],

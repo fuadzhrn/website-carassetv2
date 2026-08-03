@@ -16,15 +16,25 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@500;600;700&family=Poppins:wght@400;500;600&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
 
-    {{-- Token desain brand — dipakai bersama publik agar panel admin tetap konsisten visual --}}
-    <link rel="stylesheet" href="{{ asset('assets/css/base/reset.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/base/variables.css') }}">
+    @php
+        // filemtime()-based cache-busting: PHP's dev server sends no
+        // Cache-Control/ETag for static assets, so edits to these shared
+        // admin CSS/JS files can otherwise sit stale in the browser cache
+        // indefinitely with no way for the visitor to know a fix shipped.
+        $adminAssetVersion = fn (string $relativePath) => file_exists(public_path($relativePath))
+            ? '?v='.filemtime(public_path($relativePath))
+            : '';
+    @endphp
 
-    <link rel="stylesheet" href="{{ asset('assets/admin/css/admin-base.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/admin/css/admin-layout.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/admin/css/admin-sidebar.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/admin/css/admin-topbar.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/admin/css/admin-components.css') }}">
+    {{-- Token desain brand — dipakai bersama publik agar panel admin tetap konsisten visual --}}
+    <link rel="stylesheet" href="{{ asset('assets/css/base/reset.css').$adminAssetVersion('assets/css/base/reset.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/base/variables.css').$adminAssetVersion('assets/css/base/variables.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('assets/admin/css/admin-base.css').$adminAssetVersion('assets/admin/css/admin-base.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/admin/css/admin-layout.css').$adminAssetVersion('assets/admin/css/admin-layout.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/admin/css/admin-sidebar.css').$adminAssetVersion('assets/admin/css/admin-sidebar.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/admin/css/admin-topbar.css').$adminAssetVersion('assets/admin/css/admin-topbar.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/admin/css/admin-components.css').$adminAssetVersion('assets/admin/css/admin-components.css') }}">
 
     @stack('styles')
 </head>
@@ -50,8 +60,8 @@
     </div>
 
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
-    <script src="{{ asset('assets/admin/js/admin-lucide-init.js') }}" defer></script>
-    <script src="{{ asset('assets/admin/js/admin-shell.js') }}" defer></script>
+    <script src="{{ asset('assets/admin/js/admin-lucide-init.js').$adminAssetVersion('assets/admin/js/admin-lucide-init.js') }}" defer></script>
+    <script src="{{ asset('assets/admin/js/admin-shell.js').$adminAssetVersion('assets/admin/js/admin-shell.js') }}" defer></script>
 
     @stack('scripts')
 </body>
